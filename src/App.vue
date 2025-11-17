@@ -1,11 +1,15 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  import TargetCursor from "@/Animations/TargetCursor/TargetCursor.vue";
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <TargetCursor
+        :spin-duration="2"
+        :hide-default-cursor="true"
+  />
+  <RouterView />
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>

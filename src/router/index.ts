@@ -1,12 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 const BasicLayout = () => import('@/layouts/BasicLayout.vue')
+const VoiceChatLayout = () => import('@/layouts/VoiceChatLayout.vue')
 
 const routes = [
   {
     path: '/',
     component: BasicLayout,
-    children: [],
+    children: [
+      {
+        path: 'voice-chat',
+        component: VoiceChatLayout,
+      }
+    ],
   },
 ]
 

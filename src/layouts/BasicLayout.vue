@@ -1,10 +1,10 @@
 <template>
-  <div class="common-layout">
-    <el-container>
+  <div class="basic-layout">
+    <el-container class="h-screen">
       <el-header class="m-0 p-0">
         <HeaderBar />
       </el-header>
-      <el-main>
+      <el-main class="p-0 m-0 h-full">
         <RouterView />
       </el-main>
     </el-container>
@@ -15,3 +15,6 @@
 import HeaderBar from '@/components/HeaderBar.vue'
 import { RouterView } from 'vue-router'
 </script>
+
+<style scoped>
+</style>

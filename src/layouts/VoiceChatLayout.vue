@@ -4,7 +4,7 @@
       <!-- 侧边栏：overlay 在移动端始终启用（isMobile），通过 collapsed 控制显隐 -->
       <el-aside
         :class="[{ collapsed: !showAside }, { overlay: isMobile }]"
-        class="aside bg-slate-100 w-76 p-0"
+        class="aside bg-[#fff0f5] w-76 p-0 border-r border-pink-100"
       >
       <div class="aside-content">
         <ChatAside />

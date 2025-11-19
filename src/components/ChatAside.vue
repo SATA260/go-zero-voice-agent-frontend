@@ -110,7 +110,7 @@ const handleRecentItemClick = (id: string) => {
 </script>
 
 <style scoped>
-/* 基础样式保持不变 */
+/* 基础样式 */
 .sidebar {
   width: 100%;
   height: 100vh;
@@ -120,45 +120,59 @@ const handleRecentItemClick = (id: string) => {
   flex-direction: column;
   position: relative;
   transition: width 0.3s ease;
+  color: #5d5d5d;
 }
 
 .sidebar-item {
   display: flex;
   align-items: center;
-  padding: 12px 8px;
-  border-radius: 8px;
+  padding: 12px 16px;
+  border-radius: 16px;
   cursor: pointer;
   margin-bottom: 8px;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
 }
 
 .sidebar-item:hover {
-  background-color: #cecece;
+  background-color: #ffe4e8;
+  transform: translateX(2px);
 }
 
 .icon {
-  margin-right: 8px;
-  font-size: 18px;
+  margin-right: 12px;
+  font-size: 20px;
+  color: #ff8da1;
 }
 
 /* 新对话按钮特殊样式 */
 .new-conversation {
-  background-color: #b2d7fc62;
-  color: #4d4df8;
-  border: #4b3ff769 1px solid;
+  background-color: #ffffff;
+  color: #ff6b81;
+  border: 2px solid #ffb6c1;
   font-weight: 600;
+  box-shadow: 0 2px 8px rgba(255, 182, 193, 0.2);
 }
 
 .new-conversation:hover {
-  background-color: #b2d7fcd5;
+  background-color: #fff0f3;
+  border-color: #ff8da1;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 182, 193, 0.3);
+}
+
+.new-conversation .icon {
+  color: #ff6b81;
 }
 
 .new-conversation .shortcut {
   margin-left: auto;
-  background-color: rgba(255, 255, 255, 0.2);
-  padding: 2px 6px;
-  border-radius: 4px;
+  background-color: #ffe4e8;
+  color: #ff6b81;
+  padding: 2px 8px;
+  border-radius: 8px;
   font-size: 12px;
+  font-weight: 500;
 }
 
 .new-conversation-text {
@@ -168,13 +182,22 @@ const handleRecentItemClick = (id: string) => {
 /* 带箭头的项 */
 .collapse,
 .recent-conversation {
-  padding-left: 32px;
+  padding-left: 16px;
   justify-content: space-between;
+  font-weight: 500;
+  color: #888;
+  margin-top: 8px;
+}
+
+.recent-conversation:hover {
+  background-color: transparent;
+  color: #ff6b81;
 }
 
 .arrow {
-  font-size: 18px;
+  font-size: 16px;
   transition: transform 0.3s ease;
+  color: #ffb6c1;
 }
 
 .rotate-180 {
@@ -183,36 +206,61 @@ const handleRecentItemClick = (id: string) => {
 
 /* 最近对话列表 */
 .recent-list {
-  margin-top: 8px;
-  padding-left: 26px;
+  margin-top: 4px;
+  padding-left: 8px;
   transition: all 0.3s ease;
   overflow: hidden;
-  max-height: 200px; /* 可根据需要调整 */
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* 滚动条美化 */
+.recent-list::-webkit-scrollbar {
+  width: 4px;
+}
+.recent-list::-webkit-scrollbar-thumb {
+  background-color: #ffd1dc;
+  border-radius: 2px;
 }
 
 .recent-item {
-  padding: 8px 0;
-  color: #606266;
+  padding: 10px 16px;
+  color: #666;
   cursor: pointer;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-radius: 16px;
-  padding: 6px 10px;
+  border-radius: 12px;
+  margin-bottom: 4px;
+  font-size: 14px;
+  transition: all 0.2s;
+  border: 1px solid transparent;
 }
 
 .recent-item:hover {
-  background-color: #cecece;
+  background-color: #fff0f3;
+  color: #ff6b81;
+  padding-left: 20px;
 }
 
 /* 底部关于项 */
 .about {
-  margin-top: auto; /* 推到底部 */
+  margin-top: auto;
 }
 
-/* 选中态：背景变白 */
-.sidebar-item.selected,
+/* 选中态 */
+.sidebar-item.selected {
+  background-color: #ffffff;
+  color: #ff6b81;
+  border-color: #ffb6c1;
+  box-shadow: 0 2px 8px rgba(255, 182, 193, 0.15);
+}
+
 .recent-item.selected {
   background-color: #ffffff;
+  color: #ff6b81;
+  border-color: #ffb6c1;
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(255, 182, 193, 0.1);
 }
 </style>

@@ -18,11 +18,11 @@
 
         <!-- 气泡 -->
         <div
-          class="max-w-[75%] p-4 rounded-2xl text-sm leading-relaxed shadow-sm relative"
+          class="max-w-[75%] p-4 rounded-2xl text-sm leading-relaxed shadow-sm relative cursor-target"
           :class="[
             msg.role === 'user'
               ? 'bg-[#a0c4ff] text-white rounded-br-none'
-              : 'bg-white text-gray-700 rounded-bl-none border-2 border-pink-100'
+              : 'bg-white text-gray-700 rounded-bl-none border-2 border-pink-100',
           ]"
         >
           {{ msg.content }}
@@ -40,7 +40,9 @@
 
     <!-- 底部输入/状态栏 (示例) -->
     <div class="p-4 bg-white/80 backdrop-blur-sm border-t border-pink-100">
-      <div class="flex items-center gap-2 text-pink-400 text-sm justify-center bg-pink-50 py-2 rounded-full">
+      <div
+        class="flex items-center gap-2 text-pink-400 text-sm justify-center bg-pink-50 py-2 rounded-full"
+      >
         <span class="animate-pulse">✨</span>
         <span>正在聆听...</span>
         <span class="animate-pulse">✨</span>
@@ -84,13 +86,16 @@ onMounted(() => {
   scrollToBottom()
 })
 
-watch(() => messages.value.length, () => {
-  scrollToBottom()
-  const lastMsg = messages.value[messages.value.length - 1]
-  if (lastMsg && lastMsg.role === 'ai') {
-    emit('ai-message', lastMsg.content)
-  }
-})
+watch(
+  () => messages.value.length,
+  () => {
+    scrollToBottom()
+    const lastMsg = messages.value[messages.value.length - 1]
+    if (lastMsg && lastMsg.role === 'ai') {
+      emit('ai-message', lastMsg.content)
+    }
+  },
+)
 </script>
 
 <style scoped>

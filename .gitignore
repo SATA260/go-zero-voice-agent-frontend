@@ -39,6 +39,6 @@ __screenshots__/
 # Tailwind
 src/styles/tailwind-output.css
 
-# Other
+# Others
 .VSCodeCounter
-.VSCodeCounter/
+.VSCodeCounter/*

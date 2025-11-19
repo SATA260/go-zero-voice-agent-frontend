@@ -1,17 +1,34 @@
 <template>
-  <div class="app relative">
-<!-- 自定义ref="liveCanvas"： -->
-     <canvas ref="liveCanvas"></canvas>
+  <div class="app relative" @click="handleInteraction">
+    <!-- 自定义ref="liveCanvas"： -->
+    <canvas ref="liveCanvas"></canvas>
 
-     <!-- 聊天气泡 -->
-     <transition name="fade">
-       <div v-if="displayText" class="bubble-container">
-         <div class="bubble-content">
-           {{ displayText }}
-         </div>
-         <!-- <div class="bubble-arrow"></div> -->
-       </div>
-     </transition>
+    <!-- 聊天气泡 -->
+    <transition name="fade">
+      <div v-if="displayText" class="bubble-container">
+        <div class="bubble-content">
+          {{ displayText }}
+        </div>
+      </div>
+    </transition>
+
+    <!-- 交互菜单 -->
+    <transition name="slide-up">
+      <div v-if="showMenu" class="interaction-menu" @click.stop>
+        <div class="menu-btn" @click="handleAction('greet')">
+          <span class="btn-icon">👋</span>
+          <span class="btn-text">打招呼</span>
+        </div>
+        <div class="menu-btn" @click="handleAction('setting')">
+          <span class="btn-icon">📸</span>
+          <span class="btn-text">设置</span>
+        </div>
+        <div class="menu-btn" @click="handleAction('call')">
+          <span class="btn-icon">📞</span>
+          <span class="btn-text">通话</span>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -24,6 +41,7 @@ const props = defineProps<{
   aiMessage?: string
 }>()
 
+const showMenu = ref(false)
 const displayText = ref('')
 const idleMessages = [
   '今天天气真不错呢~',
@@ -31,10 +49,37 @@ const idleMessages = [
   '发呆中...',
   '好想吃鱼干啊~',
   '你今天过得怎么样？',
-  '喵~'
+  '喵~',
 ]
 let idleTimer: ReturnType<typeof setInterval> | undefined
 let messageTimer: ReturnType<typeof setTimeout> | undefined
+
+const emit = defineEmits<{
+  (e: 'start-call'): void
+}>()
+
+const handleInteraction = () => {
+  showMenu.value = !showMenu.value
+  if (showMenu.value) {
+    showMessage('喵？找我有什么事吗？', 3000)
+  }
+}
+
+const handleAction = (action: string) => {
+  showMenu.value = false
+  switch (action) {
+    case 'greet':
+      showMessage('你好呀！很高兴见到你！', 4000)
+      break
+    case 'setting':
+      showMessage('要设置参数吗？喵~', 4000)
+      break
+    case 'call':
+      showMessage('正在为你接通...', 4000)
+      emit('start-call')
+      break
+  }
+}
 
 const showMessage = (text: string, duration = 5000) => {
   displayText.value = text
@@ -57,11 +102,14 @@ const startIdleLoop = () => {
   }, 10000) // 每10秒切换一次空闲语句
 }
 
-watch(() => props.aiMessage, (newVal) => {
-  if (newVal) {
-    showMessage(newVal, 6000)
-  }
-})
+watch(
+  () => props.aiMessage,
+  (newVal) => {
+    if (newVal) {
+      showMessage(newVal, 6000)
+    }
+  },
+)
 
 declare global {
   interface Window {
@@ -98,7 +146,6 @@ onMounted(async () => {
     const newX = centerX + (x - centerX) * 0.1
     const newY = centerY + (y - centerY) * 0.6
     originalFocus.call(model, newX, newY)
-    console.log('x: ', centerX, ', y: ', centerY)
   }
 
   app.stage.addChild(model)
@@ -118,7 +165,7 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.app{
+.app {
   background-color: #ffffff;
   min-width: 360px;
   height: 100%;
@@ -166,12 +213,73 @@ header {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
 }
 
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
   transform: translateX(-50%) translateY(10px);
+}
+
+.interaction-menu {
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 20;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 10px 16px;
+  border-radius: 24px;
+  box-shadow: 0 8px 20px rgba(255, 182, 193, 0.3);
+  border: 2px solid #fff0f5;
+  backdrop-filter: blur(4px);
+}
+
+.menu-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 16px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 60px;
+}
+
+.menu-btn:hover {
+  background-color: #fff0f5;
+  transform: translateY(-4px);
+}
+
+.menu-btn:active {
+  transform: translateY(-1px);
+}
+
+.btn-icon {
+  font-size: 24px;
+  margin-bottom: 4px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.btn-text {
+  font-size: 12px;
+  color: #ff6b81;
+  font-weight: 600;
+}
+
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.slide-up-enter-from,
+.slide-up-leave-to {
+  opacity: 0;
+  transform: translate(-50%, 40px) scale(0.9);
 }
 </style>

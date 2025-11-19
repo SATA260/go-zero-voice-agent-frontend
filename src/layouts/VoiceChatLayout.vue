@@ -6,23 +6,31 @@
         :class="[{ collapsed: !showAside }, { overlay: isMobile }]"
         class="aside bg-[#fff0f5] w-76 p-0 border-r border-pink-100"
       >
-      <div class="aside-content">
-        <ChatAside />
-      </div>
+        <div class="aside-content">
+          <ChatAside />
+        </div>
       </el-aside>
 
       <!-- 移动端遮罩：打开侧边栏时显示，点击关闭 -->
-      <div
-        v-if="isMobile && showAside"
-        class="overlay-backdrop"
-        @click="toggleAside"
-      ></div>
+      <div v-if="isMobile && showAside" class="overlay-backdrop" @click="toggleAside"></div>
 
       <el-main class="main">
         <!-- 主区顶部：移动端显示菜单按钮，桌面也可显示 -->
         <div class="main-top">
-          <img src="@/assets/svg/展开.svg" v-show="!showAside" class="main-toggle" @click="toggleAside" aria-label="切换侧边栏" />
-          <img src="@/assets/svg/收起.svg" v-show="showAside" class="main-toggle" @click="toggleAside" aria-label="切换侧边栏" />
+          <img
+            src="@/assets/svg/展开.svg"
+            v-show="!showAside"
+            class="main-toggle"
+            @click="toggleAside"
+            aria-label="切换侧边栏"
+          />
+          <img
+            src="@/assets/svg/收起.svg"
+            v-show="showAside"
+            class="main-toggle"
+            @click="toggleAside"
+            aria-label="切换侧边栏"
+          />
         </div>
         <div class="main-body h-full">
           <VoiceChatView />
@@ -75,7 +83,11 @@ function toggleAside() {
 .aside {
   min-width: 0; /* 保证 flex 收缩 */
   overflow: hidden; /* 隐藏内容折叠时溢出 */
-  transition: width 0.28s ease 0s, padding 0.28s ease 0s, transform 0.28s ease 0s, box-shadow 0.2s ease 0s;
+  transition:
+    width 0.28s ease 0s,
+    padding 0.28s ease 0s,
+    transform 0.28s ease 0s,
+    box-shadow 0.2s ease 0s;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -86,7 +98,9 @@ function toggleAside() {
 .aside.collapsed {
   width: 0;
   padding: 0;
-  transition: width 0.28s ease 0.18s, padding 0.28s ease 0.18s;
+  transition:
+    width 0.28s ease 0.18s,
+    padding 0.28s ease 0.18s;
 }
 
 /* 侧边的显示内容渐隐动画
@@ -114,7 +128,7 @@ function toggleAside() {
   top: 0;
   height: 100vh;
   z-index: 60;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
   transform: translateX(-100%); /* 默认隐藏在左侧外 */
 }
 /* 移动端显示（未 collapsed）：滑入屏幕，立即开始 transform，无延迟 */
@@ -143,7 +157,7 @@ function toggleAside() {
   font-weight: 600;
 }
 .control-btn:hover {
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* 主区顶部工具 */
@@ -153,20 +167,20 @@ function toggleAside() {
 }
 .main-toggle {
   border: none;
-  background: rgba(0,0,0,0.05);
+  background: rgba(0, 0, 0, 0.05);
   padding: 6px 10px;
   border-radius: 6px;
   cursor: pointer;
 }
 .main-toggle:hover {
-  background: rgba(0,0,0,0.08);
+  background: rgba(0, 0, 0, 0.08);
 }
 
 /* 遮罩层 */
 .overlay-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.36);
+  background: rgba(0, 0, 0, 0.36);
   z-index: 55;
   transition: opacity 0.18s ease;
 }

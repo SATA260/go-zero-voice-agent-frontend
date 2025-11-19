@@ -15,7 +15,10 @@
       v-for="item in menuItems"
       :key="item.label"
       @click="handleMenuItemClick(item.label)"
-      :class="[{ selected: selectedMenu === item.label }, {'shadow-md': selectedMenu === item.label}]"
+      :class="[
+        { selected: selectedMenu === item.label },
+        { 'shadow-md': selectedMenu === item.label },
+      ]"
     >
       <el-icon class="icon"></el-icon>
       <span>{{ item.label }}</span>
@@ -37,7 +40,10 @@
         v-for="item in recentItems"
         :key="item.id"
         @click="handleRecentItemClick(item.id)"
-        :class="[{ selected: selectedRecentId === item.id }, {'shadow-md': selectedRecentId === item.id}]"
+        :class="[
+          { selected: selectedRecentId === item.id },
+          { 'shadow-md': selectedRecentId === item.id },
+        ]"
       >
         {{ item.title }}
       </div>
@@ -46,35 +52,32 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref } from 'vue'
 
 // 定义菜单项类型
 interface MenuItem {
-  label: string;
+  label: string
 }
 
 // 定义最近对话项类型
 interface RecentItem {
-  id: string;
-  title: string;
+  id: string
+  title: string
 }
 
 // 折叠状态
-const isCollapsed = ref(false);
+const isCollapsed = ref(false)
 
 // 选中状态
-const selectedMenu = ref<string | null>(null);
-const selectedRecentId = ref<string | null>(null);
+const selectedMenu = ref<string | null>(null)
+const selectedRecentId = ref<string | null>(null)
 const clearSelection = () => {
-  selectedMenu.value = null;
-  selectedRecentId.value = null;
-};
+  selectedMenu.value = null
+  selectedRecentId.value = null
+}
 
 // 功能菜单项数据
-const menuItems = ref<MenuItem[]>([
-  { label: '文字交流'},
-  { label: '语音对话'},
-]);
+const menuItems = ref<MenuItem[]>([{ label: '文字交流' }, { label: '语音对话' }])
 
 // 最近对话列表数据
 const recentItems = ref<RecentItem[]>([
@@ -82,31 +85,30 @@ const recentItems = ref<RecentItem[]>([
   { id: '2', title: '这个地方是历史记录' },
   { id: '3', title: '这个地方是历史记录' },
   { id: '4', title: '这个地方是历史记录' },
-]);
+])
 
 // 新对话按钮点击事件
 const handleNewChat = () => {
-  clearSelection();
-  console.log('开始新对话');
+  clearSelection()
+  console.log('开始新对话')
   // 在这里添加新对话的逻辑，例如清空当前聊天记录等
-};
+}
 
 // 功能菜单项点击事件
 const handleMenuItemClick = (label: string) => {
-  clearSelection();
-  console.log(`点击了功能菜单: ${label}`);
-  selectedMenu.value = label;
+  clearSelection()
+  console.log(`点击了功能菜单: ${label}`)
+  selectedMenu.value = label
   // 在这里添加对应功能的逻辑
-};
+}
 
 // 最近对话项点击事件
 const handleRecentItemClick = (id: string) => {
-  clearSelection();
-  console.log(`加载最近对话: ${id}`);
-  selectedRecentId.value = id;
+  clearSelection()
+  console.log(`加载最近对话: ${id}`)
+  selectedRecentId.value = id
   // 在这里添加加载历史对话的逻辑
-};
-
+}
 </script>
 
 <style scoped>

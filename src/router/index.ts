@@ -7,12 +7,12 @@ const routes = [
   {
     path: '/',
     component: BasicLayout,
-    children: [
-      {
-        path: 'voice-chat',
-        component: VoiceChatLayout,
-      }
-    ],
+    children: [],
+  },
+  {
+    path: '/voice-chat',
+    component: VoiceChatLayout,
+    children: [],
   },
 ]
 

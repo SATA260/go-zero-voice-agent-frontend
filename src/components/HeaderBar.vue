@@ -1,7 +1,7 @@
 <template>
   <div class="header-bar flex items-center justify-between min-w-screen">
     <h1>Welcome to the Home Page</h1>
-    <p>This is the main landing page of the application.</p>
+    <p>this is the main landing page of the application.</p>
   </div>
 </template>
 

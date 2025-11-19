@@ -24,8 +24,8 @@
           <img src="@/assets/svg/展开.svg" v-show="!showAside" class="main-toggle" @click="toggleAside" aria-label="切换侧边栏" />
           <img src="@/assets/svg/收起.svg" v-show="showAside" class="main-toggle" @click="toggleAside" aria-label="切换侧边栏" />
         </div>
-        <div class="main-body">
-
+        <div class="main-body h-full">
+          <VoiceChatView />
         </div>
       </el-main>
     </el-container>
@@ -35,6 +35,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import ChatAside from '@/components/ChatAside.vue'
+import VoiceChatView from '@/views/VoiceChatView.vue'
 
 const minWidthForAside = 768
 const isMobile = ref(window.innerWidth < minWidthForAside)

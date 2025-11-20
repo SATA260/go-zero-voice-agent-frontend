@@ -14,7 +14,7 @@
       <!-- 移动端遮罩：打开侧边栏时显示，点击关闭 -->
       <div v-if="isMobile && showAside" class="overlay-backdrop" @click="toggleAside"></div>
 
-      <el-main class="main">
+      <el-main class="p-0">
         <!-- 主区顶部：移动端显示菜单按钮，桌面也可显示 -->
         <div class="main-top">
           <img

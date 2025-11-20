@@ -14,10 +14,10 @@
       class="sidebar-item cursor-target"
       v-for="item in menuItems"
       :key="item.label"
-      @click="handleMenuItemClick(item.label)"
+      @click="handleMenuItemClick(item)"
       :class="[
-        { selected: selectedMenu === item.label },
-        { 'shadow-md': selectedMenu === item.label },
+        { selected: selectedMenu === item.path },
+        { 'shadow-md': selectedMenu === item.path },
       ]"
     >
       <el-icon class="icon"></el-icon>
@@ -52,11 +52,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+
+const router = useRouter()
+const route = useRoute()
 
 // 定义菜单项类型
 interface MenuItem {
   label: string
+  path: string
 }
 
 // 定义最近对话项类型
@@ -77,7 +82,10 @@ const clearSelection = () => {
 }
 
 // 功能菜单项数据
-const menuItems = ref<MenuItem[]>([{ label: '文字交流' }, { label: '语音对话' }])
+const menuItems = ref<MenuItem[]>([
+  { label: 'api-key', path: '/voice-chat/api' },
+  { label: '语音对话', path: '/' },
+])
 
 // 最近对话列表数据
 const recentItems = ref<RecentItem[]>([
@@ -91,16 +99,39 @@ const recentItems = ref<RecentItem[]>([
 const handleNewChat = () => {
   clearSelection()
   console.log('开始新对话')
-  // 在这里添加新对话的逻辑，例如清空当前聊天记录等
+  router.push('/voice-chat')
 }
 
 // 功能菜单项点击事件
-const handleMenuItemClick = (label: string) => {
+const handleMenuItemClick = (item: MenuItem) => {
   clearSelection()
-  console.log(`点击了功能菜单: ${label}`)
-  selectedMenu.value = label
-  // 在这里添加对应功能的逻辑
+  console.log(`点击了功能菜单: ${item.label}`)
+  selectedMenu.value = item.path
+  router.push(item.path)
 }
+
+// 监听路由变化，更新选中状态
+watch(
+  () => route.path,
+  (newPath) => {
+    const target = menuItems.value.find((item) => item.path === newPath)
+    if (target) {
+      selectedMenu.value = target.path
+    } else {
+      // 简单的路径匹配逻辑
+      if (newPath.startsWith('/voice-chat')) {
+        selectedMenu.value = '/voice-chat'
+      } else if (newPath === '/') {
+        selectedMenu.value = '/'
+      } else {
+        selectedMenu.value = null
+      }
+    }
+  },
+  { immediate: true },
+)
+
+
 
 // 最近对话项点击事件
 const handleRecentItemClick = (id: string) => {

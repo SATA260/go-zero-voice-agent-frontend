@@ -118,12 +118,9 @@ class WebRTCService {
 
         this.peerConnection = newPeerConnection
         this.localStream = newLocalStream
-
       } catch (error) {
         console.error('Error during WebSocket onopen:', error)
       }
-
-
     }
 
     // 处理websocket消息

@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 const BasicLayout = () => import('@/layouts/BasicLayout.vue')
 const VoiceChatLayout = () => import('@/layouts/VoiceChatLayout.vue')
+const ApiSetting = () => import('@/views/ApiSetting.vue')
+const VoiceChatView = () => import('@/views/VoiceChatView.vue')
 
 const routes = [
   {
@@ -12,7 +14,18 @@ const routes = [
   {
     path: '/voice-chat',
     component: VoiceChatLayout,
-    children: [],
+    children: [
+      {
+        path: '',
+        name: 'VoiceChat',
+        component: VoiceChatView,
+      },
+      {
+        path: 'api',
+        name: 'ApiSetting',
+        component: ApiSetting,
+      },
+    ],
   },
 ]
 

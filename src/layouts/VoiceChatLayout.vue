@@ -33,7 +33,7 @@
           />
         </div>
         <div class="main-body h-full">
-          <VoiceChatView />
+          <RouterView />
         </div>
       </el-main>
     </el-container>
@@ -43,7 +43,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import ChatAside from '@/components/ChatAside.vue'
-import VoiceChatView from '@/views/VoiceChatView.vue'
 
 const minWidthForAside = 768
 const isMobile = ref(window.innerWidth < minWidthForAside)
@@ -164,6 +163,7 @@ function toggleAside() {
 .main-top {
   padding: 0.5rem;
   position: fixed;
+  z-index: 50;
 }
 .main-toggle {
   border: none;

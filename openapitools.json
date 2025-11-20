@@ -1,0 +1,29 @@
+{
+  "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "7.17.0",
+    "generators": {
+      "usercenter": {
+        "inputSpec": "public/swagger/usercenter.openapi.json",
+        "generatorName": "typescript-axios",
+        "output": "src/api/usercenter",
+        "additionalProperties": {
+          "withSeparateModelsAndApi": true,
+          "apiPackage": "api",
+          "modelPackage": "model"
+        }
+      },
+      "voicechat": {
+        "inputSpec": "public/swagger/voicechat.openapi.json",
+        "generatorName": "typescript-axios",
+        "output": "src/api/voicechat",
+        "additionalProperties": {
+          "withSeparateModelsAndApi": true,
+          "apiPackage": "api",
+          "modelPackage": "model"
+        }
+      }
+    }
+  }
+}

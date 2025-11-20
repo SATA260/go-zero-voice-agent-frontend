@@ -1,0 +1,807 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "voicechat",
+    "description": "",
+    "version": "v1"
+  },
+  "tags": [],
+  "paths": {
+    "/voice/v1/asr/config": {
+      "post": {
+        "summary": "创建ASR配置",
+        "deprecated": false,
+        "description": "",
+        "operationId": "asrCreateAsrConfig",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/asrCreateAsrConfigBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/voice/v1/asr/config/{id}": {
+      "get": {
+        "summary": "获取ASR配置详情",
+        "deprecated": false,
+        "description": "",
+        "operationId": "asrGetAsrConfig",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "appId": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "language": {
+                      "type": "string"
+                    },
+                    "provider": {
+                      "type": "string"
+                    },
+                    "secretId": {
+                      "type": "string"
+                    },
+                    "secretKey": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "put": {
+        "summary": "更新ASR配置",
+        "deprecated": false,
+        "description": "",
+        "operationId": "asrUpdateAsrConfig",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/asrCreateAsrConfigBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "delete": {
+        "summary": "删除ASR配置",
+        "deprecated": false,
+        "description": "",
+        "operationId": "asrDeleteAsrConfig",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/voice/v1/asr/configs": {
+      "get": {
+        "summary": "分页获取ASR配置列表",
+        "deprecated": false,
+        "description": "",
+        "operationId": "asrListAsrConfig",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/asrListAsrConfigBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "configList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "provider",
+                          "appId",
+                          "secretId",
+                          "secretKey",
+                          "language"
+                        ],
+                        "properties": {
+                          "appId": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "integer"
+                          },
+                          "language": {
+                            "type": "string"
+                          },
+                          "provider": {
+                            "type": "string"
+                          },
+                          "secretId": {
+                            "type": "string"
+                          },
+                          "secretKey": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/voice/v1/chat/start": {
+      "get": {
+        "summary": "创建websocket连接,然后帮助建立webrtc连接",
+        "deprecated": false,
+        "description": "",
+        "operationId": "chatStart",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "knowledgeInfo",
+                  "asrConfig",
+                  "ttsConfig",
+                  "llmConfig"
+                ],
+                "properties": {
+                  "asrConfig": {
+                    "type": "object",
+                    "required": [
+                      "provider",
+                      "appId",
+                      "secretId",
+                      "secretKey",
+                      "language"
+                    ],
+                    "properties": {
+                      "appId": {
+                        "type": "string"
+                      },
+                      "language": {
+                        "type": "string"
+                      },
+                      "provider": {
+                        "type": "string"
+                      },
+                      "secretId": {
+                        "type": "string"
+                      },
+                      "secretKey": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "knowledgeInfo": {
+                    "type": "string"
+                  },
+                  "llmConfig": {
+                    "type": "object",
+                    "required": [
+                      "model",
+                      "apiKey",
+                      "apiBaseUrl"
+                    ],
+                    "properties": {
+                      "apiBaseUrl": {
+                        "type": "string"
+                      },
+                      "apiKey": {
+                        "type": "string"
+                      },
+                      "model": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "ttsConfig": {
+                    "type": "object",
+                    "required": [
+                      "provider",
+                      "appId",
+                      "secretId",
+                      "secretKey"
+                    ],
+                    "properties": {
+                      "appId": {
+                        "type": "string"
+                      },
+                      "provider": {
+                        "type": "string"
+                      },
+                      "secretId": {
+                        "type": "string"
+                      },
+                      "secretKey": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/voice/v1/tts/config": {
+      "post": {
+        "summary": "创建TTS配置",
+        "deprecated": false,
+        "description": "",
+        "operationId": "ttsCreateTtsConfig",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ttsCreateTtsConfigBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/voice/v1/tts/config/{id}": {
+      "get": {
+        "summary": "获取TTS配置详情",
+        "deprecated": false,
+        "description": "",
+        "operationId": "ttsGetTtsConfig",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "appId": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "provider": {
+                      "type": "string"
+                    },
+                    "secretId": {
+                      "type": "string"
+                    },
+                    "secretKey": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "put": {
+        "summary": "更新TTS配置",
+        "deprecated": false,
+        "description": "",
+        "operationId": "ttsUpdateTtsConfig",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ttsCreateTtsConfigBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "delete": {
+        "summary": "删除TTS配置",
+        "deprecated": false,
+        "description": "",
+        "operationId": "ttsDeleteTtsConfig",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/voice/v1/tts/configs": {
+      "get": {
+        "summary": "分页获取TTS配置列表",
+        "deprecated": false,
+        "description": "",
+        "operationId": "ttsListTtsConfig",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/asrListAsrConfigBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "configList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "provider",
+                          "appId",
+                          "secretId",
+                          "secretKey"
+                        ],
+                        "properties": {
+                          "appId": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "integer"
+                          },
+                          "provider": {
+                            "type": "string"
+                          },
+                          "secretId": {
+                            "type": "string"
+                          },
+                          "secretKey": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "asrGetAsrConfigBody": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          }
+        }
+      },
+      "asrListAsrConfigBody": {
+        "type": "object",
+        "required": [
+          "page",
+          "pageSize"
+        ],
+        "properties": {
+          "page": {
+            "type": "integer"
+          },
+          "pageSize": {
+            "type": "integer"
+          }
+        }
+      },
+      "ttsCreateTtsConfigBody": {
+        "type": "object",
+        "required": [
+          "provider",
+          "appId",
+          "secretId",
+          "secretKey"
+        ],
+        "properties": {
+          "appId": {
+            "type": "string"
+          },
+          "provider": {
+            "type": "string"
+          },
+          "secretId": {
+            "type": "string"
+          },
+          "secretKey": {
+            "type": "string"
+          }
+        }
+      },
+      "asrCreateAsrConfigBody": {
+        "type": "object",
+        "required": [
+          "provider",
+          "appId",
+          "secretId",
+          "secretKey",
+          "language"
+        ],
+        "properties": {
+          "appId": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          },
+          "provider": {
+            "type": "string"
+          },
+          "secretId": {
+            "type": "string"
+          },
+          "secretKey": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {}
+  },
+  "servers": [],
+  "security": []
+}

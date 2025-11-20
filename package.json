@@ -14,7 +14,7 @@
     "type-check": "vue-tsc --build",
     "lint": "eslint . --fix --cache",
     "format": "prettier --write src/",
-    "api:gen": "openapi-generator-cli generate -i public/swagger/api.json -g typescript-axios -o src/api"
+    "api:gen": "openapi-generator-cli generate"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.2",

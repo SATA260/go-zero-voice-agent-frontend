@@ -23,6 +23,16 @@
           "apiPackage": "api",
           "modelPackage": "model"
         }
+      },
+      "llm": {
+        "inputSpec": "public/swagger/llm.openapi.json",
+        "generatorName": "typescript-axios",
+        "output": "src/api/llm",
+        "additionalProperties": {
+          "withSeparateModelsAndApi": true,
+          "apiPackage": "api",
+          "modelPackage": "model"
+        }
       }
     }
   }

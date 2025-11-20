@@ -1,0 +1,551 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "llm",
+    "description": "",
+    "version": "v1"
+  },
+  "tags": [],
+  "paths": {
+    "/llm/v1/config/create": {
+      "post": {
+        "summary": "创建配置",
+        "deprecated": false,
+        "description": "",
+        "operationId": "configCreateConfig",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/configCreateConfigBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/llm/v1/config/list": {
+      "post": {
+        "summary": "分页查询我的配置",
+        "deprecated": false,
+        "description": "",
+        "operationId": "configListMyConfig",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "pageQuery",
+                  "queryFilter"
+                ],
+                "properties": {
+                  "pageQuery": {
+                    "type": "object",
+                    "required": [
+                      "page",
+                      "pageSize",
+                      "orderBy"
+                    ],
+                    "properties": {
+                      "orderBy": {
+                        "type": "string"
+                      },
+                      "page": {
+                        "type": "integer"
+                      },
+                      "pageSize": {
+                        "type": "integer"
+                      }
+                    }
+                  },
+                  "queryFilter": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "name",
+                      "description",
+                      "userId",
+                      "baseUrl",
+                      "apiKey",
+                      "model",
+                      "stream",
+                      "temperature",
+                      "topP",
+                      "topK",
+                      "enableThinking",
+                      "repetitionPenalty",
+                      "presencePenalty",
+                      "maxTokens",
+                      "seed",
+                      "enableSearch",
+                      "contextLength"
+                    ],
+                    "properties": {
+                      "apiKey": {
+                        "type": "string"
+                      },
+                      "baseUrl": {
+                        "type": "string"
+                      },
+                      "contextLength": {
+                        "type": "integer"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "enableSearch": {
+                        "type": "integer"
+                      },
+                      "enableThinking": {
+                        "type": "integer"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "maxTokens": {
+                        "type": "integer"
+                      },
+                      "model": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "presencePenalty": {
+                        "type": "number"
+                      },
+                      "repetitionPenalty": {
+                        "type": "number"
+                      },
+                      "seed": {
+                        "type": "integer"
+                      },
+                      "stream": {
+                        "type": "integer"
+                      },
+                      "temperature": {
+                        "type": "number"
+                      },
+                      "topK": {
+                        "type": "integer"
+                      },
+                      "topP": {
+                        "type": "number"
+                      },
+                      "userId": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "configs": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "name",
+                          "description",
+                          "userId",
+                          "baseUrl",
+                          "apiKey",
+                          "model",
+                          "stream",
+                          "temperature",
+                          "topP",
+                          "topK",
+                          "enableThinking",
+                          "repetitionPenalty",
+                          "presencePenalty",
+                          "maxTokens",
+                          "seed",
+                          "enableSearch",
+                          "contextLength"
+                        ],
+                        "properties": {
+                          "apiKey": {
+                            "type": "string"
+                          },
+                          "baseUrl": {
+                            "type": "string"
+                          },
+                          "contextLength": {
+                            "type": "integer"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "enableSearch": {
+                            "type": "integer"
+                          },
+                          "enableThinking": {
+                            "type": "integer"
+                          },
+                          "id": {
+                            "type": "integer"
+                          },
+                          "maxTokens": {
+                            "type": "integer"
+                          },
+                          "model": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "presencePenalty": {
+                            "type": "number"
+                          },
+                          "repetitionPenalty": {
+                            "type": "number"
+                          },
+                          "seed": {
+                            "type": "integer"
+                          },
+                          "stream": {
+                            "type": "integer"
+                          },
+                          "temperature": {
+                            "type": "number"
+                          },
+                          "topK": {
+                            "type": "integer"
+                          },
+                          "topP": {
+                            "type": "number"
+                          },
+                          "userId": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/llm/v1/config/{id}": {
+      "get": {
+        "summary": "获取配置详情",
+        "deprecated": false,
+        "description": "",
+        "operationId": "configGetConfig",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "config": {
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "name",
+                        "description",
+                        "userId",
+                        "baseUrl",
+                        "apiKey",
+                        "model",
+                        "stream",
+                        "temperature",
+                        "topP",
+                        "topK",
+                        "enableThinking",
+                        "repetitionPenalty",
+                        "presencePenalty",
+                        "maxTokens",
+                        "seed",
+                        "enableSearch",
+                        "contextLength"
+                      ],
+                      "properties": {
+                        "apiKey": {
+                          "type": "string"
+                        },
+                        "baseUrl": {
+                          "type": "string"
+                        },
+                        "contextLength": {
+                          "type": "integer"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "enableSearch": {
+                          "type": "integer"
+                        },
+                        "enableThinking": {
+                          "type": "integer"
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "maxTokens": {
+                          "type": "integer"
+                        },
+                        "model": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "presencePenalty": {
+                          "type": "number"
+                        },
+                        "repetitionPenalty": {
+                          "type": "number"
+                        },
+                        "seed": {
+                          "type": "integer"
+                        },
+                        "stream": {
+                          "type": "integer"
+                        },
+                        "temperature": {
+                          "type": "number"
+                        },
+                        "topK": {
+                          "type": "integer"
+                        },
+                        "topP": {
+                          "type": "number"
+                        },
+                        "userId": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "put": {
+        "summary": "更新配置",
+        "deprecated": false,
+        "description": "",
+        "operationId": "configUpdateConfig",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/configCreateConfigBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "delete": {
+        "summary": "删除配置",
+        "deprecated": false,
+        "description": "",
+        "operationId": "configDeleteConfig",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "configCreateConfigBody": {
+        "type": "object",
+        "required": [
+          "name",
+          "description",
+          "userId",
+          "baseUrl",
+          "apiKey",
+          "model",
+          "stream",
+          "temperature",
+          "topP",
+          "topK",
+          "enableThinking",
+          "repetitionPenalty",
+          "presencePenalty",
+          "maxTokens",
+          "seed",
+          "enableSearch",
+          "contextLength"
+        ],
+        "properties": {
+          "apiKey": {
+            "type": "string"
+          },
+          "baseUrl": {
+            "type": "string"
+          },
+          "contextLength": {
+            "type": "integer"
+          },
+          "description": {
+            "type": "string"
+          },
+          "enableSearch": {
+            "type": "integer"
+          },
+          "enableThinking": {
+            "type": "integer"
+          },
+          "maxTokens": {
+            "type": "integer"
+          },
+          "model": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "presencePenalty": {
+            "type": "number"
+          },
+          "repetitionPenalty": {
+            "type": "number"
+          },
+          "seed": {
+            "type": "integer"
+          },
+          "stream": {
+            "type": "integer"
+          },
+          "temperature": {
+            "type": "number"
+          },
+          "topK": {
+            "type": "integer"
+          },
+          "topP": {
+            "type": "number"
+          },
+          "userId": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "securitySchemes": {}
+  },
+  "servers": [],
+  "security": []
+}

@@ -6,7 +6,7 @@
     <div
       class="live2d-wrapper hidden md:block md:w-[360px] lg:w-[400px] h-[90%] pt-[5%] border-r border-gray-100 relative flex-shrink-0"
     >
-      <Live2dDisplay :ai-message="currentAiMessage" @start-call="handleStartCall" />
+      <Live2dDisplay :ai-message="currentAiMessage" />
     </div>
 
     <!-- 聊天区域：占满剩余空间 -->
@@ -20,17 +20,11 @@
 import { ref } from 'vue'
 import Live2dDisplay from '@/components/Live2dDisplay.vue'
 import ChatBox from '@/components/ChatBox.vue'
-import { webRTCService } from '@/services/webrtcService'
 
 const currentAiMessage = ref('')
 
 const handleAiMessage = (msg: string) => {
   currentAiMessage.value = msg
-}
-
-const handleStartCall = () => {
-  console.log('开始 WebRTC 通话')
-  webRTCService.startCall()
 }
 </script>
 <style scoped></style>

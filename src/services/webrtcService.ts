@@ -1,4 +1,5 @@
 import { useApiSettingStore } from '@/stores/modules/apiSetting'
+import { ref } from 'vue'
 
 export interface AsrConfig {
   provider: string
@@ -33,9 +34,30 @@ class WebRTCService {
   private localStream: MediaStream | null = null
   private socket: WebSocket | null = null
   private pendingCandidates: RTCIceCandidateInit[] = []
+  private waitingAudio: HTMLAudioElement | null = null
+
+  public websokcetConnected = ref(false)
+  public webrtcConnected = ref(false)
 
   constructor() {
     // 初始化配置
+  }
+
+  private playWaitingAudio() {
+    if (!this.waitingAudio) {
+      this.waitingAudio = new Audio('/music/wait.mp3')
+      this.waitingAudio.loop = true
+    }
+    this.waitingAudio.play().catch((error) => {
+      console.error('Error playing waiting audio:', error)
+    })
+  }
+
+  private stopWaitingAudio() {
+    if (this.waitingAudio) {
+      this.waitingAudio.pause()
+      this.waitingAudio.currentTime = 0
+    }
   }
 
   // 开始通话
@@ -43,6 +65,8 @@ class WebRTCService {
     // 先断开已有连接
     if (this.socket && this.socket.readyState !== WebSocket.CLOSED) {
       await this.hangup()
+      this.websokcetConnected.value = false
+      this.webrtcConnected.value = false
     }
 
     // 获取asr,tts,llm配置
@@ -63,11 +87,14 @@ class WebRTCService {
       throw new Error('LLM configuration is not set')
     }
 
+    this.playWaitingAudio()
+
     // 创建 WebSocket 连接
     const newSocket = new WebSocket('ws://localhost:3083/voice/v1/chat/start')
 
     newSocket.onopen = async () => {
       console.log('WebSocket connected')
+      this.websokcetConnected.value = true
 
       try {
         // 创建 RtcPeerConnection
@@ -116,11 +143,14 @@ class WebRTCService {
           switch (newPeerConnection.connectionState) {
             case 'connected':
               console.log('WebRTC connected!')
+              this.webrtcConnected.value = true
+              this.stopWaitingAudio()
               break
             case 'disconnected':
             case 'failed':
             case 'closed':
               console.log('Connection closed')
+              this.hangup()
               break
           }
         }
@@ -140,6 +170,7 @@ class WebRTCService {
         this.localStream = newLocalStream
       } catch (error) {
         console.error('Error during WebSocket onopen:', error)
+        this.hangup()
       }
     }
 
@@ -161,6 +192,10 @@ class WebRTCService {
 
   // 挂断
   hangup() {
+    this.stopWaitingAudio()
+    this.websokcetConnected.value = false
+    this.webrtcConnected.value = false
+
     if (this.peerConnection) {
       this.peerConnection.close()
       this.peerConnection = null

@@ -1,7 +1,7 @@
 <template>
-  <div class="app relative" @click="handleInteraction">
+  <div class="app relative">
     <!-- 自定义ref="liveCanvas"： -->
-    <canvas ref="liveCanvas"></canvas>
+    <canvas ref="liveCanvas" @click="handleInteraction"></canvas>
 
     <!-- 聊天气泡 -->
     <transition name="fade">
@@ -16,16 +16,24 @@
     <transition name="slide-up">
       <div v-if="showMenu" class="interaction-menu" @click.stop>
         <div class="menu-btn" @click="handleAction('greet')">
-          <span class="btn-icon">👋</span>
+          <img class="btn-icon" src="@/assets/svg/逗猫棒-2.svg" />
           <span class="btn-text">打招呼</span>
         </div>
-        <div class="menu-btn" @click="handleAction('setting')">
-          <span class="btn-icon">📸</span>
+        <div v-show="!websokcetConnected" class="menu-btn" @click="handleAction('setting')">
+          <img class="btn-icon" src="@/assets/svg/settings.svg" />
           <span class="btn-text">设置</span>
         </div>
-        <div class="menu-btn" @click="handleAction('call')">
-          <span class="btn-icon">📞</span>
+        <div v-show="!websokcetConnected" class="menu-btn" @click="handleAction('call')">
+          <img class="btn-icon" src="@/assets/svg/call.svg" />
           <span class="btn-text">通话</span>
+        </div>
+        <div v-show="websokcetConnected" class="menu-btn" @click="handleAction('mute')">
+          <img class="btn-icon" src="@/assets/svg/Mute.svg" />
+          <span class="btn-text">静音</span>
+        </div>
+        <div v-show="websokcetConnected" class="menu-btn" @click="handleAction('hangup')">
+          <img class="btn-icon" src="@/assets/svg/挂断.svg" />
+          <span class="btn-text">挂断</span>
         </div>
       </div>
     </transition>
@@ -36,6 +44,9 @@
 import * as PIXI from 'pixi.js'
 import { Live2DModel } from 'pixi-live2d-display/cubism4'
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { webRTCService } from '@/services/webrtcService';
+
+const websokcetConnected = webRTCService.websokcetConnected;
 
 const props = defineProps<{
   aiMessage?: string
@@ -54,10 +65,6 @@ const idleMessages = [
 let idleTimer: ReturnType<typeof setInterval> | undefined
 let messageTimer: ReturnType<typeof setTimeout> | undefined
 
-const emit = defineEmits<{
-  (e: 'start-call'): void
-}>()
-
 const handleInteraction = () => {
   showMenu.value = !showMenu.value
   if (showMenu.value) {
@@ -75,8 +82,15 @@ const handleAction = (action: string) => {
       showMessage('要设置参数吗？喵~', 4000)
       break
     case 'call':
+      webRTCService.startCall();
       showMessage('正在为你接通...', 4000)
-      emit('start-call')
+      break
+    case 'mute':
+      showMessage('静音中...', 4000)
+      break
+    case 'hangup':
+      webRTCService.hangup();
+      showMessage('正在为你挂断...', 1000)
       break
   }
 }
@@ -99,7 +113,7 @@ const startIdleLoop = () => {
   idleTimer = setInterval(() => {
     const msg = idleMessages[Math.floor(Math.random() * idleMessages.length)]
     if (msg) displayText.value = msg
-  }, 10000) // 每10秒切换一次空闲语句
+  }, 7000) // 每7秒切换一次空闲语句
 }
 
 watch(
@@ -171,7 +185,6 @@ onBeforeUnmount(() => {
   background-color: #ffffff;
   min-width: 360px;
   height: 100%;
-  overflow: hidden;
 }
 header {
   line-height: 1;
@@ -179,12 +192,11 @@ header {
 
 .bubble-container {
   position: absolute;
-  top: 8%;
+  top: 0%;
   left: 75%;
   transform: translateX(-50%);
+  width: 216px;
   z-index: 10;
-  min-width: 60%;
-  max-width: 80%;
   pointer-events: none;
   display: flex;
   flex-direction: column;
@@ -203,6 +215,7 @@ header {
   text-align: center;
   line-height: 1.4;
   position: relative;
+  word-break: break-all;
 }
 
 .bubble-arrow {
@@ -264,7 +277,8 @@ header {
 }
 
 .btn-icon {
-  font-size: 24px;
+  width: 80%;
+  margin-top: 4px;
   margin-bottom: 4px;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }

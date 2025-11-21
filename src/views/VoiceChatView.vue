@@ -4,7 +4,7 @@
   >
     <!-- Live2D 区域：移动端隐藏，桌面端显示 -->
     <div
-      class="live2d-wrapper hidden md:block md:w-[360px] lg:w-[400px] h-full border-r border-gray-100 relative flex-shrink-0"
+      class="live2d-wrapper hidden md:block md:w-[360px] lg:w-[400px] h-[90%] pt-[5%] border-r border-gray-100 relative flex-shrink-0"
     >
       <Live2dDisplay :ai-message="currentAiMessage" @start-call="handleStartCall" />
     </div>

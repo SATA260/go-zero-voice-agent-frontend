@@ -15,22 +15,21 @@
 
 
 export interface ConfigCreateConfigBody {
-    'apiKey': string;
-    'baseUrl': string;
-    'contextLength': number;
-    'description': string;
-    'enableSearch': number;
-    'enableThinking': number;
-    'maxTokens': number;
-    'model': string;
-    'name': string;
-    'presencePenalty': number;
-    'repetitionPenalty': number;
-    'seed': number;
-    'stream': number;
-    'temperature': number;
-    'topK': number;
-    'topP': number;
-    'userId': number;
+    'apiKey'?: string;
+    'baseUrl'?: string;
+    'contextLength'?: number;
+    'description'?: string;
+    'enableSearch'?: number;
+    'enableThinking'?: number;
+    'maxTokens'?: number;
+    'model'?: string;
+    'name'?: string;
+    'presencePenalty'?: number;
+    'repetitionPenalty'?: number;
+    'seed'?: number;
+    'stream'?: number;
+    'temperature'?: number;
+    'topK'?: number;
+    'topP'?: number;
 }
 

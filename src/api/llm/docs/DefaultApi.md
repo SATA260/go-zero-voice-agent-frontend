@@ -28,9 +28,11 @@ const configuration = new Configuration();
 const apiInstance = new DefaultApi(configuration);
 
 let configCreateConfigBody: ConfigCreateConfigBody; //
+let xUserId: number; // (optional) (default to undefined)
 
 const { status, data } = await apiInstance.configCreateConfig(
-    configCreateConfigBody
+    configCreateConfigBody,
+    xUserId
 );
 ```
 
@@ -39,6 +41,7 @@ const { status, data } = await apiInstance.configCreateConfig(
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
 | **configCreateConfigBody** | **ConfigCreateConfigBody**|  | |
+| **xUserId** | [**number**] |  | (optional) defaults to undefined|
 
 
 ### Return type
@@ -79,9 +82,11 @@ const configuration = new Configuration();
 const apiInstance = new DefaultApi(configuration);
 
 let id: number; // (default to undefined)
+let xUserId: number; // (optional) (default to undefined)
 
 const { status, data } = await apiInstance.configDeleteConfig(
-    id
+    id,
+    xUserId
 );
 ```
 
@@ -90,6 +95,7 @@ const { status, data } = await apiInstance.configDeleteConfig(
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
 | **id** | [**number**] |  | defaults to undefined|
+| **xUserId** | [**number**] |  | (optional) defaults to undefined|
 
 
 ### Return type
@@ -130,9 +136,11 @@ const configuration = new Configuration();
 const apiInstance = new DefaultApi(configuration);
 
 let id: number; // (default to undefined)
+let xUserId: number; // (optional) (default to undefined)
 
 const { status, data } = await apiInstance.configGetConfig(
-    id
+    id,
+    xUserId
 );
 ```
 
@@ -141,6 +149,7 @@ const { status, data } = await apiInstance.configGetConfig(
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
 | **id** | [**number**] |  | defaults to undefined|
+| **xUserId** | [**number**] |  | (optional) defaults to undefined|
 
 
 ### Return type
@@ -182,9 +191,11 @@ const configuration = new Configuration();
 const apiInstance = new DefaultApi(configuration);
 
 let configListMyConfigRequest: ConfigListMyConfigRequest; //
+let xUserId: number; // (optional) (default to undefined)
 
 const { status, data } = await apiInstance.configListMyConfig(
-    configListMyConfigRequest
+    configListMyConfigRequest,
+    xUserId
 );
 ```
 
@@ -193,6 +204,7 @@ const { status, data } = await apiInstance.configListMyConfig(
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
 | **configListMyConfigRequest** | **ConfigListMyConfigRequest**|  | |
+| **xUserId** | [**number**] |  | (optional) defaults to undefined|
 
 
 ### Return type
@@ -235,10 +247,12 @@ const apiInstance = new DefaultApi(configuration);
 
 let id: number; // (default to undefined)
 let configCreateConfigBody: ConfigCreateConfigBody; //
+let xUserId: number; // (optional) (default to undefined)
 
 const { status, data } = await apiInstance.configUpdateConfig(
     id,
-    configCreateConfigBody
+    configCreateConfigBody,
+    xUserId
 );
 ```
 
@@ -248,6 +262,7 @@ const { status, data } = await apiInstance.configUpdateConfig(
 |------------- | ------------- | ------------- | -------------|
 | **configCreateConfigBody** | **ConfigCreateConfigBody**|  | |
 | **id** | [**number**] |  | defaults to undefined|
+| **xUserId** | [**number**] |  | (optional) defaults to undefined|
 
 
 ### Return type

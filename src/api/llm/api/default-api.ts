@@ -40,10 +40,11 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary 创建配置
          * @param {ConfigCreateConfigBody} configCreateConfigBody 
+         * @param {number} [xUserId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        configCreateConfig: async (configCreateConfigBody: ConfigCreateConfigBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        configCreateConfig: async (configCreateConfigBody: ConfigCreateConfigBody, xUserId?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'configCreateConfigBody' is not null or undefined
             assertParamExists('configCreateConfig', 'configCreateConfigBody', configCreateConfigBody)
             const localVarPath = `/llm/v1/config/create`;
@@ -62,6 +63,11 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
+            if (xUserId != null) {
+                localVarHeaderParameter['X-User-Id'] = typeof xUserId === 'string'
+                    ? xUserId
+                    : JSON.stringify(xUserId);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -76,10 +82,11 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary 删除配置
          * @param {number} id 
+         * @param {number} [xUserId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        configDeleteConfig: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        configDeleteConfig: async (id: number, xUserId?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('configDeleteConfig', 'id', id)
             const localVarPath = `/llm/v1/config/{id}`
@@ -97,6 +104,11 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
 
     
+            if (xUserId != null) {
+                localVarHeaderParameter['X-User-Id'] = typeof xUserId === 'string'
+                    ? xUserId
+                    : JSON.stringify(xUserId);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -110,10 +122,11 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary 获取配置详情
          * @param {number} id 
+         * @param {number} [xUserId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        configGetConfig: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        configGetConfig: async (id: number, xUserId?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('configGetConfig', 'id', id)
             const localVarPath = `/llm/v1/config/{id}`
@@ -131,6 +144,11 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
 
     
+            if (xUserId != null) {
+                localVarHeaderParameter['X-User-Id'] = typeof xUserId === 'string'
+                    ? xUserId
+                    : JSON.stringify(xUserId);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -144,10 +162,11 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary 分页查询我的配置
          * @param {ConfigListMyConfigRequest} configListMyConfigRequest 
+         * @param {number} [xUserId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        configListMyConfig: async (configListMyConfigRequest: ConfigListMyConfigRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        configListMyConfig: async (configListMyConfigRequest: ConfigListMyConfigRequest, xUserId?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'configListMyConfigRequest' is not null or undefined
             assertParamExists('configListMyConfig', 'configListMyConfigRequest', configListMyConfigRequest)
             const localVarPath = `/llm/v1/config/list`;
@@ -166,6 +185,11 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
+            if (xUserId != null) {
+                localVarHeaderParameter['X-User-Id'] = typeof xUserId === 'string'
+                    ? xUserId
+                    : JSON.stringify(xUserId);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -181,10 +205,11 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @summary 更新配置
          * @param {number} id 
          * @param {ConfigCreateConfigBody} configCreateConfigBody 
+         * @param {number} [xUserId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        configUpdateConfig: async (id: number, configCreateConfigBody: ConfigCreateConfigBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        configUpdateConfig: async (id: number, configCreateConfigBody: ConfigCreateConfigBody, xUserId?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('configUpdateConfig', 'id', id)
             // verify required parameter 'configCreateConfigBody' is not null or undefined
@@ -206,6 +231,11 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
+            if (xUserId != null) {
+                localVarHeaderParameter['X-User-Id'] = typeof xUserId === 'string'
+                    ? xUserId
+                    : JSON.stringify(xUserId);
+            }
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -229,11 +259,12 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * 
          * @summary 创建配置
          * @param {ConfigCreateConfigBody} configCreateConfigBody 
+         * @param {number} [xUserId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async configCreateConfig(configCreateConfigBody: ConfigCreateConfigBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ConfigCreateConfig200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.configCreateConfig(configCreateConfigBody, options);
+        async configCreateConfig(configCreateConfigBody: ConfigCreateConfigBody, xUserId?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ConfigCreateConfig200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.configCreateConfig(configCreateConfigBody, xUserId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.configCreateConfig']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -242,11 +273,12 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * 
          * @summary 删除配置
          * @param {number} id 
+         * @param {number} [xUserId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async configDeleteConfig(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.configDeleteConfig(id, options);
+        async configDeleteConfig(id: number, xUserId?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.configDeleteConfig(id, xUserId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.configDeleteConfig']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -255,11 +287,12 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * 
          * @summary 获取配置详情
          * @param {number} id 
+         * @param {number} [xUserId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async configGetConfig(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ConfigGetConfig200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.configGetConfig(id, options);
+        async configGetConfig(id: number, xUserId?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ConfigGetConfig200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.configGetConfig(id, xUserId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.configGetConfig']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -268,11 +301,12 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * 
          * @summary 分页查询我的配置
          * @param {ConfigListMyConfigRequest} configListMyConfigRequest 
+         * @param {number} [xUserId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async configListMyConfig(configListMyConfigRequest: ConfigListMyConfigRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ConfigListMyConfig200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.configListMyConfig(configListMyConfigRequest, options);
+        async configListMyConfig(configListMyConfigRequest: ConfigListMyConfigRequest, xUserId?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ConfigListMyConfig200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.configListMyConfig(configListMyConfigRequest, xUserId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.configListMyConfig']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -282,11 +316,12 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @summary 更新配置
          * @param {number} id 
          * @param {ConfigCreateConfigBody} configCreateConfigBody 
+         * @param {number} [xUserId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async configUpdateConfig(id: number, configCreateConfigBody: ConfigCreateConfigBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.configUpdateConfig(id, configCreateConfigBody, options);
+        async configUpdateConfig(id: number, configCreateConfigBody: ConfigCreateConfigBody, xUserId?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.configUpdateConfig(id, configCreateConfigBody, xUserId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.configUpdateConfig']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -304,52 +339,57 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * 
          * @summary 创建配置
          * @param {ConfigCreateConfigBody} configCreateConfigBody 
+         * @param {number} [xUserId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        configCreateConfig(configCreateConfigBody: ConfigCreateConfigBody, options?: RawAxiosRequestConfig): AxiosPromise<ConfigCreateConfig200Response> {
-            return localVarFp.configCreateConfig(configCreateConfigBody, options).then((request) => request(axios, basePath));
+        configCreateConfig(configCreateConfigBody: ConfigCreateConfigBody, xUserId?: number, options?: RawAxiosRequestConfig): AxiosPromise<ConfigCreateConfig200Response> {
+            return localVarFp.configCreateConfig(configCreateConfigBody, xUserId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 删除配置
          * @param {number} id 
+         * @param {number} [xUserId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        configDeleteConfig(id: number, options?: RawAxiosRequestConfig): AxiosPromise<object> {
-            return localVarFp.configDeleteConfig(id, options).then((request) => request(axios, basePath));
+        configDeleteConfig(id: number, xUserId?: number, options?: RawAxiosRequestConfig): AxiosPromise<object> {
+            return localVarFp.configDeleteConfig(id, xUserId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 获取配置详情
          * @param {number} id 
+         * @param {number} [xUserId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        configGetConfig(id: number, options?: RawAxiosRequestConfig): AxiosPromise<ConfigGetConfig200Response> {
-            return localVarFp.configGetConfig(id, options).then((request) => request(axios, basePath));
+        configGetConfig(id: number, xUserId?: number, options?: RawAxiosRequestConfig): AxiosPromise<ConfigGetConfig200Response> {
+            return localVarFp.configGetConfig(id, xUserId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 分页查询我的配置
          * @param {ConfigListMyConfigRequest} configListMyConfigRequest 
+         * @param {number} [xUserId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        configListMyConfig(configListMyConfigRequest: ConfigListMyConfigRequest, options?: RawAxiosRequestConfig): AxiosPromise<ConfigListMyConfig200Response> {
-            return localVarFp.configListMyConfig(configListMyConfigRequest, options).then((request) => request(axios, basePath));
+        configListMyConfig(configListMyConfigRequest: ConfigListMyConfigRequest, xUserId?: number, options?: RawAxiosRequestConfig): AxiosPromise<ConfigListMyConfig200Response> {
+            return localVarFp.configListMyConfig(configListMyConfigRequest, xUserId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 更新配置
          * @param {number} id 
          * @param {ConfigCreateConfigBody} configCreateConfigBody 
+         * @param {number} [xUserId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        configUpdateConfig(id: number, configCreateConfigBody: ConfigCreateConfigBody, options?: RawAxiosRequestConfig): AxiosPromise<object> {
-            return localVarFp.configUpdateConfig(id, configCreateConfigBody, options).then((request) => request(axios, basePath));
+        configUpdateConfig(id: number, configCreateConfigBody: ConfigCreateConfigBody, xUserId?: number, options?: RawAxiosRequestConfig): AxiosPromise<object> {
+            return localVarFp.configUpdateConfig(id, configCreateConfigBody, xUserId, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -362,44 +402,48 @@ export class DefaultApi extends BaseAPI {
      * 
      * @summary 创建配置
      * @param {ConfigCreateConfigBody} configCreateConfigBody 
+     * @param {number} [xUserId] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public configCreateConfig(configCreateConfigBody: ConfigCreateConfigBody, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).configCreateConfig(configCreateConfigBody, options).then((request) => request(this.axios, this.basePath));
+    public configCreateConfig(configCreateConfigBody: ConfigCreateConfigBody, xUserId?: number, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).configCreateConfig(configCreateConfigBody, xUserId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 删除配置
      * @param {number} id 
+     * @param {number} [xUserId] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public configDeleteConfig(id: number, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).configDeleteConfig(id, options).then((request) => request(this.axios, this.basePath));
+    public configDeleteConfig(id: number, xUserId?: number, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).configDeleteConfig(id, xUserId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 获取配置详情
      * @param {number} id 
+     * @param {number} [xUserId] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public configGetConfig(id: number, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).configGetConfig(id, options).then((request) => request(this.axios, this.basePath));
+    public configGetConfig(id: number, xUserId?: number, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).configGetConfig(id, xUserId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 分页查询我的配置
      * @param {ConfigListMyConfigRequest} configListMyConfigRequest 
+     * @param {number} [xUserId] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public configListMyConfig(configListMyConfigRequest: ConfigListMyConfigRequest, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).configListMyConfig(configListMyConfigRequest, options).then((request) => request(this.axios, this.basePath));
+    public configListMyConfig(configListMyConfigRequest: ConfigListMyConfigRequest, xUserId?: number, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).configListMyConfig(configListMyConfigRequest, xUserId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -407,11 +451,12 @@ export class DefaultApi extends BaseAPI {
      * @summary 更新配置
      * @param {number} id 
      * @param {ConfigCreateConfigBody} configCreateConfigBody 
+     * @param {number} [xUserId] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public configUpdateConfig(id: number, configCreateConfigBody: ConfigCreateConfigBody, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).configUpdateConfig(id, configCreateConfigBody, options).then((request) => request(this.axios, this.basePath));
+    public configUpdateConfig(id: number, configCreateConfigBody: ConfigCreateConfigBody, xUserId?: number, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).configUpdateConfig(id, configCreateConfigBody, xUserId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

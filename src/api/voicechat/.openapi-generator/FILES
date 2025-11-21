@@ -8,7 +8,6 @@ configuration.ts
 docs/AsrCreateAsrConfig200Response.md
 docs/AsrCreateAsrConfigBody.md
 docs/AsrGetAsrConfig200Response.md
-docs/AsrGetAsrConfigBody.md
 docs/AsrListAsrConfig200Response.md
 docs/AsrListAsrConfig200ResponseConfigListInner.md
 docs/AsrListAsrConfigBody.md
@@ -25,7 +24,6 @@ git_push.sh
 index.ts
 model/asr-create-asr-config-body.ts
 model/asr-create-asr-config200-response.ts
-model/asr-get-asr-config-body.ts
 model/asr-get-asr-config200-response.ts
 model/asr-list-asr-config-body.ts
 model/asr-list-asr-config200-response-config-list-inner.ts

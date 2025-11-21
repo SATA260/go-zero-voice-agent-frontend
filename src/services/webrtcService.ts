@@ -1,3 +1,5 @@
+import { useApiSettingStore } from '@/stores/modules/apiSetting'
+
 export interface AsrConfig {
   provider: string
   appId: string
@@ -8,12 +10,9 @@ export interface AsrConfig {
 
 export interface TtsConfig {
   provider: string
-  speaker: string
   appId: string
   secretId: string
   secretKey: string
-  speed: number // float32 对应 number
-  volume: number
 }
 
 export interface WebRTCMessage {
@@ -24,6 +23,7 @@ export interface WebRTCMessage {
   assistantId?: number // int64 对应 number
   systemPrompt?: string
   knowledgeInfo?: string
+
   asrConfig?: AsrConfig
   ttsConfig?: TtsConfig
 }
@@ -43,6 +43,24 @@ class WebRTCService {
     // 先断开已有连接
     if (this.socket && this.socket.readyState !== WebSocket.CLOSED) {
       await this.hangup()
+    }
+
+    // 获取asr,tts,llm配置
+    const apiSettingStore = useApiSettingStore()
+    await apiSettingStore.fetchAsrConfigs()
+    await apiSettingStore.fetchTtsConfigs()
+    await apiSettingStore.fetchLlmConfigs()
+    const asrConfig = apiSettingStore.currentAsrConfig
+    const ttsConfig = apiSettingStore.currentTtsConfig
+    const llmConfig = apiSettingStore.activeLlmConfig
+    if (!asrConfig) {
+      throw new Error('ASR configuration is not set')
+    }
+    if (!ttsConfig) {
+      throw new Error('TTS configuration is not set')
+    }
+    if (!llmConfig) {
+      throw new Error('LLM configuration is not set')
     }
 
     // 创建 WebSocket 连接
@@ -113,6 +131,8 @@ class WebRTCService {
         const newOffer: WebRTCMessage = {
           type: 'offer',
           sdp: offer.sdp,
+          asrConfig: asrConfig,
+          ttsConfig: ttsConfig,
         }
         await newSocket.send(JSON.stringify(newOffer))
 
@@ -206,7 +226,7 @@ class WebRTCService {
         console.log('[WebRTC] ASR Final Result:', message.text)
         break
       default:
-        console.warn('Unknown message type:', message.type)
+        console.warn('Unknown message type:', message)
         break
     }
   }

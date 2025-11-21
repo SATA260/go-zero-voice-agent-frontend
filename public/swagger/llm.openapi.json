@@ -14,7 +14,18 @@
         "description": "",
         "operationId": "configCreateConfig",
         "tags": [],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -53,17 +64,41 @@
         "description": "",
         "operationId": "configListMyConfig",
         "tags": [],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "required": [
-                  "pageQuery",
-                  "queryFilter"
+                  "pageQuery"
                 ],
                 "properties": {
+                  "filter": {
+                    "type": "object",
+                    "properties": {
+                      "description": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  },
                   "pageQuery": {
                     "type": "object",
                     "required": [
@@ -79,85 +114,6 @@
                         "type": "integer"
                       },
                       "pageSize": {
-                        "type": "integer"
-                      }
-                    }
-                  },
-                  "queryFilter": {
-                    "type": "object",
-                    "required": [
-                      "id",
-                      "name",
-                      "description",
-                      "userId",
-                      "baseUrl",
-                      "apiKey",
-                      "model",
-                      "stream",
-                      "temperature",
-                      "topP",
-                      "topK",
-                      "enableThinking",
-                      "repetitionPenalty",
-                      "presencePenalty",
-                      "maxTokens",
-                      "seed",
-                      "enableSearch",
-                      "contextLength"
-                    ],
-                    "properties": {
-                      "apiKey": {
-                        "type": "string"
-                      },
-                      "baseUrl": {
-                        "type": "string"
-                      },
-                      "contextLength": {
-                        "type": "integer"
-                      },
-                      "description": {
-                        "type": "string"
-                      },
-                      "enableSearch": {
-                        "type": "integer"
-                      },
-                      "enableThinking": {
-                        "type": "integer"
-                      },
-                      "id": {
-                        "type": "integer"
-                      },
-                      "maxTokens": {
-                        "type": "integer"
-                      },
-                      "model": {
-                        "type": "string"
-                      },
-                      "name": {
-                        "type": "string"
-                      },
-                      "presencePenalty": {
-                        "type": "number"
-                      },
-                      "repetitionPenalty": {
-                        "type": "number"
-                      },
-                      "seed": {
-                        "type": "integer"
-                      },
-                      "stream": {
-                        "type": "integer"
-                      },
-                      "temperature": {
-                        "type": "number"
-                      },
-                      "topK": {
-                        "type": "integer"
-                      },
-                      "topP": {
-                        "type": "number"
-                      },
-                      "userId": {
                         "type": "integer"
                       }
                     }
@@ -288,6 +244,16 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -402,6 +368,16 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "requestBody": {
@@ -446,6 +422,16 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -470,25 +456,6 @@
     "schemas": {
       "configCreateConfigBody": {
         "type": "object",
-        "required": [
-          "name",
-          "description",
-          "userId",
-          "baseUrl",
-          "apiKey",
-          "model",
-          "stream",
-          "temperature",
-          "topP",
-          "topK",
-          "enableThinking",
-          "repetitionPenalty",
-          "presencePenalty",
-          "maxTokens",
-          "seed",
-          "enableSearch",
-          "contextLength"
-        ],
         "properties": {
           "apiKey": {
             "type": "string"
@@ -537,9 +504,6 @@
           },
           "topP": {
             "type": "number"
-          },
-          "userId": {
-            "type": "integer"
           }
         }
       }

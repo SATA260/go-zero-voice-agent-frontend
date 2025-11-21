@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**configs** | [**Array&lt;ConfigListMyConfigRequestQueryFilter&gt;**](ConfigListMyConfigRequestQueryFilter.md) |  | [optional] [default to undefined]
+**configs** | [**Array&lt;ConfigListMyConfig200ResponseConfigsInner&gt;**](ConfigListMyConfig200ResponseConfigsInner.md) |  | [optional] [default to undefined]
 **total** | **number** |  | [optional] [default to undefined]
 
 ## Example

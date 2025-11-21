@@ -5,8 +5,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**filter** | [**ConfigListMyConfigRequestFilter**](ConfigListMyConfigRequestFilter.md) |  | [optional] [default to undefined]
 **pageQuery** | [**ConfigListMyConfigRequestPageQuery**](ConfigListMyConfigRequestPageQuery.md) |  | [default to undefined]
-**queryFilter** | [**ConfigListMyConfigRequestQueryFilter**](ConfigListMyConfigRequestQueryFilter.md) |  | [default to undefined]
 
 ## Example
 
@@ -14,8 +14,8 @@ Name | Type | Description | Notes
 import { ConfigListMyConfigRequest } from './api';
 
 const instance: ConfigListMyConfigRequest = {
+    filter,
     pageQuery,
-    queryFilter,
 };
 ```
 

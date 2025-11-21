@@ -15,13 +15,13 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import type { ConfigListMyConfigRequestPageQuery } from './config-list-my-config-request-page-query';
+import type { ConfigListMyConfigRequestFilter } from './config-list-my-config-request-filter';
 // May contain unused imports in some cases
 // @ts-ignore
-import type { ConfigListMyConfigRequestQueryFilter } from './config-list-my-config-request-query-filter';
+import type { ConfigListMyConfigRequestPageQuery } from './config-list-my-config-request-page-query';
 
 export interface ConfigListMyConfigRequest {
+    'filter'?: ConfigListMyConfigRequestFilter;
     'pageQuery': ConfigListMyConfigRequestPageQuery;
-    'queryFilter': ConfigListMyConfigRequestQueryFilter;
 }
 

@@ -15,9 +15,9 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import type { ConfigListMyConfigRequestQueryFilter } from './config-list-my-config-request-query-filter';
+import type { ConfigListMyConfig200ResponseConfigsInner } from './config-list-my-config200-response-configs-inner';
 
 export interface ConfigGetConfig200Response {
-    'config'?: ConfigListMyConfigRequestQueryFilter;
+    'config'?: ConfigListMyConfig200ResponseConfigsInner;
 }
 

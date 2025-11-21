@@ -1,6 +1,6 @@
 <template>
-  <div class="api-setting-view p-6 min-h-screen">
-    <div class="max-w-6xl mx-auto bg-white/90 backdrop-blur-sm rounded-[2rem] p-8">
+  <div class="api-setting-view h-full">
+    <div class="max-w-full mx-auto bg-white/90 backdrop-blur-sm rounded-[2rem] p-8 h-full">
       <h2 class="text-3xl font-bold mb-8 flex items-center gap-3">
         <!-- <span class="text-4xl animate-bounce">✨</span> -->
         <img src="@/assets/svg/猫爪.svg" alt="" class="w-10 h-10 animate-bounce" />
@@ -11,7 +11,7 @@
       <!-- ASR 设置 -->
       <el-tab-pane label="ASR 设置" name="asr">
         <div class="mb-4">
-          <el-button type="primary" @click="showAsrDialog = true" class="cursor-target">添加 ASR 配置</el-button>
+          <el-button type="primary" @click="openCreateAsrDialog" class="cursor-target">添加 ASR 配置</el-button>
         </div>
 
         <el-table :data="apiStore.asrConfigs" style="width: 100%" border>
@@ -30,13 +30,23 @@
                 size="small"
                 @click="apiStore.setCurrentAsrConfigId(scope.row.id)"
                 :disabled="apiStore.currentAsrConfigId === scope.row.id"
+                class="cursor-target"
               >
                 选择
               </el-button>
               <el-button
                 size="small"
+                type="primary"
+                @click="handleEditAsr(scope.row)"
+                class="cursor-target"
+              >
+                编辑
+              </el-button>
+              <el-button
+                size="small"
                 type="danger"
                 @click="handleDeleteAsr(scope.row.id)"
+                class="cursor-target"
               >
                 删除
               </el-button>
@@ -48,7 +58,7 @@
       <!-- TTS 设置 -->
       <el-tab-pane label="TTS 设置" name="tts">
         <div class="mb-4">
-          <el-button type="primary" @click="showTtsDialog = true" class="cursor-target">添加 TTS 配置</el-button>
+          <el-button type="primary" @click="openCreateTtsDialog" class="cursor-target">添加 TTS 配置</el-button>
         </div>
 
         <el-table :data="apiStore.ttsConfigs" style="width: 100%" border>
@@ -66,13 +76,23 @@
                 size="small"
                 @click="apiStore.setCurrentTtsConfigId(scope.row.id)"
                 :disabled="apiStore.currentTtsConfigId === scope.row.id"
+                class="cursor-target"
               >
                 选择
               </el-button>
               <el-button
                 size="small"
+                type="primary"
+                @click="handleEditTts(scope.row)"
+                class="cursor-target"
+              >
+                编辑
+              </el-button>
+              <el-button
+                size="small"
                 type="danger"
                 @click="handleDeleteTts(scope.row.id)"
+                class="cursor-target"
               >
                 删除
               </el-button>
@@ -84,7 +104,7 @@
       <!-- LLM 设置 -->
       <el-tab-pane label="LLM 设置" name="llm">
         <div class="mb-4">
-          <el-button type="primary" @click="showLlmDialog = true" class="cursor-target">添加 LLM 配置</el-button>
+          <el-button type="primary" @click="openCreateLlmDialog" class="cursor-target">添加 LLM 配置</el-button>
         </div>
 
         <el-table :data="apiStore.llmConfigs" style="width: 100%" border>
@@ -103,13 +123,23 @@
                 size="small"
                 @click="apiStore.setCurrentLlmConfigId(scope.row.id)"
                 :disabled="apiStore.currentLlmConfigId === scope.row.id"
+                class="cursor-target"
               >
                 选择
               </el-button>
               <el-button
                 size="small"
+                type="primary"
+                @click="handleEditLlm(scope.row)"
+                class="cursor-target"
+              >
+                编辑
+              </el-button>
+              <el-button
+                size="small"
                 type="danger"
                 @click="handleDeleteLlm(scope.row.id)"
+                class="cursor-target"
               >
                 删除
               </el-button>
@@ -120,12 +150,12 @@
     </el-tabs>
 
     <!-- ASR Dialog -->
-    <el-dialog v-model="showAsrDialog" title="添加 ASR 配置" width="500px">
+    <el-dialog v-model="showAsrDialog" :title="editingAsrId ? '编辑 ASR 配置' : '添加 ASR 配置'" width="500px">
       <el-form :model="asrForm" label-width="100px">
         <el-form-item label="提供商">
           <el-select v-model="asrForm.provider" placeholder="选择提供商">
             <el-option label="Volcengine" value="volcengine" />
-            <el-option label="Aliyun" value="aliyun" />
+            <el-option label="Tencent" value="tencent" />
           </el-select>
         </el-form-item>
         <el-form-item label="App ID">
@@ -150,12 +180,12 @@
     </el-dialog>
 
     <!-- TTS Dialog -->
-    <el-dialog v-model="showTtsDialog" title="添加 TTS 配置" width="500px">
+    <el-dialog v-model="showTtsDialog" :title="editingTtsId ? '编辑 TTS 配置' : '添加 TTS 配置'" width="500px">
       <el-form :model="ttsForm" label-width="100px">
         <el-form-item label="提供商">
           <el-select v-model="ttsForm.provider" placeholder="选择提供商">
             <el-option label="Volcengine" value="volcengine" />
-            <el-option label="Aliyun" value="aliyun" />
+            <el-option label="Tencent" value="tencent" />
           </el-select>
         </el-form-item>
         <el-form-item label="App ID">
@@ -177,7 +207,7 @@
     </el-dialog>
 
     <!-- LLM Dialog -->
-    <el-dialog v-model="showLlmDialog" title="添加 LLM 配置" width="600px">
+    <el-dialog v-model="showLlmDialog" :title="editingLlmId ? '编辑 LLM 配置' : '添加 LLM 配置'" width="600px">
       <el-form :model="llmForm" label-width="120px">
         <el-form-item label="名称">
           <el-input v-model="llmForm.name" />
@@ -230,6 +260,13 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useApiSettingStore } from '@/stores/modules/apiSetting'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import type {
+  AsrListAsrConfig200ResponseConfigListInner,
+  TtsListTtsConfig200ResponseConfigListInner
+} from '@/api/voicechat/model'
+import type {
+  ConfigListMyConfig200ResponseConfigsInner
+} from '@/api/llm/model'
 
 const apiStore = useApiSettingStore()
 const activeTab = ref('asr')
@@ -238,6 +275,11 @@ const activeTab = ref('asr')
 const showAsrDialog = ref(false)
 const showTtsDialog = ref(false)
 const showLlmDialog = ref(false)
+
+// Editing states
+const editingAsrId = ref<number | null>(null)
+const editingTtsId = ref<number | null>(null)
+const editingLlmId = ref<number | null>(null)
 
 // Forms
 const asrForm = reactive({
@@ -271,19 +313,47 @@ const llmForm = reactive({
   enableSearch: 0,
   enableThinking: 0,
   stream: 1,
-  seed: 0,
-  userId: 0
+  seed: 0
 })
 
 // Actions
+const openCreateAsrDialog = () => {
+  editingAsrId.value = null
+  Object.assign(asrForm, {
+    provider: 'volcengine',
+    appId: '',
+    secretId: '',
+    secretKey: '',
+    language: 'zh-CN'
+  })
+  showAsrDialog.value = true
+}
+
+const handleEditAsr = (row: AsrListAsrConfig200ResponseConfigListInner) => {
+  editingAsrId.value = row.id
+  Object.assign(asrForm, {
+    provider: row.provider,
+    appId: row.appId,
+    secretId: row.secretId,
+    secretKey: row.secretKey,
+    language: row.language
+  })
+  showAsrDialog.value = true
+}
+
 const submitAsr = async () => {
   try {
-    await apiStore.createAsrConfig({ ...asrForm })
-    ElMessage.success('ASR 配置创建成功')
+    if (editingAsrId.value) {
+      await apiStore.updateAsrConfig(editingAsrId.value, { ...asrForm })
+      ElMessage.success('ASR 配置更新成功')
+    } else {
+      await apiStore.createAsrConfig({ ...asrForm })
+      ElMessage.success('ASR 配置创建成功')
+    }
     showAsrDialog.value = false
   } catch (error) {
     console.error(error)
-    ElMessage.error('创建失败')
+    ElMessage.error(editingAsrId.value ? '更新失败' : '创建失败')
   }
 }
 
@@ -297,14 +367,41 @@ const handleDeleteAsr = async (id: number) => {
   }
 }
 
+const openCreateTtsDialog = () => {
+  editingTtsId.value = null
+  Object.assign(ttsForm, {
+    provider: 'volcengine',
+    appId: '',
+    secretId: '',
+    secretKey: ''
+  })
+  showTtsDialog.value = true
+}
+
+const handleEditTts = (row: TtsListTtsConfig200ResponseConfigListInner) => {
+  editingTtsId.value = row.id
+  Object.assign(ttsForm, {
+    provider: row.provider,
+    appId: row.appId,
+    secretId: row.secretId,
+    secretKey: row.secretKey
+  })
+  showTtsDialog.value = true
+}
+
 const submitTts = async () => {
   try {
-    await apiStore.createTtsConfig({ ...ttsForm })
-    ElMessage.success('TTS 配置创建成功')
+    if (editingTtsId.value) {
+      await apiStore.updateTtsConfig(editingTtsId.value, { ...ttsForm })
+      ElMessage.success('TTS 配置更新成功')
+    } else {
+      await apiStore.createTtsConfig({ ...ttsForm })
+      ElMessage.success('TTS 配置创建成功')
+    }
     showTtsDialog.value = false
   } catch (error) {
     console.error(error)
-    ElMessage.error('创建失败')
+    ElMessage.error(editingTtsId.value ? '更新失败' : '创建失败')
   }
 }
 
@@ -318,15 +415,65 @@ const handleDeleteTts = async (id: number) => {
   }
 }
 
+const openCreateLlmDialog = () => {
+  editingLlmId.value = null
+  Object.assign(llmForm, {
+    name: '',
+    description: '',
+    baseUrl: '',
+    apiKey: '',
+    model: '',
+    maxTokens: 4096,
+    temperature: 0.7,
+    topP: 1.0,
+    topK: 0,
+    presencePenalty: 0,
+    repetitionPenalty: 1.0,
+    contextLength: 4096,
+    enableSearch: 0,
+    enableThinking: 0,
+    stream: 1,
+    seed: 0
+  })
+  showLlmDialog.value = true
+}
+
+const handleEditLlm = (row: ConfigListMyConfig200ResponseConfigsInner) => {
+  editingLlmId.value = row.id
+  Object.assign(llmForm, {
+    name: row.name,
+    description: row.description,
+    baseUrl: row.baseUrl,
+    apiKey: row.apiKey,
+    model: row.model,
+    maxTokens: row.maxTokens,
+    temperature: row.temperature,
+    topP: row.topP,
+    topK: row.topK,
+    presencePenalty: row.presencePenalty,
+    repetitionPenalty: row.repetitionPenalty,
+    contextLength: row.contextLength,
+    enableSearch: row.enableSearch,
+    enableThinking: row.enableThinking,
+    stream: row.stream,
+    seed: row.seed
+  })
+  showLlmDialog.value = true
+}
+
 const submitLlm = async () => {
   try {
-    const userId = apiStore.getUserId()
-    await apiStore.createLlmConfig({ ...llmForm, userId })
-    ElMessage.success('LLM 配置创建成功')
+    if (editingLlmId.value) {
+      await apiStore.updateLlmConfig(editingLlmId.value, { ...llmForm })
+      ElMessage.success('LLM 配置更新成功')
+    } else {
+      await apiStore.createLlmConfig({ ...llmForm })
+      ElMessage.success('LLM 配置创建成功')
+    }
     showLlmDialog.value = false
   } catch (error) {
     console.error(error)
-    ElMessage.error('创建失败')
+    ElMessage.error(editingLlmId.value ? '更新失败' : '创建失败')
   }
 }
 
@@ -350,7 +497,7 @@ onMounted(() => {
 <style scoped>
 .api-setting-view {
   /* background: linear-gradient(135deg, #fff1eb 0%, #ace0f9 100%); */
-  background: #f8f2f6;
+  /* background: #f8f2f6; */
   min-height: 100vh;
 }
 

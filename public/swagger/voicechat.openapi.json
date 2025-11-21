@@ -221,7 +221,7 @@
       }
     },
     "/voice/v1/asr/configs": {
-      "get": {
+      "post": {
         "summary": "分页获取ASR配置列表",
         "deprecated": false,
         "description": "",
@@ -244,7 +244,8 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/asrListAsrConfigBody"
-              }
+              },
+              "examples": {}
             }
           },
           "required": true
@@ -641,7 +642,7 @@
       }
     },
     "/voice/v1/tts/configs": {
-      "get": {
+      "post": {
         "summary": "分页获取TTS配置列表",
         "deprecated": false,
         "description": "",
@@ -664,7 +665,8 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/asrListAsrConfigBody"
-              }
+              },
+              "examples": {}
             }
           },
           "required": true
@@ -723,17 +725,6 @@
   },
   "components": {
     "schemas": {
-      "asrGetAsrConfigBody": {
-        "type": "object",
-        "required": [
-          "id"
-        ],
-        "properties": {
-          "id": {
-            "type": "integer"
-          }
-        }
-      },
       "asrListAsrConfigBody": {
         "type": "object",
         "required": [

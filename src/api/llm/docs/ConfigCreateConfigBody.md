@@ -5,23 +5,22 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**apiKey** | **string** |  | [default to undefined]
-**baseUrl** | **string** |  | [default to undefined]
-**contextLength** | **number** |  | [default to undefined]
-**description** | **string** |  | [default to undefined]
-**enableSearch** | **number** |  | [default to undefined]
-**enableThinking** | **number** |  | [default to undefined]
-**maxTokens** | **number** |  | [default to undefined]
-**model** | **string** |  | [default to undefined]
-**name** | **string** |  | [default to undefined]
-**presencePenalty** | **number** |  | [default to undefined]
-**repetitionPenalty** | **number** |  | [default to undefined]
-**seed** | **number** |  | [default to undefined]
-**stream** | **number** |  | [default to undefined]
-**temperature** | **number** |  | [default to undefined]
-**topK** | **number** |  | [default to undefined]
-**topP** | **number** |  | [default to undefined]
-**userId** | **number** |  | [default to undefined]
+**apiKey** | **string** |  | [optional] [default to undefined]
+**baseUrl** | **string** |  | [optional] [default to undefined]
+**contextLength** | **number** |  | [optional] [default to undefined]
+**description** | **string** |  | [optional] [default to undefined]
+**enableSearch** | **number** |  | [optional] [default to undefined]
+**enableThinking** | **number** |  | [optional] [default to undefined]
+**maxTokens** | **number** |  | [optional] [default to undefined]
+**model** | **string** |  | [optional] [default to undefined]
+**name** | **string** |  | [optional] [default to undefined]
+**presencePenalty** | **number** |  | [optional] [default to undefined]
+**repetitionPenalty** | **number** |  | [optional] [default to undefined]
+**seed** | **number** |  | [optional] [default to undefined]
+**stream** | **number** |  | [optional] [default to undefined]
+**temperature** | **number** |  | [optional] [default to undefined]
+**topK** | **number** |  | [optional] [default to undefined]
+**topP** | **number** |  | [optional] [default to undefined]
 
 ## Example
 
@@ -45,7 +44,6 @@ const instance: ConfigCreateConfigBody = {
     temperature,
     topK,
     topP,
-    userId,
 };
 ```
 

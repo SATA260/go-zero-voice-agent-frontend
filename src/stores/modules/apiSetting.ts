@@ -11,7 +11,7 @@ import type {
   ChatStartRequestLlmConfig
 } from '@/api/voicechat/model';
 import type {
-  ConfigListMyConfigRequestQueryFilter,
+  ConfigListMyConfig200ResponseConfigsInner,
   ConfigCreateConfigBody
 } from '@/api/llm/model';
 
@@ -25,7 +25,7 @@ const llmApi = new LlmApi(llmApiConfig);
 interface ApiSettingState {
   asrConfigs: AsrListAsrConfig200ResponseConfigListInner[];
   ttsConfigs: TtsListTtsConfig200ResponseConfigListInner[];
-  llmConfigs: ConfigListMyConfigRequestQueryFilter[];
+  llmConfigs: ConfigListMyConfig200ResponseConfigsInner[];
   currentAsrConfigId: number | null;
   currentTtsConfigId: number | null;
   currentLlmConfigId: number | null;
@@ -69,7 +69,7 @@ export const useApiSettingStore = defineStore('apiSetting', {
       if (!userId) return;
 
       try {
-        const response = await voiceApi.asrListAsrConfig({ page: 1, pageSize: 100 }, userId);
+        const response = await voiceApi.asrListAsrConfig({ page: 1, pageSize: 10 }, userId);
         if (response.data && response.data.configList) {
           this.asrConfigs = response.data.configList;
           // 如果当前没有选中的配置，默认选中第一个
@@ -94,6 +94,19 @@ export const useApiSettingStore = defineStore('apiSetting', {
         await this.fetchAsrConfigs(); // 重新获取列表
       } catch (error) {
         console.error('Failed to create ASR config:', error);
+        throw error;
+      }
+    },
+
+    async updateAsrConfig(id: number, config: AsrCreateAsrConfigBody) {
+      const userId = this.getUserId();
+      if (!userId) throw new Error('User not logged in');
+
+      try {
+        await voiceApi.asrUpdateAsrConfig(id, config, userId);
+        await this.fetchAsrConfigs();
+      } catch (error) {
+        console.error('Failed to update ASR config:', error);
         throw error;
       }
     },
@@ -127,7 +140,7 @@ export const useApiSettingStore = defineStore('apiSetting', {
       if (!userId) return;
 
       try {
-        const response = await voiceApi.ttsListTtsConfig({ page: 1, pageSize: 100 }, userId);
+        const response = await voiceApi.ttsListTtsConfig({ page: 1, pageSize: 10 }, userId);
         if (response.data && response.data.configList) {
           this.ttsConfigs = response.data.configList;
           if (!this.currentTtsConfigId && this.ttsConfigs.length > 0) {
@@ -151,6 +164,19 @@ export const useApiSettingStore = defineStore('apiSetting', {
         await this.fetchTtsConfigs();
       } catch (error) {
         console.error('Failed to create TTS config:', error);
+        throw error;
+      }
+    },
+
+    async updateTtsConfig(id: number, config: TtsCreateTtsConfigBody) {
+      const userId = this.getUserId();
+      if (!userId) throw new Error('User not logged in');
+
+      try {
+        await voiceApi.ttsUpdateTtsConfig(id, config, userId);
+        await this.fetchTtsConfigs();
+      } catch (error) {
+        console.error('Failed to update TTS config:', error);
         throw error;
       }
     },
@@ -185,9 +211,8 @@ export const useApiSettingStore = defineStore('apiSetting', {
 
       try {
         const response = await llmApi.configListMyConfig({
-          pageQuery: { page: 1, pageSize: 100, orderBy: 'id desc' },
-          queryFilter: { userId } as unknown as ConfigListMyConfigRequestQueryFilter
-        });
+          pageQuery: { page: 1, pageSize: 10, orderBy: 'id desc' }
+        }, userId);
         if (response.data && response.data.configs) {
           this.llmConfigs = response.data.configs;
           if (!this.currentLlmConfigId && this.llmConfigs.length > 0) {
@@ -207,10 +232,23 @@ export const useApiSettingStore = defineStore('apiSetting', {
       if (!userId) throw new Error('User not logged in');
 
       try {
-        await llmApi.configCreateConfig(config);
+        await llmApi.configCreateConfig(config, userId);
         await this.fetchLlmConfigs();
       } catch (error) {
         console.error('Failed to create LLM config:', error);
+        throw error;
+      }
+    },
+
+    async updateLlmConfig(id: number, config: ConfigCreateConfigBody) {
+      const userId = this.getUserId();
+      if (!userId) throw new Error('User not logged in');
+
+      try {
+        await llmApi.configUpdateConfig(id, config, userId);
+        await this.fetchLlmConfigs();
+      } catch (error) {
+        console.error('Failed to update LLM config:', error);
         throw error;
       }
     },
@@ -220,7 +258,7 @@ export const useApiSettingStore = defineStore('apiSetting', {
       if (!userId) throw new Error('User not logged in');
 
       try {
-        await llmApi.configDeleteConfig(id);
+        await llmApi.configDeleteConfig(id, userId);
         if (this.currentLlmConfigId === id) {
           this.currentLlmConfigId = null;
           localStorage.removeItem('currentLlmConfigId');

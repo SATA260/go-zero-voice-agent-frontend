@@ -7,13 +7,13 @@ All URIs are relative to *http://localhost*
 |[**asrCreateAsrConfig**](#asrcreateasrconfig) | **POST** /voice/v1/asr/config | 创建ASR配置|
 |[**asrDeleteAsrConfig**](#asrdeleteasrconfig) | **DELETE** /voice/v1/asr/config/{id} | 删除ASR配置|
 |[**asrGetAsrConfig**](#asrgetasrconfig) | **GET** /voice/v1/asr/config/{id} | 获取ASR配置详情|
-|[**asrListAsrConfig**](#asrlistasrconfig) | **GET** /voice/v1/asr/configs | 分页获取ASR配置列表|
+|[**asrListAsrConfig**](#asrlistasrconfig) | **POST** /voice/v1/asr/configs | 分页获取ASR配置列表|
 |[**asrUpdateAsrConfig**](#asrupdateasrconfig) | **PUT** /voice/v1/asr/config/{id} | 更新ASR配置|
 |[**chatStart**](#chatstart) | **GET** /voice/v1/chat/start | 创建websocket连接,然后帮助建立webrtc连接|
 |[**ttsCreateTtsConfig**](#ttscreatettsconfig) | **POST** /voice/v1/tts/config | 创建TTS配置|
 |[**ttsDeleteTtsConfig**](#ttsdeletettsconfig) | **DELETE** /voice/v1/tts/config/{id} | 删除TTS配置|
 |[**ttsGetTtsConfig**](#ttsgetttsconfig) | **GET** /voice/v1/tts/config/{id} | 获取TTS配置详情|
-|[**ttsListTtsConfig**](#ttslistttsconfig) | **GET** /voice/v1/tts/configs | 分页获取TTS配置列表|
+|[**ttsListTtsConfig**](#ttslistttsconfig) | **POST** /voice/v1/tts/configs | 分页获取TTS配置列表|
 |[**ttsUpdateTtsConfig**](#ttsupdatettsconfig) | **PUT** /voice/v1/tts/config/{id} | 更新TTS配置|
 
 # **asrCreateAsrConfig**

@@ -134,15 +134,17 @@ onMounted(async () => {
   })
 
   // public 目录下资源可从根路径直接访问
-  model = await Live2DModel.from('@/../public/live2d/model/白猫/白猫.model3.json')
+  // 使用 import.meta.env.BASE_URL 确保在非根路径部署时也能正确加载
+  const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`
+  model = await Live2DModel.from(`${baseUrl}live2d/model/白猫/白猫.model3.json`)
 
   const originalFocus = model.focus
   model.focus = (x: number, y: number) => {
     if (!liveCanvas.value) return
     const rect = liveCanvas.value.getBoundingClientRect()
     // x, y 是相对于 canvas 左上角的坐标，所以中心点应该是 canvas 宽高的一半
-    const centerX = rect.left - 140
-    const centerY = rect.top + 666
+    const centerX = rect.left - 120
+    const centerY = rect.top + 698
     const newX = centerX + (x - centerX) * 0.1
     const newY = centerY + (y - centerY) * 0.6
     originalFocus.call(model, newX, newY)
@@ -181,6 +183,7 @@ header {
   left: 75%;
   transform: translateX(-50%);
   z-index: 10;
+  min-width: 60%;
   max-width: 80%;
   pointer-events: none;
   display: flex;
@@ -227,7 +230,7 @@ header {
 .interaction-menu {
   position: absolute;
   bottom: 15%;
-  left: 50%;
+  left: 45%;
   transform: translateX(-50%);
   display: flex;
   gap: 12px;

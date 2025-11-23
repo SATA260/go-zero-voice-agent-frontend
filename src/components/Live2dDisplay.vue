@@ -29,7 +29,7 @@
         </div>
         <div v-show="websokcetConnected" class="menu-btn" @click="handleAction('mute')">
           <img class="btn-icon" src="@/assets/svg/Mute.svg" />
-          <span class="btn-text">静音</span>
+          <span class="btn-text">{{ isMuted ? '取消静音' : '静音' }}</span>
         </div>
         <div v-show="websokcetConnected" class="menu-btn" @click="handleAction('hangup')">
           <img class="btn-icon" src="@/assets/svg/挂断.svg" />
@@ -50,6 +50,7 @@ import { webRTCService } from '@/services/webrtcService';
 import ConfigSelectionModal from './ConfigSelectionModal.vue';
 
 const websokcetConnected = webRTCService.websokcetConnected;
+const isMuted = webRTCService.isMuted;
 
 const props = defineProps<{
   aiMessage?: string
@@ -91,7 +92,8 @@ const handleAction = (action: string) => {
       showMessage('正在为你接通...', 4000)
       break
     case 'mute':
-      showMessage('静音中...', 4000)
+      webRTCService.mute();
+      showMessage(isMuted.value ? '已静音' : '已取消静音', 4000)
       break
     case 'hangup':
       webRTCService.hangup();

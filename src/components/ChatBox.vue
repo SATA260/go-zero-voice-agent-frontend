@@ -54,7 +54,7 @@
     <!-- 底部输入/状态栏 -->
     <div class="p-4 backdrop-blur-sm border-t border-pink-100">
       <!-- 语音监听状态 -->
-      <div v-if="webRTCService.webrtcConnected.value"
+      <div v-if="webRTCService.websokcetConnected.value"
         class="flex items-center justify-center gap-3 bg-pink-50 rounded-3xl p-3 shadow-inner border border-pink-100 h-[58px]">
         <div class="flex items-center gap-1">
           <div class="w-1.5 h-1.5 bg-pink-400 rounded-full animate-bounce" style="animation-delay: 0s"></div>
@@ -71,7 +71,7 @@
 
       <!-- 文本输入框 -->
       <div v-else
-        class="flex items-end gap-2 bg-white rounded-3xl p-2 shadow-sm border border-pink-100 focus-within:border-pink-300 focus-within:ring-2 focus-within:ring-pink-100 transition-all duration-300">
+        class=" cursor-target flex items-end gap-2 bg-white rounded-3xl p-2 shadow-sm border border-pink-100 focus-within:border-pink-300 focus-within:ring-2 focus-within:ring-pink-100 transition-all duration-300">
 
         <el-input v-model="textarea" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" placeholder="输入消息..."
           class="flex-1 !border-none !shadow-none custom-textarea" resize="none" @keydown.enter="handleEnter" />

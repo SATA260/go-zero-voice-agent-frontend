@@ -215,6 +215,16 @@ class WebRTCService {
     }
   }
 
+  // 切换静音状态
+  mute() {
+    this.isMuted.value = !this.isMuted.value
+    if (this.localStream) {
+      this.localStream.getAudioTracks().forEach((track) => {
+        track.enabled = !this.isMuted.value
+      })
+    }
+  }
+
   private async handleWebSocketMessage(event: MessageEvent) {
     const message: WebRTCMessage = JSON.parse(event.data)
 

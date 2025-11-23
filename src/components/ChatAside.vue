@@ -1,8 +1,16 @@
 <template>
   <div class="sidebar">
+    <!-- Logo -->
+    <div class="logo-wrapper" @click="router.push('/')">
+      <img src="@/assets/svg/Cat-01.svg" class="logo-icon" alt="logo" />
+      <h1 class="logo-title">Go-Zero Voice Agent</h1>
+    </div>
+
     <!-- 新对话按钮 -->
     <div class="sidebar-item new-conversation cursor-target" @click="handleNewChat">
-      <el-icon class="icon"><Edit /></el-icon>
+      <el-icon class="icon">
+        <Edit />
+      </el-icon>
       <span class="new-conversion-text">新对话</span>
       <el-tooltip effect="dark" content="Ctrl + K" placement="right">
         <span class="shortcut">Ctrl K</span>
@@ -10,16 +18,11 @@
     </div>
 
     <!-- 功能菜单 -->
-    <div
-      class="sidebar-item cursor-target"
-      v-for="item in menuItems"
-      :key="item.label"
-      @click="handleMenuItemClick(item)"
-      :class="[
+    <div class="sidebar-item cursor-target" v-for="item in menuItems" :key="item.label"
+      @click="handleMenuItemClick(item)" :class="[
         { selected: selectedMenu === item.path },
         { 'shadow-md': selectedMenu === item.path },
-      ]"
-    >
+      ]">
       <el-icon class="icon"></el-icon>
       <span>{{ item.label }}</span>
     </div>
@@ -30,21 +33,18 @@
     <!-- 最近对话（点击展开/收起历史记录） -->
     <div class="sidebar-item recent-conversation cursor-target" @click="isCollapsed = !isCollapsed">
       <span>最近对话</span>
-      <el-icon class="arrow"><ArrowDown :class="{ 'rotate-180': isCollapsed }" /></el-icon>
+      <el-icon class="arrow">
+        <ArrowDown :class="{ 'rotate-180': isCollapsed }" />
+      </el-icon>
     </div>
 
     <!-- 最近对话列表 -->
     <div class="recent-list" v-show="!isCollapsed">
-      <div
-        class="recent-item"
-        v-for="item in recentItems"
-        :key="item.id"
-        @click="handleRecentItemClick(item.id)"
+      <div class="recent-item" v-for="item in recentItems" :key="item.id" @click="handleRecentItemClick(item.id)"
         :class="[
           { selected: selectedRecentId === item.id },
           { 'shadow-md': selectedRecentId === item.id },
-        ]"
-      >
+        ]">
         {{ item.title }}
       </div>
     </div>
@@ -250,6 +250,7 @@ const handleRecentItemClick = (id: string) => {
 .recent-list::-webkit-scrollbar {
   width: 4px;
 }
+
 .recent-list::-webkit-scrollbar-thumb {
   background-color: #ffd1dc;
   border-radius: 2px;
@@ -294,5 +295,32 @@ const handleRecentItemClick = (id: string) => {
   border-color: #ffb6c1;
   font-weight: 500;
   box-shadow: 0 2px 6px rgba(255, 182, 193, 0.1);
+}
+
+/* Logo 样式 */
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  padding-left: 6px;
+  padding-bottom: 24px;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  filter: drop-shadow(0 2px 4px rgba(255, 107, 129, 0.2));
+}
+
+.logo-title {
+  font-size: 20px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ff6b81 0%, #ff9a9e 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  letter-spacing: -0.5px;
 }
 </style>

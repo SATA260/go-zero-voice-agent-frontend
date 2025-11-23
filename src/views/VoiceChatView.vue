@@ -10,7 +10,7 @@
     </div>
 
     <!-- 聊天区域：占满剩余空间 -->
-    <div class="chat-wrapper flex-1 h-full min-w-0">
+    <div class="chat-wrapper flex-1 h-screen min-w-0">
       <ChatBox @ai-message="handleAiMessage" />
     </div>
   </div>

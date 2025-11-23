@@ -84,7 +84,6 @@ const clearSelection = () => {
 // 功能菜单项数据
 const menuItems = ref<MenuItem[]>([
   { label: 'api-key', path: '/voice-chat/api' },
-  { label: '语音对话', path: '/' },
 ])
 
 // 最近对话列表数据

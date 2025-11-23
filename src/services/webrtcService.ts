@@ -38,6 +38,7 @@ class WebRTCService {
 
   public websokcetConnected = ref(false)
   public webrtcConnected = ref(false)
+  public isMuted = ref(false)
 
   constructor() {
     // 初始化配置
@@ -69,6 +70,8 @@ class WebRTCService {
       this.webrtcConnected.value = false
     }
 
+    this.isMuted.value = false
+
     // 获取asr,tts,llm配置
     const apiSettingStore = useApiSettingStore()
     await apiSettingStore.fetchAsrConfigs()
@@ -88,6 +91,8 @@ class WebRTCService {
     }
 
     this.playWaitingAudio()
+    await new Promise((resolve) => setTimeout(resolve, 5000)) // 等待5秒再连接，避免音频截断
+
 
     // 创建 WebSocket 连接
     const newSocket = new WebSocket('ws://localhost:3083/voice/v1/chat/start')
@@ -265,6 +270,8 @@ class WebRTCService {
         break
     }
   }
+
+
 }
 
 // 导出单例方便全局使用

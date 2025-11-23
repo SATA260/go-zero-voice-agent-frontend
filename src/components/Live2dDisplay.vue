@@ -37,6 +37,8 @@
         </div>
       </div>
     </transition>
+
+    <ConfigSelectionModal v-model:visible="showConfigModal" />
   </div>
 </template>
 
@@ -45,6 +47,7 @@ import * as PIXI from 'pixi.js'
 import { Live2DModel } from 'pixi-live2d-display/cubism4'
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { webRTCService } from '@/services/webrtcService';
+import ConfigSelectionModal from './ConfigSelectionModal.vue';
 
 const websokcetConnected = webRTCService.websokcetConnected;
 
@@ -53,6 +56,7 @@ const props = defineProps<{
 }>()
 
 const showMenu = ref(false)
+const showConfigModal = ref(false)
 const displayText = ref('')
 const idleMessages = [
   '今天天气真不错呢~',
@@ -80,6 +84,7 @@ const handleAction = (action: string) => {
       break
     case 'setting':
       showMessage('要设置参数吗？喵~', 4000)
+      showConfigModal.value = true
       break
     case 'call':
       webRTCService.startCall();
@@ -186,6 +191,7 @@ onBeforeUnmount(() => {
   min-width: 360px;
   height: 100%;
 }
+
 header {
   line-height: 1;
 }

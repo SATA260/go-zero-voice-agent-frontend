@@ -15,9 +15,10 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import type { ConfigListMyConfig200ResponseConfigsInner } from './config-list-my-config200-response-configs-inner';
+import type { ChatmessageListChatMessageBySessionRequestPageQuery } from './chatmessage-list-chat-message-by-session-request-page-query';
 
-export interface ConfigGetConfig200Response {
-    'config'?: ConfigListMyConfig200ResponseConfigsInner;
+export interface ChatmessageListChatMessageBySessionRequest {
+    'pageQuery': ChatmessageListChatMessageBySessionRequestPageQuery;
+    'sessionId': number;
 }
 

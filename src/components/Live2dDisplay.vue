@@ -269,7 +269,7 @@ header {
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  padding: 8px 12px;
+  padding: 5px 6px;
   border-radius: 16px;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   min-width: 60px;
@@ -294,7 +294,7 @@ header {
 .btn-text {
   font-size: 12px;
   color: #ff6b81;
-  font-weight: 600;
+  font-weight: 800;
 }
 
 .slide-up-enter-active,

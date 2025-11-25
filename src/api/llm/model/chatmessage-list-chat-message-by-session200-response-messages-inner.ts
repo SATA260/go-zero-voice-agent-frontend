@@ -13,11 +13,12 @@
  */
 
 
-// May contain unused imports in some cases
-// @ts-ignore
-import type { ConfigListMyConfig200ResponseConfigsInner } from './config-list-my-config200-response-configs-inner';
 
-export interface ConfigGetConfig200Response {
-    'config'?: ConfigListMyConfig200ResponseConfigsInner;
+export interface ChatmessageListChatMessageBySession200ResponseMessagesInner {
+    'content': string;
+    'createTime': number;
+    'id': number;
+    'role': string;
+    'sessionId': number;
 }
 

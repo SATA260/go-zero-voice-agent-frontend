@@ -1,19 +1,19 @@
-# ConfigListMyConfigRequest
+# ChatsessionListChatSessionRequest
 
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**filter** | [**ConfigListMyConfigRequestFilter**](ConfigListMyConfigRequestFilter.md) |  | [optional] [default to undefined]
+**filter** | [**ChatsessionListChatSessionRequestFilter**](ChatsessionListChatSessionRequestFilter.md) |  | [optional] [default to undefined]
 **pageQuery** | [**ChatmessageListChatMessageBySessionRequestPageQuery**](ChatmessageListChatMessageBySessionRequestPageQuery.md) |  | [default to undefined]
 
 ## Example
 
 ```typescript
-import { ConfigListMyConfigRequest } from './api';
+import { ChatsessionListChatSessionRequest } from './api';
 
-const instance: ConfigListMyConfigRequest = {
+const instance: ChatsessionListChatSessionRequest = {
     filter,
     pageQuery,
 };

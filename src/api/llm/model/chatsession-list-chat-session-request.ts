@@ -18,10 +18,10 @@
 import type { ChatmessageListChatMessageBySessionRequestPageQuery } from './chatmessage-list-chat-message-by-session-request-page-query';
 // May contain unused imports in some cases
 // @ts-ignore
-import type { ConfigListMyConfigRequestFilter } from './config-list-my-config-request-filter';
+import type { ChatsessionListChatSessionRequestFilter } from './chatsession-list-chat-session-request-filter';
 
-export interface ConfigListMyConfigRequest {
-    'filter'?: ConfigListMyConfigRequestFilter;
+export interface ChatsessionListChatSessionRequest {
+    'filter'?: ChatsessionListChatSessionRequestFilter;
     'pageQuery': ChatmessageListChatMessageBySessionRequestPageQuery;
 }
 

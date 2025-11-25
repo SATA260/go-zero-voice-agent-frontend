@@ -4,11 +4,288 @@ All URIs are relative to *http://localhost*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
+|[**chatmessageDeleteChatMessage**](#chatmessagedeletechatmessage) | **DELETE** /llm/v1/chat-message/{id} | 删除聊天消息|
+|[**chatmessageListChatMessageBySession**](#chatmessagelistchatmessagebysession) | **POST** /llm/v1/chat-message/list | 根据会话分页查询消息|
+|[**chatsessionDeleteChatSession**](#chatsessiondeletechatsession) | **DELETE** /llm/v1/chat-session/{id} | 删除会话|
+|[**chatsessionGetChatSession**](#chatsessiongetchatsession) | **GET** /llm/v1/chat-session/{id} | 查询会话详情|
+|[**chatsessionListChatSession**](#chatsessionlistchatsession) | **POST** /llm/v1/chat-session/list | 分页查询会话列表|
 |[**configCreateConfig**](#configcreateconfig) | **POST** /llm/v1/config/create | 创建配置|
 |[**configDeleteConfig**](#configdeleteconfig) | **DELETE** /llm/v1/config/{id} | 删除配置|
 |[**configGetConfig**](#configgetconfig) | **GET** /llm/v1/config/{id} | 获取配置详情|
 |[**configListMyConfig**](#configlistmyconfig) | **POST** /llm/v1/config/list | 分页查询我的配置|
 |[**configUpdateConfig**](#configupdateconfig) | **PUT** /llm/v1/config/{id} | 更新配置|
+
+# **chatmessageDeleteChatMessage**
+> object chatmessageDeleteChatMessage()
+
+
+
+### Example
+
+```typescript
+import {
+    DefaultApi,
+    Configuration
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new DefaultApi(configuration);
+
+let id: number; // (default to undefined)
+let xUserId: number; // (optional) (default to undefined)
+
+const { status, data } = await apiInstance.chatmessageDeleteChatMessage(
+    id,
+    xUserId
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **id** | [**number**] |  | defaults to undefined|
+| **xUserId** | [**number**] |  | (optional) defaults to undefined|
+
+
+### Return type
+
+**object**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** |  |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **chatmessageListChatMessageBySession**
+> ChatmessageListChatMessageBySession200Response chatmessageListChatMessageBySession(chatmessageListChatMessageBySessionRequest)
+
+
+
+### Example
+
+```typescript
+import {
+    DefaultApi,
+    Configuration,
+    ChatmessageListChatMessageBySessionRequest
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new DefaultApi(configuration);
+
+let chatmessageListChatMessageBySessionRequest: ChatmessageListChatMessageBySessionRequest; //
+let xUserId: number; // (optional) (default to undefined)
+
+const { status, data } = await apiInstance.chatmessageListChatMessageBySession(
+    chatmessageListChatMessageBySessionRequest,
+    xUserId
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **chatmessageListChatMessageBySessionRequest** | **ChatmessageListChatMessageBySessionRequest**|  | |
+| **xUserId** | [**number**] |  | (optional) defaults to undefined|
+
+
+### Return type
+
+**ChatmessageListChatMessageBySession200Response**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** |  |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **chatsessionDeleteChatSession**
+> object chatsessionDeleteChatSession()
+
+
+
+### Example
+
+```typescript
+import {
+    DefaultApi,
+    Configuration
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new DefaultApi(configuration);
+
+let id: number; // (default to undefined)
+let xUserId: number; // (optional) (default to undefined)
+
+const { status, data } = await apiInstance.chatsessionDeleteChatSession(
+    id,
+    xUserId
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **id** | [**number**] |  | defaults to undefined|
+| **xUserId** | [**number**] |  | (optional) defaults to undefined|
+
+
+### Return type
+
+**object**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** |  |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **chatsessionGetChatSession**
+> ChatsessionGetChatSession200Response chatsessionGetChatSession()
+
+
+
+### Example
+
+```typescript
+import {
+    DefaultApi,
+    Configuration
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new DefaultApi(configuration);
+
+let id: number; // (default to undefined)
+let xUserId: number; // (optional) (default to undefined)
+
+const { status, data } = await apiInstance.chatsessionGetChatSession(
+    id,
+    xUserId
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **id** | [**number**] |  | defaults to undefined|
+| **xUserId** | [**number**] |  | (optional) defaults to undefined|
+
+
+### Return type
+
+**ChatsessionGetChatSession200Response**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** |  |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **chatsessionListChatSession**
+> ChatsessionListChatSession200Response chatsessionListChatSession(chatsessionListChatSessionRequest)
+
+
+
+### Example
+
+```typescript
+import {
+    DefaultApi,
+    Configuration,
+    ChatsessionListChatSessionRequest
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new DefaultApi(configuration);
+
+let chatsessionListChatSessionRequest: ChatsessionListChatSessionRequest; //
+let xUserId: number; // (optional) (default to undefined)
+
+const { status, data } = await apiInstance.chatsessionListChatSession(
+    chatsessionListChatSessionRequest,
+    xUserId
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **chatsessionListChatSessionRequest** | **ChatsessionListChatSessionRequest**|  | |
+| **xUserId** | [**number**] |  | (optional) defaults to undefined|
+
+
+### Return type
+
+**ChatsessionListChatSession200Response**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** |  |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **configCreateConfig**
 > ConfigCreateConfig200Response configCreateConfig(configCreateConfigBody)

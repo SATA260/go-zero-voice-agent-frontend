@@ -15,9 +15,9 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import type { ConfigListMyConfig200ResponseConfigsInner } from './config-list-my-config200-response-configs-inner';
+import type { ChatsessionListChatSession200ResponseSessionsInner } from './chatsession-list-chat-session200-response-sessions-inner';
 
-export interface ConfigGetConfig200Response {
-    'config'?: ConfigListMyConfig200ResponseConfigsInner;
+export interface ChatsessionGetChatSession200Response {
+    'session'?: ChatsessionListChatSession200ResponseSessionsInner;
 }
 

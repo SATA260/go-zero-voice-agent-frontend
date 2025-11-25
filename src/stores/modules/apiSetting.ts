@@ -8,7 +8,6 @@ import type {
   TtsListTtsConfig200ResponseConfigListInner,
   AsrCreateAsrConfigBody,
   TtsCreateTtsConfigBody,
-  ChatStartRequestLlmConfig
 } from '@/api/voicechat/model';
 import type {
   ConfigListMyConfig200ResponseConfigsInner,
@@ -45,16 +44,6 @@ export const useApiSettingStore = defineStore('apiSetting', {
     currentAsrConfig: (state) => state.asrConfigs.find(c => c.id === state.currentAsrConfigId),
     currentTtsConfig: (state) => state.ttsConfigs.find(c => c.id === state.currentTtsConfigId),
     currentLlmConfig: (state) => state.llmConfigs.find(c => c.id === state.currentLlmConfigId),
-    // 适配 ChatStartRequestLlmConfig 接口
-    activeLlmConfig(): ChatStartRequestLlmConfig | null {
-      const config = this.currentLlmConfig;
-      if (!config) return null;
-      return {
-        apiBaseUrl: config.baseUrl,
-        apiKey: config.apiKey,
-        model: config.model,
-      };
-    }
   },
 
   actions: {

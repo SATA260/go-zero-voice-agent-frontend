@@ -24,10 +24,10 @@
         <img src="@/assets/svg/Cat-01.svg" alt="hello" class="w-80 mb-4" />
         <div class="text-lg">点击左侧live2d形象开始语音聊天</div>
       </div>
-      <div v-for="msg in messages" :key="msg.id" class="flex w-full transition-all duration-300 ease-out"
+      <div v-for="(msg, index) in messages" :key="index" class="flex w-full transition-all duration-300 ease-out"
         :class="msg.role === 'user' ? 'justify-end' : 'justify-start'">
         <!-- AI 头像 -->
-        <div v-if="msg.role === 'ai'"
+        <div v-if="msg.role === 'assistant'"
           class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center mr-3 flex-shrink-0 shadow-sm border-2 border-white">
           <span class="text-lg">🐱</span>
         </div>
@@ -98,18 +98,12 @@ defineProps<{
 
 const textarea = ref('')
 
-export interface Message {
-  id: number
-  role: 'user' | 'ai'
-  content: string
-}
-
 const emit = defineEmits<{
   (e: 'ai-message', content: string): void
 }>()
 
 // 示例数据
-const messages = ref<Message[]>([])
+const messages = webRTCService.chatMessages
 
 const messagesContainer = ref<HTMLElement | null>(null)
 
@@ -131,7 +125,6 @@ const sendMessage = () => {
   if (!textarea.value.trim()) return
 
   messages.value.push({
-    id: Date.now(),
     role: 'user',
     content: textarea.value
   })
@@ -148,7 +141,7 @@ watch(
   () => {
     scrollToBottom()
     const lastMsg = messages.value[messages.value.length - 1]
-    if (lastMsg && lastMsg.role === 'ai') {
+    if (lastMsg && lastMsg.role === 'assistant') {
       emit('ai-message', lastMsg.content)
     }
   },

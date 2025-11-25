@@ -16,6 +16,18 @@ export interface TtsConfig {
   secretKey: string
 }
 
+export interface LlmConfig {
+  baseUrl: string
+  apiKey: string
+  model: string
+  systemPrompt?: string
+}
+
+export interface llmChatMsg {
+  role: string
+  content: string
+}
+
 export interface WebRTCMessage {
   type: string // 消息类型: offer / answer / ice-candidate
   sdp?: string // SDP 内容（仅 offer / answer 时有）
@@ -27,6 +39,7 @@ export interface WebRTCMessage {
 
   asrConfig?: AsrConfig
   ttsConfig?: TtsConfig
+  llmConfig?: LlmConfig
 }
 
 class WebRTCService {
@@ -39,6 +52,7 @@ class WebRTCService {
   public websokcetConnected = ref(false)
   public webrtcConnected = ref(false)
   public isMuted = ref(false)
+  public chatMessages = ref<llmChatMsg[]>([])
 
   constructor() {
     // 初始化配置
@@ -79,7 +93,7 @@ class WebRTCService {
     await apiSettingStore.fetchLlmConfigs()
     const asrConfig = apiSettingStore.currentAsrConfig
     const ttsConfig = apiSettingStore.currentTtsConfig
-    const llmConfig = apiSettingStore.activeLlmConfig
+    const llmConfig = apiSettingStore.currentLlmConfig
     if (!asrConfig) {
       throw new Error('ASR configuration is not set')
     }
@@ -168,6 +182,12 @@ class WebRTCService {
           sdp: offer.sdp,
           asrConfig: asrConfig,
           ttsConfig: ttsConfig,
+          llmConfig: {
+            baseUrl: llmConfig.baseUrl,
+            apiKey: llmConfig.apiKey,
+            model: llmConfig.model,
+            systemPrompt: llmConfig.description,
+          },
         }
         await newSocket.send(JSON.stringify(newOffer))
 
@@ -272,8 +292,23 @@ class WebRTCService {
           }
         }
         break
-      case 'asr-final':
+      case 'llmUser':
         console.log('[WebRTC] ASR Final Result:', message.text)
+        if (message.text) {
+          this.chatMessages.value.push({
+            role: 'user',
+            content: message.text,
+          })
+        }
+        break
+      case 'llmAssistant':
+        console.log('[WebRTC] LLM Chat Result:', message.text)
+        if (message.text) {
+          this.chatMessages.value.push({
+            role: 'assistant',
+            content: message.text,
+          })
+        }
         break
       default:
         console.warn('Unknown message type:', message)

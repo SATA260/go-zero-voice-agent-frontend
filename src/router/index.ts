@@ -10,6 +10,7 @@ const routes = [
     path: '/',
     component: BasicLayout,
     children: [],
+    redirect: '/voice-chat',
   },
   {
     path: '/voice-chat',

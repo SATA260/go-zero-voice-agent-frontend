@@ -1,7 +1,6 @@
 export * from './asr-create-asr-config200-response';
 export * from './asr-create-asr-config-body';
 export * from './asr-get-asr-config200-response';
-export * from './asr-get-asr-config-body';
 export * from './asr-list-asr-config200-response';
 export * from './asr-list-asr-config200-response-config-list-inner';
 export * from './asr-list-asr-config-body';

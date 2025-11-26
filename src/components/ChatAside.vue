@@ -52,11 +52,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useMsgHistoryStore } from '@/stores/modules/msgHistory'
+import { storeToRefs } from 'pinia'
 
 const router = useRouter()
 const route = useRoute()
+const msgHistoryStore = useMsgHistoryStore()
+const { sessions: recentItems } = storeToRefs(msgHistoryStore)
 
 // 定义菜单项类型
 interface MenuItem {
@@ -64,18 +68,12 @@ interface MenuItem {
   path: string
 }
 
-// 定义最近对话项类型
-interface RecentItem {
-  id: string
-  title: string
-}
-
 // 折叠状态
 const isCollapsed = ref(false)
 
 // 选中状态
 const selectedMenu = ref<string | null>(null)
-const selectedRecentId = ref<string | null>(null)
+const selectedRecentId = ref<number | null>(null)
 const clearSelection = () => {
   selectedMenu.value = null
   selectedRecentId.value = null
@@ -86,18 +84,11 @@ const menuItems = ref<MenuItem[]>([
   { label: 'api-key', path: '/voice-chat/api' },
 ])
 
-// 最近对话列表数据
-const recentItems = ref<RecentItem[]>([
-  { id: '1', title: '这个地方是历史记录' },
-  { id: '2', title: '这个地方是历史记录' },
-  { id: '3', title: '这个地方是历史记录' },
-  { id: '4', title: '这个地方是历史记录' },
-])
-
 // 新对话按钮点击事件
 const handleNewChat = () => {
   clearSelection()
   console.log('开始新对话')
+  msgHistoryStore.clearMessages()
   router.push('/voice-chat')
 }
 
@@ -133,12 +124,17 @@ watch(
 
 
 // 最近对话项点击事件
-const handleRecentItemClick = (id: string) => {
+const handleRecentItemClick = async (id: number) => {
   clearSelection()
   console.log(`加载最近对话: ${id}`)
   selectedRecentId.value = id
-  // 在这里添加加载历史对话的逻辑
+  await msgHistoryStore.selectSession(id)
+  router.push('/voice-chat')
 }
+
+onMounted(() => {
+  msgHistoryStore.fetchSessions()
+})
 </script>
 
 <style scoped>

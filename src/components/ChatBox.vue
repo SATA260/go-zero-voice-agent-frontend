@@ -4,7 +4,8 @@
     <div
       class="h-16 px-6 flex items-center justify-between bg-white/90 backdrop-blur-md border-b border-pink-100 shadow-sm z-10">
       <div class="flex items-center gap-3">
-        <img src="@/assets/svg/cat-avatar.png" alt="ai-avatar" class="w-10 h-10 rounded-full border-pink-200 shadow-sm" />
+        <img src="@/assets/svg/cat-avatar.png" alt="ai-avatar"
+          class="w-10 h-10 rounded-full border-pink-200 shadow-sm" />
         <div class="flex flex-col">
           <span class="font-bold text-gray-800 text-base">{{ aiName || '猫猫' }}</span>
           <span class="text-xs text-green-500 flex items-center gap-1.5 font-medium">
@@ -88,9 +89,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick, watch, onMounted } from 'vue'
+import { ref, nextTick, watch, onMounted, computed } from 'vue'
 import { Promotion } from '@element-plus/icons-vue'
 import { webRTCService } from '@/services/webrtcService'
+import { useMsgHistoryStore } from '@/stores/modules/msgHistory'
+import { storeToRefs } from 'pinia'
 
 defineProps<{
   aiName?: string
@@ -102,8 +105,16 @@ const emit = defineEmits<{
   (e: 'ai-message', content: string): void
 }>()
 
-// 示例数据
-const messages = webRTCService.chatMessages
+const msgHistoryStore = useMsgHistoryStore()
+const { messages: historyMessages, currentSessionId } = storeToRefs(msgHistoryStore)
+
+// 消息列表
+const messages = computed(() => {
+  if (currentSessionId.value) {
+    return historyMessages.value
+  }
+  return webRTCService.chatMessages.value
+})
 
 const messagesContainer = ref<HTMLElement | null>(null)
 
@@ -124,7 +135,12 @@ const handleEnter = (e: KeyboardEvent) => {
 const sendMessage = () => {
   if (!textarea.value.trim()) return
 
-  messages.value.push({
+  if (currentSessionId.value) {
+    // 历史会话模式下暂不支持发送消息
+    return
+  }
+
+  webRTCService.chatMessages.value.push({
     role: 'user',
     content: textarea.value
   })
@@ -137,7 +153,7 @@ onMounted(() => {
 })
 
 watch(
-  () => messages.value.length,
+  messages,
   () => {
     scrollToBottom()
     const lastMsg = messages.value[messages.value.length - 1]
@@ -145,6 +161,7 @@ watch(
       emit('ai-message', lastMsg.content)
     }
   },
+  { deep: true }
 )
 </script>
 

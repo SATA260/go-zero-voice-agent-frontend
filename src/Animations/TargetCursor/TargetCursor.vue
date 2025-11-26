@@ -180,8 +180,8 @@ const setupAnimation = () => {
         tl.to(
           corner as HTMLElement,
           {
-            x: offsets[index].x,
-            y: offsets[index].y,
+            x: offsets[index]?.x,
+            y: offsets[index]?.y,
             duration: 0.2,
             ease: 'power2.out',
           },
@@ -228,8 +228,8 @@ const setupAnimation = () => {
           tl.to(
             corner as HTMLElement,
             {
-              x: positions[index].x,
-              y: positions[index].y,
+              x: positions[index]?.x,
+              y: positions[index]?.y,
               duration: 0.3,
               ease: 'power3.out',
             },

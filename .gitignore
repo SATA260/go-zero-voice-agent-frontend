@@ -42,3 +42,6 @@ src/styles/tailwind-output.css
 # Others
 .VSCodeCounter
 .VSCodeCounter/*
+
+# Tauri
+src-tauri/target/

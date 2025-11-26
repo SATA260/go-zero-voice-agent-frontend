@@ -43,10 +43,9 @@
 </template>
 
 <script setup lang="ts">
-import * as PIXI from 'pixi.js'
-import { Live2DModel } from 'pixi-live2d-display/cubism4'
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { webRTCService } from '@/services/webrtcService';
+import { live2dService } from '@/services/live2dService';
 import ConfigSelectionModal from './ConfigSelectionModal.vue';
 
 const websokcetConnected = webRTCService.websokcetConnected;
@@ -59,21 +58,38 @@ const props = defineProps<{
 const showMenu = ref(false)
 const showConfigModal = ref(false)
 const displayText = ref('')
-const idleMessages = [
-  '今天天气真不错呢~',
-  '有什么我可以帮你的吗？',
-  '发呆中...',
-  '好想吃鱼干啊~',
-  '你今天过得怎么样？',
-  '喵~',
-]
+
+const expressionMessages: Record<string, string> = {
+  '爱心眼': '主人...最喜欢你了喵~❤️',
+  '不爽嘴': '哼！不理你了！',
+  '嘟嘴': '要抱抱才能起来...',
+  '黑脸': '...',
+  '黑脸&嘴': '你刚刚说什么？再说一遍？',
+  '惊恐': '哇！吓死本喵了！',
+  '泪目&嘴': '呜呜...欺负人...',
+  '脸红100%': '呀！别、别盯着我看啦...',
+  '脸红50%': '稍微有点害羞呢...',
+  '斜眼': '盯——',
+  '星星眼': '哇！好厉害！想要这个！',
+  '心虚眼': '我、我才没有偷吃鱼干呢...',
+  '白丝开关': '好热啊...',
+  'JK开关': 'JK制服...嘿嘿，合适吗？'
+}
+
 let idleTimer: ReturnType<typeof setInterval> | undefined
 let messageTimer: ReturnType<typeof setTimeout> | undefined
 
 const handleInteraction = () => {
   showMenu.value = !showMenu.value
   if (showMenu.value) {
-    showMessage('喵？找我有什么事吗？', 3000)
+    // 随机选择一个表情
+    const expressions = Object.keys(expressionMessages)
+    const randomExpression = expressions[Math.floor(Math.random() * expressions.length)]
+
+    if (randomExpression) {
+      live2dService.setExpression(randomExpression)
+      showMessage(expressionMessages[randomExpression] || '喵~', 3000)
+    }
   }
 }
 
@@ -82,10 +98,12 @@ const handleAction = (action: string) => {
   switch (action) {
     case 'greet':
       showMessage('你好呀！很高兴见到你！', 4000)
+      live2dService.setExpression(1)
       break
     case 'setting':
       showMessage('要设置参数吗？喵~', 4000)
       showConfigModal.value = true
+      live2dService.setExpression(0)
       break
     case 'call':
       webRTCService.startCall();
@@ -105,7 +123,6 @@ const handleAction = (action: string) => {
 const showMessage = (text: string, duration = 5000) => {
   displayText.value = text
   clearTimeout(messageTimer)
-  clearInterval(idleTimer)
 
   // 消息显示一段时间后，恢复空闲轮播
   messageTimer = setTimeout(() => {
@@ -118,9 +135,17 @@ const startIdleLoop = () => {
   clearInterval(idleTimer)
 
   idleTimer = setInterval(() => {
-    const msg = idleMessages[Math.floor(Math.random() * idleMessages.length)]
-    if (msg) displayText.value = msg
-  }, 7000) // 每7秒切换一次空闲语句
+    // 随机选择一个表情
+    const expressions = Object.keys(expressionMessages)
+    const randomExpression = expressions[Math.floor(Math.random() * expressions.length)]
+
+    if (randomExpression) {
+      live2dService.setExpression(randomExpression)
+
+      displayText.value = expressionMessages[randomExpression] || '喵~'
+      // 50% 概率显示表情自带台词，50% 概率显示通用闲置台词
+    }
+  }, 7000) // 每7秒切换一次
 }
 
 watch(
@@ -132,52 +157,22 @@ watch(
   },
 )
 
-declare global {
-  interface Window {
-    PIXI: typeof PIXI
-  }
-}
-
-window.PIXI = PIXI // 供 pixi-live2d-display 内部调用
-
 const liveCanvas = ref<HTMLCanvasElement | null>(null)
-let app: PIXI.Application | null = null
-let model: Live2DModel | null = null
 
 onMounted(async () => {
   if (!liveCanvas.value) return
 
-  app = new PIXI.Application({
-    view: liveCanvas.value,
-    autoStart: true,
-    resizeTo: liveCanvas.value.parentElement as HTMLElement,
-    backgroundAlpha: 0,
-  })
-
-  // public 目录下资源可从根路径直接访问
-  // 使用 import.meta.env.BASE_URL 确保在非根路径部署时也能正确加载
   const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`
-  model = await Live2DModel.from(`${baseUrl}live2d/model/白猫/白猫.model3.json`)
+  const modelUrl = `${baseUrl}live2d/model/白猫/白猫.model3.json`
 
-  const originalFocus = model.focus
-  model.focus = (x: number, y: number) => {
-    if (!liveCanvas.value) return
-    originalFocus.call(model, x, y+268)
-  }
-
-  app.stage.addChild(model)
-  model.scale.set(0.1)
+  await live2dService.init(liveCanvas.value, modelUrl)
 
   startIdleLoop()
 })
 
 onBeforeUnmount(() => {
-  model?.destroy()
-  app?.destroy(true)
-  model = null
-  app = null
+  live2dService.destroy()
   clearTimeout(messageTimer)
-  clearInterval(idleTimer)
 })
 </script>
 

@@ -1,4 +1,5 @@
 import { useApiSettingStore } from '@/stores/modules/apiSetting'
+import { useMsgHistoryStore } from '@/stores/modules/msgHistory'
 import { ref } from 'vue'
 
 export interface AsrConfig {
@@ -40,6 +41,7 @@ export interface WebRTCMessage {
   asrConfig?: AsrConfig
   ttsConfig?: TtsConfig
   llmConfig?: LlmConfig
+  LlmConversationID?: string
 }
 
 class WebRTCService {
@@ -103,6 +105,9 @@ class WebRTCService {
     if (!llmConfig) {
       throw new Error('LLM configuration is not set')
     }
+
+    // 获取当前的session
+    const currentSession = useMsgHistoryStore().currentSession
 
     this.playWaitingAudio()
     await new Promise((resolve) => setTimeout(resolve, 5000)) // 等待5秒再连接，避免音频截断
@@ -188,6 +193,7 @@ class WebRTCService {
             model: llmConfig.model,
             systemPrompt: llmConfig.description,
           },
+          LlmConversationID: currentSession ? currentSession.convId : undefined,
         }
         await newSocket.send(JSON.stringify(newOffer))
 

@@ -508,6 +508,7 @@
         }
       }
     },
+    "responses": {},
     "securitySchemes": {}
   },
   "servers": [],

@@ -162,13 +162,7 @@ onMounted(async () => {
   const originalFocus = model.focus
   model.focus = (x: number, y: number) => {
     if (!liveCanvas.value) return
-    const rect = liveCanvas.value.getBoundingClientRect()
-    // x, y 是相对于 canvas 左上角的坐标，所以中心点应该是 canvas 宽高的一半
-    const centerX = rect.left - 120
-    const centerY = rect.top + 698
-    const newX = centerX + (x - centerX) * 0.1
-    const newY = centerY + (y - centerY) * 0.6
-    originalFocus.call(model, newX, newY)
+    originalFocus.call(model, x, y+268)
   }
 
   app.stage.addChild(model)

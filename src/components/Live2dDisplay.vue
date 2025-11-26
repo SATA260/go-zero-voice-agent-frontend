@@ -61,17 +61,17 @@ const displayText = ref('')
 
 const expressionMessages: Record<string, string> = {
   '爱心眼': '主人...最喜欢你了喵~❤️',
-  '不爽嘴': '哼！不理你了！',
+  '不爽嘴': '哼！不理你了！绝交！',
   '嘟嘴': '要抱抱才能起来...',
-  '黑脸': '...',
+  '黑脸': '...嘿嘿嘿...',
   '黑脸&嘴': '你刚刚说什么？再说一遍？',
   '惊恐': '哇！吓死本喵了！',
   '泪目&嘴': '呜呜...欺负人...',
   '脸红100%': '呀！别、别盯着我看啦...',
-  '脸红50%': '稍微有点害羞呢...',
+  '脸红50%': '今天吃了好多好吃的...',
   '斜眼': '盯——',
   '星星眼': '哇！好厉害！想要这个！',
-  '心虚眼': '我、我才没有偷吃鱼干呢...',
+  '心虚眼': '我、我才没有偷吃鱼干呢...略略略',
   '白丝开关': '好热啊...',
   'JK开关': 'JK制服...嘿嘿，合适吗？'
 }
@@ -123,6 +123,7 @@ const handleAction = (action: string) => {
 const showMessage = (text: string, duration = 5000) => {
   displayText.value = text
   clearTimeout(messageTimer)
+  clearInterval(idleTimer)
 
   // 消息显示一段时间后，恢复空闲轮播
   messageTimer = setTimeout(() => {
@@ -145,7 +146,7 @@ const startIdleLoop = () => {
       displayText.value = expressionMessages[randomExpression] || '喵~'
       // 50% 概率显示表情自带台词，50% 概率显示通用闲置台词
     }
-  }, 7000) // 每7秒切换一次
+  }, 10000) // 每10秒切换一次
 }
 
 watch(
@@ -173,6 +174,7 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   live2dService.destroy()
   clearTimeout(messageTimer)
+  clearInterval(idleTimer)
 })
 </script>
 

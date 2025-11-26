@@ -15,6 +15,7 @@ All URIs are relative to *http://localhost*
 |[**configListMyConfig**](#configlistmyconfig) | **POST** /llm/v1/config/list | 分页查询我的配置|
 |[**configUpdateConfig**](#configupdateconfig) | **PUT** /llm/v1/config/{id} | 更新配置|
 
+<<<<<<< HEAD
 # **chatmessageDeleteChatMessage**
 > object chatmessageDeleteChatMessage()
 
@@ -287,6 +288,8 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+=======
+>>>>>>> a8301e9651eebb5f440e404761d96b2c65db03c1
 # **configCreateConfig**
 > ConfigCreateConfig200Response configCreateConfig(configCreateConfigBody)
 

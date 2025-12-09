@@ -29,7 +29,7 @@ export const useMsgHistoryStore = defineStore('msgHistory', {
 
   actions: {
     getUserId() {
-      return 0; // TODO: Replace with actual user ID retrieval logic
+      return 1; // TODO: Replace with actual user ID retrieval logic
     },
 
     async fetchSessions() {

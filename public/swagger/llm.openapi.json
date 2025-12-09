@@ -3,10 +3,400 @@
   "info": {
     "title": "llm",
     "description": "",
-    "version": "v1"
+    "version": "0.0.1"
   },
   "tags": [],
   "paths": {
+    "/llm/v1/chat-message/list": {
+      "post": {
+        "summary": "根据会话分页查询消息",
+        "deprecated": false,
+        "description": "",
+        "operationId": "chatmessageListChatMessageBySession",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "sessionId",
+                  "pageQuery"
+                ],
+                "properties": {
+                  "pageQuery": {
+                    "type": "object",
+                    "required": [
+                      "page",
+                      "pageSize",
+                      "orderBy"
+                    ],
+                    "properties": {
+                      "orderBy": {
+                        "type": "string"
+                      },
+                      "page": {
+                        "type": "integer"
+                      },
+                      "pageSize": {
+                        "type": "integer"
+                      }
+                    }
+                  },
+                  "sessionId": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "messages": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "sessionId",
+                          "role",
+                          "content",
+                          "createTime"
+                        ],
+                        "properties": {
+                          "content": {
+                            "type": "string"
+                          },
+                          "createTime": {
+                            "type": "integer"
+                          },
+                          "id": {
+                            "type": "integer"
+                          },
+                          "role": {
+                            "type": "string"
+                          },
+                          "sessionId": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/llm/v1/chat-message/{id}": {
+      "delete": {
+        "summary": "删除聊天消息",
+        "deprecated": false,
+        "description": "",
+        "operationId": "chatmessageDeleteChatMessage",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/llm/v1/chat-session/list": {
+      "post": {
+        "summary": "分页查询会话列表",
+        "deprecated": false,
+        "description": "",
+        "operationId": "chatsessionListChatSession",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "pageQuery"
+                ],
+                "properties": {
+                  "filter": {
+                    "type": "object",
+                    "properties": {
+                      "convId": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "title": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "pageQuery": {
+                    "type": "object",
+                    "required": [
+                      "page",
+                      "pageSize",
+                      "orderBy"
+                    ],
+                    "properties": {
+                      "orderBy": {
+                        "type": "string"
+                      },
+                      "page": {
+                        "type": "integer"
+                      },
+                      "pageSize": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sessions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "convId",
+                          "userId",
+                          "title",
+                          "createTime"
+                        ],
+                        "properties": {
+                          "convId": {
+                            "type": "string"
+                          },
+                          "createTime": {
+                            "type": "integer"
+                          },
+                          "id": {
+                            "type": "integer"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "userId": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/llm/v1/chat-session/{id}": {
+      "get": {
+        "summary": "查询会话详情",
+        "deprecated": false,
+        "description": "",
+        "operationId": "chatsessionGetChatSession",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "session": {
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "convId",
+                        "userId",
+                        "title",
+                        "createTime"
+                      ],
+                      "properties": {
+                        "convId": {
+                          "type": "string"
+                        },
+                        "createTime": {
+                          "type": "integer"
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "userId": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "delete": {
+        "summary": "删除会话",
+        "deprecated": false,
+        "description": "",
+        "operationId": "chatsessionDeleteChatSession",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
     "/llm/v1/config/create": {
       "post": {
         "summary": "创建配置",
@@ -442,6 +832,95 @@
                 "schema": {
                   "type": "object",
                   "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/llm/v1/chat/text": {
+      "post": {
+        "summary": "进行文字对话",
+        "deprecated": false,
+        "description": "",
+        "operationId": "chatTextChat",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "configId",
+                  "message"
+                ],
+                "properties": {
+                  "autoFillHistory": {
+                    "type": "boolean"
+                  },
+                  "configId": {
+                    "type": "integer"
+                  },
+                  "conversationId": {
+                    "type": "string"
+                  },
+                  "message": {
+                    "type": "string"
+                  },
+                  "systemPrompt": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "conversationId": {
+                      "type": "string"
+                    },
+                    "messages": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "role",
+                          "content"
+                        ],
+                        "properties": {
+                          "content": {
+                            "type": "string"
+                          },
+                          "role": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             },

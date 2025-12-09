@@ -5,6 +5,9 @@ api/default-api.ts
 base.ts
 common.ts
 configuration.ts
+docs/ChatTextChat200Response.md
+docs/ChatTextChat200ResponseMessagesInner.md
+docs/ChatTextChatRequest.md
 docs/ChatmessageListChatMessageBySession200Response.md
 docs/ChatmessageListChatMessageBySession200ResponseMessagesInner.md
 docs/ChatmessageListChatMessageBySessionRequest.md
@@ -24,6 +27,9 @@ docs/ConfigListMyConfigRequestFilter.md
 docs/DefaultApi.md
 git_push.sh
 index.ts
+model/chat-text-chat-request.ts
+model/chat-text-chat200-response-messages-inner.ts
+model/chat-text-chat200-response.ts
 model/chatmessage-list-chat-message-by-session-request-page-query.ts
 model/chatmessage-list-chat-message-by-session-request.ts
 model/chatmessage-list-chat-message-by-session200-response-messages-inner.ts

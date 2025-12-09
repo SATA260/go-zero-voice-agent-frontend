@@ -4,6 +4,7 @@ All URIs are relative to *http://localhost*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
+|[**chatTextChat**](#chattextchat) | **POST** /llm/v1/chat/text | 进行文字对话|
 |[**chatmessageDeleteChatMessage**](#chatmessagedeletechatmessage) | **DELETE** /llm/v1/chat-message/{id} | 删除聊天消息|
 |[**chatmessageListChatMessageBySession**](#chatmessagelistchatmessagebysession) | **POST** /llm/v1/chat-message/list | 根据会话分页查询消息|
 |[**chatsessionDeleteChatSession**](#chatsessiondeletechatsession) | **DELETE** /llm/v1/chat-session/{id} | 删除会话|
@@ -15,7 +16,61 @@ All URIs are relative to *http://localhost*
 |[**configListMyConfig**](#configlistmyconfig) | **POST** /llm/v1/config/list | 分页查询我的配置|
 |[**configUpdateConfig**](#configupdateconfig) | **PUT** /llm/v1/config/{id} | 更新配置|
 
-<<<<<<< HEAD
+# **chatTextChat**
+> ChatTextChat200Response chatTextChat(chatTextChatRequest)
+
+
+
+### Example
+
+```typescript
+import {
+    DefaultApi,
+    Configuration,
+    ChatTextChatRequest
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new DefaultApi(configuration);
+
+let chatTextChatRequest: ChatTextChatRequest; //
+let xUserId: number; // (optional) (default to undefined)
+
+const { status, data } = await apiInstance.chatTextChat(
+    chatTextChatRequest,
+    xUserId
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **chatTextChatRequest** | **ChatTextChatRequest**|  | |
+| **xUserId** | [**number**] |  | (optional) defaults to undefined|
+
+
+### Return type
+
+**ChatTextChat200Response**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** |  |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **chatmessageDeleteChatMessage**
 > object chatmessageDeleteChatMessage()
 
@@ -288,8 +343,6 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-=======
->>>>>>> a8301e9651eebb5f440e404761d96b2c65db03c1
 # **configCreateConfig**
 > ConfigCreateConfig200Response configCreateConfig(configCreateConfigBody)
 

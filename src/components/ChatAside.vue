@@ -45,7 +45,7 @@
           { selected: selectedRecentId === item.id },
           { 'shadow-md': selectedRecentId === item.id },
         ]">
-        {{ item.title }}
+        {{ item.title }} | {{ dayjs(item.createTime).format('MM-DD HH:mm') }}
       </div>
     </div>
   </div>
@@ -56,6 +56,7 @@ import { ref, watch, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useMsgHistoryStore } from '@/stores/modules/msgHistory'
 import { storeToRefs } from 'pinia'
+import { dayjs } from 'element-plus'
 
 const router = useRouter()
 const route = useRoute()

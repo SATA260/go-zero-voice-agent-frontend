@@ -1,0 +1,345 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "rag",
+    "description": "",
+    "version": "v1"
+  },
+  "tags": [],
+  "paths": {
+    "/rag/v1/doc/list": {
+      "post": {
+        "summary": "分页查询上传文件",
+        "deprecated": false,
+        "description": "",
+        "operationId": "docListDoc",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "pageQuery"
+                ],
+                "properties": {
+                  "filter": {
+                    "type": "object",
+                    "properties": {
+                      "fileFormat": {
+                        "type": "string"
+                      },
+                      "fileName": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "pageQuery": {
+                    "type": "object",
+                    "required": [
+                      "page",
+                      "pageSize"
+                    ],
+                    "properties": {
+                      "orderBy": {
+                        "type": "string"
+                      },
+                      "page": {
+                        "type": "integer"
+                      },
+                      "pageSize": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "documentList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "fileName",
+                          "fileFormat",
+                          "status"
+                        ],
+                        "properties": {
+                          "fileFormat": {
+                            "type": "string"
+                          },
+                          "fileName": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "integer"
+                          },
+                          "status": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/rag/v1/doc/upload": {
+      "post": {
+        "summary": "上传文件并向量化",
+        "deprecated": false,
+        "description": "",
+        "operationId": "docUploadAndEmbed",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "filename": {
+                    "type": "string",
+                    "example": ""
+                  }
+                },
+                "required": [
+                  "filename"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/rag/v1/doc/{id}": {
+      "delete": {
+        "summary": "删除上传文件",
+        "deprecated": false,
+        "description": "",
+        "operationId": "docDeleteDoc",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deletedCount": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/rag/v1/doc/{fileId}/chunks": {
+      "post": {
+        "summary": "分页查询文件切片",
+        "deprecated": false,
+        "description": "",
+        "operationId": "docListDocChunks",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "fileId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "pageQuery"
+                ],
+                "properties": {
+                  "pageQuery": {
+                    "type": "object",
+                    "required": [
+                      "page",
+                      "pageSize"
+                    ],
+                    "properties": {
+                      "orderBy": {
+                        "type": "string"
+                      },
+                      "page": {
+                        "type": "integer"
+                      },
+                      "pageSize": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "chunkList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "customId",
+                          "pageContent",
+                          "metadata"
+                        ],
+                        "properties": {
+                          "customId": {
+                            "type": "string"
+                          },
+                          "metadata": {
+                            "type": "object",
+                            "additionalProperties": {
+                              "type": "string"
+                            },
+                            "properties": {}
+                          },
+                          "pageContent": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "responses": {},
+    "securitySchemes": {}
+  },
+  "servers": [],
+  "security": []
+}

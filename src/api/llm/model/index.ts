@@ -1,3 +1,6 @@
+export * from './chat-text-chat200-response';
+export * from './chat-text-chat200-response-messages-inner';
+export * from './chat-text-chat-request';
 export * from './chatmessage-list-chat-message-by-session200-response';
 export * from './chatmessage-list-chat-message-by-session200-response-messages-inner';
 export * from './chatmessage-list-chat-message-by-session-request';

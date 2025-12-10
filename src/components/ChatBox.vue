@@ -17,6 +17,20 @@
           </span>
         </div>
       </div>
+
+      <!-- RAG 按钮 -->
+      <button
+        class="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 border"
+        :class="[
+          selectedDocIds.length > 0
+            ? 'bg-pink-50 text-pink-500 border-pink-200 shadow-sm hover:bg-pink-100'
+            : 'bg-transparent text-gray-500 border-transparent hover:bg-white hover:text-pink-500 hover:border-pink-100 hover:shadow-sm'
+        ]" @click="openRagDialog">
+        <el-icon>
+          <Collection />
+        </el-icon>
+        <span>知识库 {{ selectedDocIds.length > 0 ? `(${selectedDocIds.length})` : '' }}</span>
+      </button>
     </div>
 
     <!-- 消息列表区域 -->
@@ -85,19 +99,118 @@
         </el-button>
       </div>
     </div>
+
+    <!-- RAG 选择抽屉 -->
+    <el-drawer v-model="showRagDialog" title="知识库选择" direction="rtl" size="400px" :with-header="true"
+      class="rag-drawer">
+      <div class="flex flex-col h-full">
+        <div class="flex-1 overflow-y-auto px-1">
+          <div v-if="documentList.length === 0" class="flex flex-col items-center justify-center h-64 text-gray-400">
+            <el-icon size="48" class="mb-2 opacity-50">
+              <Document />
+            </el-icon>
+            <p>暂无文档</p>
+            <router-link to="/voice-chat/rag" class="text-pink-500 text-sm mt-2 hover:underline">去上传文档</router-link>
+          </div>
+
+          <div v-else class="space-y-3">
+            <div v-for="doc in documentList" :key="doc.id"
+              class="group relative flex items-start gap-3 p-3 rounded-xl border transition-all duration-200 cursor-pointer hover:shadow-md"
+              :class="tempSelectedIds.includes(String(doc.id)) ? 'bg-pink-50 border-pink-200' : 'bg-white border-gray-100 hover:border-pink-100'"
+              @click="toggleSelection(String(doc.id))">
+              <!-- Checkbox -->
+              <div class="pt-1" @click.stop>
+                <el-checkbox v-model="tempSelectedIds" :label="String(doc.id)" size="large" class="!mr-0">
+                  <span class="hidden"></span>
+                </el-checkbox>
+              </div>
+
+              <!-- Content -->
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between mb-1">
+                  <h4 class="font-medium text-gray-800 truncate pr-2"
+                    :class="{ 'text-pink-600': tempSelectedIds.includes(String(doc.id)) }">
+                    {{ doc.fileName }}
+                  </h4>
+                  <el-tag size="small" effect="plain" round class="!bg-white !border-gray-200 text-xs">
+                    {{ doc.fileFormat }}
+                  </el-tag>
+                </div>
+                <div class="flex items-center gap-2 text-xs text-gray-500">
+                  <span class="flex items-center gap-1">
+                    <el-icon>
+                      <Document />
+                    </el-icon>
+                    ID: {{ doc.id }}
+                  </span>
+                  <span v-if="doc.status === 1" class="text-green-500 flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                    已就绪
+                  </span>
+                  <span v-else class="text-orange-400 flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-orange-400"></span>
+                    处理中
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="pt-4 mt-4 border-t border-gray-100 flex justify-between items-center bg-white">
+          <span class="text-sm text-gray-500">已选 {{ tempSelectedIds.length }} 个文档</span>
+          <div class="flex gap-3">
+            <button class="px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors text-sm"
+              @click="showRagDialog = false">取消</button>
+            <button
+              class="px-6 py-2 rounded-lg bg-pink-500 text-white shadow-md hover:bg-pink-600 transition-colors text-sm font-medium"
+              @click="confirmRagSelection">确认选择</button>
+          </div>
+        </div>
+      </div>
+    </el-drawer>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, nextTick, watch, onMounted, computed } from 'vue'
-import { Promotion } from '@element-plus/icons-vue'
+import { Promotion, Collection, Document } from '@element-plus/icons-vue'
 import { webRTCService } from '@/services/webrtcService'
 import { useMsgHistoryStore } from '@/stores/modules/msgHistory'
+import { useRagStore } from '@/stores/modules/rag'
 import { storeToRefs } from 'pinia'
 
 defineProps<{
   aiName?: string
 }>()
+
+const ragStore = useRagStore()
+const { documentList, selectedDocIds } = storeToRefs(ragStore)
+const showRagDialog = ref(false)
+const tempSelectedIds = ref<string[]>([])
+
+const openRagDialog = async () => {
+  if (documentList.value.length === 0) {
+    await ragStore.fetchDocumentList()
+  }
+  tempSelectedIds.value = [...selectedDocIds.value]
+  showRagDialog.value = true
+}
+
+const confirmRagSelection = () => {
+  ragStore.setSelectedDocIds(tempSelectedIds.value)
+  showRagDialog.value = false
+}
+
+const toggleSelection = (id: string) => {
+  const index = tempSelectedIds.value.indexOf(id)
+  if (index > -1) {
+    tempSelectedIds.value.splice(index, 1)
+  } else {
+    tempSelectedIds.value.push(id)
+  }
+}
 
 const textarea = ref('')
 

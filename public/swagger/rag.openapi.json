@@ -138,17 +138,23 @@
         ],
         "requestBody": {
           "content": {
-            "application/x-www-form-urlencoded": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "filename": {
                     "type": "string",
                     "example": ""
+                  },
+                  "file": {
+                    "example": "",
+                    "type": "string",
+                    "format": "binary"
                   }
                 },
                 "required": [
-                  "filename"
+                  "filename",
+                  "file"
                 ]
               }
             }

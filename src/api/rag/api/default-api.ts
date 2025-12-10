@@ -170,13 +170,16 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary 上传文件并向量化
          * @param {string} filename 
+         * @param {File} file 
          * @param {number} [xUserId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        docUploadAndEmbed: async (filename: string, xUserId?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        docUploadAndEmbed: async (filename: string, file: File, xUserId?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filename' is not null or undefined
             assertParamExists('docUploadAndEmbed', 'filename', filename)
+            // verify required parameter 'file' is not null or undefined
+            assertParamExists('docUploadAndEmbed', 'file', file)
             const localVarPath = `/rag/v1/doc/upload`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -188,15 +191,19 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-            const localVarFormParams = new URLSearchParams();
+            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
 
 
             if (filename !== undefined) { 
-                localVarFormParams.set('filename', filename as any);
+                localVarFormParams.append('filename', filename as any);
+            }
+    
+            if (file !== undefined) { 
+                localVarFormParams.append('file', file as any);
             }
     
     
-            localVarHeaderParameter['Content-Type'] = 'application/x-www-form-urlencoded';
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
     
             if (xUserId != null) {
                 localVarHeaderParameter['X-User-Id'] = typeof xUserId === 'string'
@@ -206,7 +213,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = localVarFormParams.toString();
+            localVarRequestOptions.data = localVarFormParams;
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -269,12 +276,13 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * 
          * @summary 上传文件并向量化
          * @param {string} filename 
+         * @param {File} file 
          * @param {number} [xUserId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async docUploadAndEmbed(filename: string, xUserId?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DocUploadAndEmbed200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.docUploadAndEmbed(filename, xUserId, options);
+        async docUploadAndEmbed(filename: string, file: File, xUserId?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DocUploadAndEmbed200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.docUploadAndEmbed(filename, file, xUserId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.docUploadAndEmbed']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -326,12 +334,13 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * 
          * @summary 上传文件并向量化
          * @param {string} filename 
+         * @param {File} file 
          * @param {number} [xUserId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        docUploadAndEmbed(filename: string, xUserId?: number, options?: RawAxiosRequestConfig): AxiosPromise<DocUploadAndEmbed200Response> {
-            return localVarFp.docUploadAndEmbed(filename, xUserId, options).then((request) => request(axios, basePath));
+        docUploadAndEmbed(filename: string, file: File, xUserId?: number, options?: RawAxiosRequestConfig): AxiosPromise<DocUploadAndEmbed200Response> {
+            return localVarFp.docUploadAndEmbed(filename, file, xUserId, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -381,12 +390,13 @@ export class DefaultApi extends BaseAPI {
      * 
      * @summary 上传文件并向量化
      * @param {string} filename 
+     * @param {File} file 
      * @param {number} [xUserId] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public docUploadAndEmbed(filename: string, xUserId?: number, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).docUploadAndEmbed(filename, xUserId, options).then((request) => request(this.axios, this.basePath));
+    public docUploadAndEmbed(filename: string, file: File, xUserId?: number, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).docUploadAndEmbed(filename, file, xUserId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 const BasicLayout = () => import('@/layouts/BasicLayout.vue')
 const VoiceChatLayout = () => import('@/layouts/VoiceChatLayout.vue')
 const ApiSetting = () => import('@/views/ApiSetting.vue')
+const RagManagementView = () => import('@/views/RagManagementView.vue')
 const VoiceChatView = () => import('@/views/VoiceChatView.vue')
 
 const routes = [
@@ -25,6 +26,11 @@ const routes = [
         path: 'api',
         name: 'ApiSetting',
         component: ApiSetting,
+      },
+      {
+        path: 'rag',
+        name: 'RagManagement',
+        component: RagManagementView,
       },
     ],
   },

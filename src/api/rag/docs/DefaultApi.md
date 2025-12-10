@@ -193,10 +193,12 @@ const configuration = new Configuration();
 const apiInstance = new DefaultApi(configuration);
 
 let filename: string; // (default to undefined)
+let file: File; // (default to undefined)
 let xUserId: number; // (optional) (default to undefined)
 
 const { status, data } = await apiInstance.docUploadAndEmbed(
     filename,
+    file,
     xUserId
 );
 ```
@@ -206,6 +208,7 @@ const { status, data } = await apiInstance.docUploadAndEmbed(
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
 | **filename** | [**string**] |  | defaults to undefined|
+| **file** | [**File**] |  | defaults to undefined|
 | **xUserId** | [**number**] |  | (optional) defaults to undefined|
 
 
@@ -219,7 +222,7 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/x-www-form-urlencoded
+ - **Content-Type**: multipart/form-data
  - **Accept**: application/json
 
 

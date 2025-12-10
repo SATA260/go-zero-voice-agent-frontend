@@ -26,6 +26,9 @@ interface RagState {
   chunksCurrentPage: number
   chunksPageSize: number
   currentDocId: string
+
+  // 选中的文档ID列表
+  selectedDocIds: string[]
 }
 
 export const useRagStore = defineStore('rag', {
@@ -43,9 +46,15 @@ export const useRagStore = defineStore('rag', {
     chunksCurrentPage: 1,
     chunksPageSize: 10,
     currentDocId: '',
+
+    selectedDocIds: [],
   }),
 
   actions: {
+    setSelectedDocIds(ids: string[]) {
+      this.selectedDocIds = ids
+    },
+
     getUserId() {
       return 1; // TODO: Replace with actual user ID retrieval logic
     },

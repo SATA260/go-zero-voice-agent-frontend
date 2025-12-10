@@ -23,7 +23,9 @@
         { selected: selectedMenu === item.path },
         { 'shadow-md': selectedMenu === item.path },
       ]">
-      <el-icon class="icon"></el-icon>
+      <el-icon class="icon">
+        <component :is="item.icon" />
+      </el-icon>
       <span>{{ item.label }}</span>
     </div>
 
@@ -52,11 +54,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, type Component } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useMsgHistoryStore } from '@/stores/modules/msgHistory'
 import { storeToRefs } from 'pinia'
 import { dayjs } from 'element-plus'
+import { Key, Document } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -67,6 +70,7 @@ const { sessions: recentItems } = storeToRefs(msgHistoryStore)
 interface MenuItem {
   label: string
   path: string
+  icon: Component
 }
 
 // 折叠状态
@@ -82,7 +86,8 @@ const clearSelection = () => {
 
 // 功能菜单项数据
 const menuItems = ref<MenuItem[]>([
-  { label: 'api-key', path: '/voice-chat/api' },
+  { label: 'API-KEY', path: '/voice-chat/api', icon: Key },
+  { label: 'RAG', path: '/voice-chat/rag', icon: Document },
 ])
 
 // 新对话按钮点击事件

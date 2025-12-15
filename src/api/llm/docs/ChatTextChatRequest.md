@@ -8,7 +8,9 @@ Name | Type | Description | Notes
 **autoFillHistory** | **boolean** |  | [optional] [default to undefined]
 **configId** | **number** |  | [default to undefined]
 **conversationId** | **string** |  | [optional] [default to undefined]
+**isStream** | **boolean** |  | [optional] [default to undefined]
 **message** | **string** |  | [default to undefined]
+**ragFileIds** | **Array&lt;number&gt;** |  | [optional] [default to undefined]
 **systemPrompt** | **string** |  | [optional] [default to undefined]
 
 ## Example
@@ -20,7 +22,9 @@ const instance: ChatTextChatRequest = {
     autoFillHistory,
     configId,
     conversationId,
+    isStream,
     message,
+    ragFileIds,
     systemPrompt,
 };
 ```

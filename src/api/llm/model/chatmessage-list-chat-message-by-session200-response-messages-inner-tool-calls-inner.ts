@@ -15,10 +15,12 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import type { ChatsessionListChatSession200ResponseSessionsInner } from './chatsession-list-chat-session200-response-sessions-inner';
+import type { ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInnerInfo } from './chatmessage-list-chat-message-by-session200-response-messages-inner-tool-calls-inner-info';
 
-export interface ChatsessionListChatSession200Response {
-    'sessions'?: Array<ChatsessionListChatSession200ResponseSessionsInner>;
-    'total'?: number;
+export interface ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner {
+    'error': string;
+    'info': ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInnerInfo;
+    'result': string;
+    'status': string;
 }
 

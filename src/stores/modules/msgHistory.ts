@@ -103,6 +103,10 @@ export const useMsgHistoryStore = defineStore('msgHistory', {
     clearMessages() {
       this.messages = [];
       this.currentSessionId = null;
+    },
+
+    addMessage(message: ChatmessageListChatMessageBySession200ResponseMessagesInner) {
+      this.messages.push(message);
     }
   },
 });

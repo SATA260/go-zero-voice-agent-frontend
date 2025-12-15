@@ -55,6 +55,19 @@
               ? 'bg-[#a0c4ff] text-white rounded-br-none'
               : 'bg-white text-gray-700 rounded-bl-none border-2 border-pink-100',
           ]">
+          <div v-if="(msg as any).toolCalls && (msg as any).toolCalls.length > 0"
+            class="mb-2 text-xs text-gray-500 border-b border-gray-100 pb-1 flex flex-col gap-1">
+            <div class="flex items-center gap-1 text-[11px] leading-tight"
+              v-for="(tool, tIndex) in (msg as any).toolCalls" :key="tIndex">
+              <el-icon size="14">
+                <Tools />
+              </el-icon>
+              <span>
+                工具调用确认：{{ tool.info?.name || '未知工具' }}
+                <span v-if="tool.info?.requiresConfirmation" class="text-orange-500">(需确认)</span>
+              </span>
+            </div>
+          </div>
           {{ msg.content }}
         </div>
 
@@ -89,11 +102,12 @@
         class=" cursor-target flex items-end gap-2 bg-white rounded-3xl p-2 shadow-sm border border-pink-100 focus-within:border-pink-300 focus-within:ring-2 focus-within:ring-pink-100 transition-all duration-300">
 
         <el-input v-model="textarea" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" placeholder="输入消息..."
-          class="flex-1 !border-none !shadow-none custom-textarea" resize="none" @keydown.enter="handleEnter" />
+          class="flex-1 !border-none !shadow-none custom-textarea" resize="none" @keydown.enter="handleEnter"
+          :disabled="sending" />
         <el-button type="primary" circle
           class="!w-10 !h-10 !bg-pink-400 !border-pink-400 hover:!bg-pink-500 hover:!border-pink-500 shadow-md mb-0.5"
-          @click="sendMessage">
-          <el-icon class="text-white text-lg">
+          @click="sendMessage" :loading="sending" :disabled="sending">
+          <el-icon class="text-white text-lg" v-if="!sending">
             <Promotion />
           </el-icon>
         </el-button>
@@ -175,15 +189,19 @@
 
 <script setup lang="ts">
 import { ref, nextTick, watch, onMounted, computed } from 'vue'
-import { Promotion, Collection, Document } from '@element-plus/icons-vue'
+import { Promotion, Collection, Document, Tools } from '@element-plus/icons-vue'
 import { webRTCService } from '@/services/webrtcService'
 import { useMsgHistoryStore } from '@/stores/modules/msgHistory'
 import { useRagStore } from '@/stores/modules/rag'
+import { useChatStore } from '@/stores/modules/chat'
 import { storeToRefs } from 'pinia'
 
 defineProps<{
   aiName?: string
 }>()
+
+const chatStore = useChatStore()
+const { sending } = storeToRefs(chatStore)
 
 const ragStore = useRagStore()
 const { documentList, selectedDocIds } = storeToRefs(ragStore)
@@ -223,7 +241,7 @@ const { messages: historyMessages, currentSessionId } = storeToRefs(msgHistorySt
 
 // 消息列表
 const messages = computed(() => {
-  if (currentSessionId.value) {
+  if (currentSessionId.value || historyMessages.value.length > 0) {
     return historyMessages.value
   }
   return webRTCService.chatMessages.value
@@ -241,11 +259,13 @@ const scrollToBottom = async () => {
 const handleEnter = (e: KeyboardEvent) => {
   if (!e.shiftKey) {
     e.preventDefault()
-    sendMessage()
+    if (!sending.value) {
+      sendMessage()
+    }
   }
 }
 
-const sendMessage = () => {
+const sendMessage = async () => {
   if (!textarea.value.trim()) return
 
   if (currentSessionId.value) {
@@ -253,12 +273,10 @@ const sendMessage = () => {
     return
   }
 
-  webRTCService.chatMessages.value.push({
-    role: 'user',
-    content: textarea.value
-  })
-
+  const content = textarea.value
   textarea.value = ''
+
+  await chatStore.sendMessage(content)
 }
 
 onMounted(() => {

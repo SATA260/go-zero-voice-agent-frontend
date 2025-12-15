@@ -1,4 +1,4 @@
-# ChatTextChat200ResponseMessagesInner
+# ChatTextChat200ResponseMessages
 
 
 ## Properties
@@ -13,9 +13,9 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { ChatTextChat200ResponseMessagesInner } from './api';
+import { ChatTextChat200ResponseMessages } from './api';
 
-const instance: ChatTextChat200ResponseMessagesInner = {
+const instance: ChatTextChat200ResponseMessages = {
     content,
     role,
     toolCallId,

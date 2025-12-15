@@ -13,12 +13,12 @@
  */
 
 
-// May contain unused imports in some cases
-// @ts-ignore
-import type { ChatsessionListChatSession200ResponseSessionsInner } from './chatsession-list-chat-session200-response-sessions-inner';
 
-export interface ChatsessionListChatSession200Response {
-    'sessions'?: Array<ChatsessionListChatSession200ResponseSessionsInner>;
-    'total'?: number;
+export interface ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInnerInfo {
+    'argumentsJson': string;
+    'id': string;
+    'name': string;
+    'requiresConfirmation': boolean;
+    'scope': string;
 }
 

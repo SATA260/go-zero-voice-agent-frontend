@@ -6,7 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **conversationId** | **string** |  | [optional] [default to undefined]
-**messages** | [**Array&lt;ChatTextChat200ResponseMessagesInner&gt;**](ChatTextChat200ResponseMessagesInner.md) |  | [optional] [default to undefined]
+**messages** | [**ChatTextChat200ResponseMessages**](ChatTextChat200ResponseMessages.md) |  | [optional] [default to undefined]
 
 ## Example
 

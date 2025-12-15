@@ -7,9 +7,12 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **content** | **string** |  | [default to undefined]
 **createTime** | **number** |  | [default to undefined]
+**extra** | **string** |  | [default to undefined]
 **id** | **number** |  | [default to undefined]
 **role** | **string** |  | [default to undefined]
 **sessionId** | **number** |  | [default to undefined]
+**toolCallId** | **string** |  | [default to undefined]
+**toolCalls** | [**Array&lt;ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner&gt;**](ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner.md) |  | [default to undefined]
 
 ## Example
 
@@ -19,9 +22,12 @@ import { ChatmessageListChatMessageBySession200ResponseMessagesInner } from './a
 const instance: ChatmessageListChatMessageBySession200ResponseMessagesInner = {
     content,
     createTime,
+    extra,
     id,
     role,
     sessionId,
+    toolCallId,
+    toolCalls,
 };
 ```
 

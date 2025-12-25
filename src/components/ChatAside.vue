@@ -57,6 +57,7 @@
 import { ref, watch, onMounted, type Component } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useMsgHistoryStore } from '@/stores/modules/msgHistory'
+import { useChatStore } from '@/stores/modules/chat'
 import { storeToRefs } from 'pinia'
 import { dayjs } from 'element-plus'
 import { Key, Document } from '@element-plus/icons-vue'
@@ -64,6 +65,7 @@ import { Key, Document } from '@element-plus/icons-vue'
 const router = useRouter()
 const route = useRoute()
 const msgHistoryStore = useMsgHistoryStore()
+const chatStore = useChatStore()
 const { sessions: recentItems } = storeToRefs(msgHistoryStore)
 
 // 定义菜单项类型
@@ -95,6 +97,7 @@ const handleNewChat = () => {
   clearSelection()
   console.log('开始新对话')
   msgHistoryStore.clearMessages()
+  chatStore.resetConversation()
   router.push('/voice-chat')
 }
 

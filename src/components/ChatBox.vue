@@ -55,20 +55,44 @@
               ? 'bg-[#a0c4ff] text-white rounded-br-none'
               : 'bg-white text-gray-700 rounded-bl-none border-2 border-pink-100',
           ]">
-          <div v-if="(msg as any).toolCalls && (msg as any).toolCalls.length > 0"
-            class="mb-2 text-xs text-gray-500 border-b border-gray-100 pb-1 flex flex-col gap-1">
-            <div class="flex items-center gap-1 text-[11px] leading-tight"
-              v-for="(tool, tIndex) in (msg as any).toolCalls" :key="tIndex">
-              <el-icon size="14">
-                <Tools />
-              </el-icon>
-              <span>
-                工具调用确认：{{ tool.info?.name || '未知工具' }}
-                <span v-if="tool.info?.requiresConfirmation" class="text-orange-500">(需确认)</span>
-              </span>
+          <div v-if="hasToolCalls(msg)" class="mb-3 space-y-2">
+            <div class="flex items-center justify-between text-xs text-gray-600">
+              <div class="flex items-center gap-1 font-medium">
+                <el-icon size="14"><Tools /></el-icon>
+                <span>工具调用</span>
+              </div>
+              <div v-if="pendingCount(msg) > 1" class="flex gap-2">
+                <el-button size="small" plain type="success" @click="bulkHandle(msg, 'confirm')"
+                  :disabled="pendingCount(msg) === 0 || handlingTool">
+                  全部接受
+                </el-button>
+                <el-button size="small" plain type="danger" @click="bulkHandle(msg, 'reject')"
+                  :disabled="pendingCount(msg) === 0 || handlingTool">
+                  全部拒绝
+                </el-button>
+              </div>
+            </div>
+
+            <div v-for="(tool, tIndex) in toolCallsFor(msg)" :key="tIndex"
+              class="rounded-xl border border-pink-100 bg-pink-50/70 px-3 py-2 text-xs text-gray-700 shadow-inner">
+              <div class="flex items-center justify-between gap-2">
+                <div class="font-semibold text-gray-800 truncate">{{ tool.info?.name || '未知工具' }}</div>
+                <el-tag size="small" round :type="statusType(tool)">{{ statusLabel(tool) }}</el-tag>
+              </div>
+              <div class="mt-1 text-[11px] leading-snug text-gray-600 break-all">
+                {{ tool.info?.description || tool.info?.argumentsJson || '无参数' }}
+              </div>
+              <div v-if="tool.info?.requiresConfirmation || tool.info?.scope === CLIENT_SCOPE" class="mt-2 flex gap-2">
+                <el-button size="small" type="success" plain :disabled="!isPending(tool) || handlingTool"
+                  @click="handleSingle(msg, tool, 'confirm')">确认</el-button>
+                <el-button size="small" type="danger" plain :disabled="!isPending(tool) || handlingTool"
+                  @click="handleSingle(msg, tool, 'reject')">拒绝</el-button>
+              </div>
+              <div v-if="tool.result" class="mt-1 text-[11px] text-green-600">结果：{{ tool.result }}</div>
+              <div v-if="tool.error" class="mt-1 text-[11px] text-red-500">错误：{{ tool.error }}</div>
             </div>
           </div>
-          {{ msg.content }}
+          <div>{{ msg.content }}</div>
         </div>
 
         <!-- 用户头像 -->
@@ -195,6 +219,7 @@ import { useMsgHistoryStore } from '@/stores/modules/msgHistory'
 import { useRagStore } from '@/stores/modules/rag'
 import { useChatStore } from '@/stores/modules/chat'
 import { storeToRefs } from 'pinia'
+import type { ChatmessageListChatMessageBySession200ResponseMessagesInner, ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner } from '@/api/llm/model'
 
 defineProps<{
   aiName?: string
@@ -263,6 +288,142 @@ const handleEnter = (e: KeyboardEvent) => {
       sendMessage()
     }
   }
+}
+
+// ------ 工具调用确认逻辑 ------
+const CLIENT_SCOPE = 'client'
+const PENDING_STATUSES = ['tool_calling_start', 'tool_calling_waiting_confirmation']
+
+const hasToolCalls = (msg: ChatmessageListChatMessageBySession200ResponseMessagesInner) => {
+  return Array.isArray((msg as any).toolCalls) && (msg as any).toolCalls.length > 0
+}
+
+const toolCallsFor = (msg: ChatmessageListChatMessageBySession200ResponseMessagesInner) => {
+  return ((msg as any).toolCalls || []) as ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner[]
+}
+
+const isPending = (tool: ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner) => {
+  return PENDING_STATUSES.includes(tool.status)
+}
+
+const pendingCount = (msg: ChatmessageListChatMessageBySession200ResponseMessagesInner) => {
+  return toolCallsFor(msg).filter((t) => isPending(t)).length
+}
+
+const statusLabel = (tool: ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner) => {
+  switch (tool.status) {
+    case 'tool_calling_start':
+      return '待处理'
+    case 'tool_calling_waiting_confirmation':
+      return '待确认'
+    case 'tool_calling_confirmed':
+      return '已确认'
+    case 'tool_calling_rejected':
+      return '已拒绝'
+    case 'tool_calling_executing':
+      return '执行中'
+    case 'tool_calling_finished':
+      return '已完成'
+    case 'tool_calling_failed':
+      return '失败'
+    default:
+      return tool.status || '未知'
+  }
+}
+
+const statusType = (tool: ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner) => {
+  switch (tool.status) {
+    case 'tool_calling_confirmed':
+    case 'tool_calling_finished':
+      return 'success'
+    case 'tool_calling_rejected':
+    case 'tool_calling_failed':
+      return 'danger'
+    case 'tool_calling_executing':
+      return 'warning'
+    default:
+      return 'info'
+  }
+}
+
+const handlingTool = ref(false)
+
+const executeClientTool = async (tool: ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner) => {
+  // Placeholder for real client-side tool execution
+  return `客户端已确认执行 ${tool.info?.name || ''}，暂未实现具体逻辑`
+}
+
+const applyLocalToolUpdates = (
+  msg: ChatmessageListChatMessageBySession200ResponseMessagesInner,
+  updatedTools: ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner[],
+) => {
+  const clonedTools = updatedTools.map((t) => ({ ...t }))
+  ;(msg as any).toolCalls = clonedTools
+
+  const idx = msgHistoryStore.messages.findIndex((m) => m === msg)
+  if (idx !== -1) {
+    const existing = msgHistoryStore.messages[idx]
+    msgHistoryStore.messages.splice(idx, 1, { ...existing, toolCalls: clonedTools })
+  }
+}
+
+const sendToolDecision = async (
+  msg: ChatmessageListChatMessageBySession200ResponseMessagesInner,
+  updatedTools: ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner[],
+) => {
+  handlingTool.value = true
+  try {
+    applyLocalToolUpdates(msg, updatedTools)
+    await chatStore.sendToolCalls({
+      toolCalls: updatedTools,
+      toolCallId: msg.toolCallId || updatedTools[0]?.info?.id || '',
+    })
+  } finally {
+    handlingTool.value = false
+  }
+}
+
+const handleSingle = async (
+  msg: ChatmessageListChatMessageBySession200ResponseMessagesInner,
+  tool: ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner,
+  action: 'confirm' | 'reject',
+) => {
+  if (!isPending(tool)) return
+
+  const updated = toolCallsFor(msg).map((t) => ({ ...t }))
+  const target = updated.find((t) => t.info?.id === tool.info?.id)
+  if (!target) return
+
+  if (action === 'confirm') {
+    target.status = tool.info?.scope === CLIENT_SCOPE ? 'tool_calling_finished' : 'tool_calling_confirmed'
+    if (tool.info?.scope === CLIENT_SCOPE) {
+      target.result = await executeClientTool(target)
+    }
+  } else {
+    target.status = 'tool_calling_rejected'
+  }
+
+  await sendToolDecision(msg, updated)
+}
+
+const bulkHandle = async (
+  msg: ChatmessageListChatMessageBySession200ResponseMessagesInner,
+  action: 'confirm' | 'reject',
+) => {
+  const updated = toolCallsFor(msg).map((t) => ({ ...t }))
+  for (const t of updated) {
+    if (!isPending(t)) continue
+    if (action === 'confirm') {
+      t.status = t.info?.scope === CLIENT_SCOPE ? 'tool_calling_finished' : 'tool_calling_confirmed'
+      if (t.info?.scope === CLIENT_SCOPE) {
+        t.result = await executeClientTool(t)
+      }
+    } else {
+      t.status = 'tool_calling_rejected'
+    }
+  }
+
+  await sendToolDecision(msg, updated)
 }
 
 const sendMessage = async () => {

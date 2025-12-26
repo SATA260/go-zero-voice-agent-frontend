@@ -80,7 +80,7 @@
                 <el-tag size="small" round :type="statusType(tool)">{{ statusLabel(tool) }}</el-tag>
               </div>
               <div class="mt-1 text-[11px] leading-snug text-gray-600 break-all">
-                {{ tool.info?.description || tool.info?.argumentsJson || '无参数' }}
+                {{ toolDescription(tool) }}
               </div>
               <div v-if="tool.info?.requiresConfirmation || tool.info?.scope === CLIENT_SCOPE" class="mt-2 flex gap-2">
                 <el-button size="small" type="success" plain :disabled="!isPending(tool) || handlingTool"
@@ -214,12 +214,16 @@
 <script setup lang="ts">
 import { ref, nextTick, watch, onMounted, computed } from 'vue'
 import { Promotion, Collection, Document, Tools } from '@element-plus/icons-vue'
-import { webRTCService } from '@/services/webrtcService'
+import { webRTCService, type llmChatMsg } from '@/services/webrtcService'
 import { useMsgHistoryStore } from '@/stores/modules/msgHistory'
 import { useRagStore } from '@/stores/modules/rag'
 import { useChatStore } from '@/stores/modules/chat'
 import { storeToRefs } from 'pinia'
-import type { ChatmessageListChatMessageBySession200ResponseMessagesInner, ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner } from '@/api/llm/model'
+import type {
+  ChatmessageListChatMessageBySession200ResponseMessagesInner,
+  ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner,
+  ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInnerInfo,
+} from '@/api/llm/model'
 
 defineProps<{
   aiName?: string
@@ -265,11 +269,26 @@ const msgHistoryStore = useMsgHistoryStore()
 const { messages: historyMessages, currentSessionId } = storeToRefs(msgHistoryStore)
 
 // 消息列表
-const messages = computed(() => {
+type UiMessage =
+  | ChatmessageListChatMessageBySession200ResponseMessagesInner
+  | (llmChatMsg & {
+      toolCalls?: ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner[]
+      toolCallId?: string
+      id?: number
+      sessionId?: number
+      createTime?: number
+      extra?: string
+    })
+
+type ToolCall = ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner & {
+  info?: ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInnerInfo & { description?: string }
+}
+
+const messages = computed<UiMessage[]>(() => {
   if (currentSessionId.value || historyMessages.value.length > 0) {
-    return historyMessages.value
+    return historyMessages.value as UiMessage[]
   }
-  return webRTCService.chatMessages.value
+  return webRTCService.chatMessages.value as UiMessage[]
 })
 
 const messagesContainer = ref<HTMLElement | null>(null)
@@ -294,23 +313,23 @@ const handleEnter = (e: KeyboardEvent) => {
 const CLIENT_SCOPE = 'client'
 const PENDING_STATUSES = ['tool_calling_start', 'tool_calling_waiting_confirmation']
 
-const hasToolCalls = (msg: ChatmessageListChatMessageBySession200ResponseMessagesInner) => {
+const hasToolCalls = (msg: UiMessage) => {
   return Array.isArray((msg as any).toolCalls) && (msg as any).toolCalls.length > 0
 }
 
-const toolCallsFor = (msg: ChatmessageListChatMessageBySession200ResponseMessagesInner) => {
-  return ((msg as any).toolCalls || []) as ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner[]
+const toolCallsFor = (msg: UiMessage) => {
+  return ((msg as any).toolCalls || []) as ToolCall[]
 }
 
-const isPending = (tool: ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner) => {
+const isPending = (tool: ToolCall) => {
   return PENDING_STATUSES.includes(tool.status)
 }
 
-const pendingCount = (msg: ChatmessageListChatMessageBySession200ResponseMessagesInner) => {
+const pendingCount = (msg: UiMessage) => {
   return toolCallsFor(msg).filter((t) => isPending(t)).length
 }
 
-const statusLabel = (tool: ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner) => {
+const statusLabel = (tool: ToolCall) => {
   switch (tool.status) {
     case 'tool_calling_start':
       return '待处理'
@@ -331,7 +350,7 @@ const statusLabel = (tool: ChatmessageListChatMessageBySession200ResponseMessage
   }
 }
 
-const statusType = (tool: ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner) => {
+const statusType = (tool: ToolCall) => {
   switch (tool.status) {
     case 'tool_calling_confirmed':
     case 'tool_calling_finished':
@@ -348,14 +367,18 @@ const statusType = (tool: ChatmessageListChatMessageBySession200ResponseMessages
 
 const handlingTool = ref(false)
 
-const executeClientTool = async (tool: ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner) => {
+const executeClientTool = async (tool: ToolCall) => {
   // Placeholder for real client-side tool execution
   return `客户端已确认执行 ${tool.info?.name || ''}，暂未实现具体逻辑`
 }
 
+const toolDescription = (tool: ToolCall) => {
+  return tool.info?.description || tool.info?.argumentsJson || '无参数'
+}
+
 const applyLocalToolUpdates = (
-  msg: ChatmessageListChatMessageBySession200ResponseMessagesInner,
-  updatedTools: ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner[],
+  msg: UiMessage,
+  updatedTools: ToolCall[],
 ) => {
   const clonedTools = updatedTools.map((t) => ({ ...t }))
   ;(msg as any).toolCalls = clonedTools
@@ -363,13 +386,20 @@ const applyLocalToolUpdates = (
   const idx = msgHistoryStore.messages.findIndex((m) => m === msg)
   if (idx !== -1) {
     const existing = msgHistoryStore.messages[idx]
-    msgHistoryStore.messages.splice(idx, 1, { ...existing, toolCalls: clonedTools })
+    if (!existing) return
+    msgHistoryStore.messages.splice(idx, 1, {
+      ...existing,
+      content: existing.content || '',
+      createTime: existing.createTime ?? Date.now(),
+      toolCalls: clonedTools,
+      toolCallId: msg.toolCallId || existing.toolCallId || '',
+    })
   }
 }
 
 const sendToolDecision = async (
-  msg: ChatmessageListChatMessageBySession200ResponseMessagesInner,
-  updatedTools: ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner[],
+  msg: UiMessage,
+  updatedTools: ToolCall[],
 ) => {
   handlingTool.value = true
   try {
@@ -383,11 +413,7 @@ const sendToolDecision = async (
   }
 }
 
-const handleSingle = async (
-  msg: ChatmessageListChatMessageBySession200ResponseMessagesInner,
-  tool: ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner,
-  action: 'confirm' | 'reject',
-) => {
+const handleSingle = async (msg: UiMessage, tool: ToolCall, action: 'confirm' | 'reject') => {
   if (!isPending(tool)) return
 
   const updated = toolCallsFor(msg).map((t) => ({ ...t }))
@@ -406,10 +432,7 @@ const handleSingle = async (
   await sendToolDecision(msg, updated)
 }
 
-const bulkHandle = async (
-  msg: ChatmessageListChatMessageBySession200ResponseMessagesInner,
-  action: 'confirm' | 'reject',
-) => {
+const bulkHandle = async (msg: UiMessage, action: 'confirm' | 'reject') => {
   const updated = toolCallsFor(msg).map((t) => ({ ...t }))
   for (const t of updated) {
     if (!isPending(t)) continue

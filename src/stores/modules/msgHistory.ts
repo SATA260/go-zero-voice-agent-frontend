@@ -13,6 +13,8 @@ interface MsgHistoryState {
   currentSessionId: number | null;
   messages: ChatmessageListChatMessageBySession200ResponseMessagesInner[];
   loading: boolean;
+  currentPage: number;
+  hasMore: boolean;
 }
 
 export const useMsgHistoryStore = defineStore('msgHistory', {
@@ -21,6 +23,8 @@ export const useMsgHistoryStore = defineStore('msgHistory', {
     currentSessionId: null,
     messages: [],
     loading: false,
+    currentPage: 1,
+    hasMore: true,
   }),
 
   getters: {
@@ -32,23 +36,48 @@ export const useMsgHistoryStore = defineStore('msgHistory', {
       return 1; // TODO: Replace with actual user ID retrieval logic
     },
 
-    async fetchSessions() {
+    async fetchSessions(reset = false) {
       const userId = this.getUserId();
       this.loading = true;
+
+      if (reset) {
+        this.currentPage = 1;
+        this.hasMore = true;
+      }
+
       try {
         const response = await llmApi.chatsessionListChatSession({
           pageQuery: {
-            page: 1,
+            page: this.currentPage,
             pageSize: 5,
             orderBy: 'create_time desc'
           },
         }, userId);
-        this.sessions = response.data.sessions || [];
+
+        const newSessions = response.data.sessions || [];
+
+        if (reset) {
+          this.sessions = newSessions;
+        } else {
+          this.sessions = [...this.sessions, ...newSessions];
+        }
+
+        // 如果返回的数据少于5条，说明没有更多数据了
+        this.hasMore = newSessions.length === 5;
+
       } catch (error) {
         console.error('Failed to fetch sessions:', error);
       } finally {
         this.loading = false;
       }
+    },
+
+    async loadMoreSessions() {
+      if (!this.hasMore || this.loading) {
+        return;
+      }
+      this.currentPage += 1;
+      await this.fetchSessions(false);
     },
 
     async fetchMessages(sessionId: number) {

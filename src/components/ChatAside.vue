@@ -41,13 +41,29 @@
     </div>
 
     <!-- 最近对话列表 -->
-    <div class="recent-list" v-show="!isCollapsed">
-      <div class="recent-item" v-for="item in recentItems" :key="item.id" @click="handleRecentItemClick(item.id)"
-        :class="[
-          { selected: selectedRecentId === item.id },
-          { 'shadow-md': selectedRecentId === item.id },
-        ]">
-        {{ item.title }} | {{ dayjs(item.createTime).format('MM-DD HH:mm') }}
+    <div class="recent-list-container" v-show="!isCollapsed">
+      <div class="recent-list">
+        <div class="recent-item" v-for="item in recentItems" :key="item.id" @click="handleRecentItemClick(item.id)"
+          :class="[
+            { selected: selectedRecentId === item.id },
+            { 'shadow-md': selectedRecentId === item.id },
+          ]">
+          {{ item.title }} | {{ dayjs(item.createTime).format('MM-DD HH:mm') }}
+        </div>
+      </div>
+
+      <!-- View More 按钮 -->
+      <div v-if="hasMore" class="view-more-container">
+        <button
+          class="view-more-btn cursor-target"
+          @click="handleLoadMore"
+          :disabled="loading"
+        >
+          <el-icon v-if="loading" class="is-loading">
+            <Loading />
+          </el-icon>
+          <span v-else>View More</span>
+        </button>
       </div>
     </div>
   </div>
@@ -60,13 +76,13 @@ import { useMsgHistoryStore } from '@/stores/modules/msgHistory'
 import { useChatStore } from '@/stores/modules/chat'
 import { storeToRefs } from 'pinia'
 import { dayjs } from 'element-plus'
-import { Key, Document } from '@element-plus/icons-vue'
+import { Key, Document, Loading } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const route = useRoute()
 const msgHistoryStore = useMsgHistoryStore()
 const chatStore = useChatStore()
-const { sessions: recentItems } = storeToRefs(msgHistoryStore)
+const { sessions: recentItems, loading, hasMore } = storeToRefs(msgHistoryStore)
 
 // 定义菜单项类型
 interface MenuItem {
@@ -141,8 +157,13 @@ const handleRecentItemClick = async (id: number) => {
   router.push('/voice-chat')
 }
 
+// 加载更多对话
+const handleLoadMore = async () => {
+  await msgHistoryStore.loadMoreSessions()
+}
+
 onMounted(() => {
-  msgHistoryStore.fetchSessions()
+  msgHistoryStore.fetchSessions(true)
 })
 </script>
 
@@ -241,14 +262,22 @@ onMounted(() => {
   transform: rotate(180deg);
 }
 
-/* 最近对话列表 */
-.recent-list {
+/* 最近对话列表容器 */
+.recent-list-container {
+  display: flex;
+  flex-direction: column;
   margin-top: 4px;
   padding-left: 8px;
+  max-height: 400px;
+}
+
+/* 最近对话列表 */
+.recent-list {
   transition: all 0.3s ease;
-  overflow: hidden;
-  max-height: 300px;
   overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
+  min-height: 0;
 }
 
 /* 滚动条美化 */
@@ -279,6 +308,57 @@ onMounted(() => {
   background-color: #fff0f3;
   color: #ff6b81;
   padding-left: 20px;
+}
+
+/* View More 按钮容器 */
+.view-more-container {
+  padding: 8px 0;
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid #ffe4e8;
+  margin-top: 8px;
+}
+
+.view-more-btn {
+  width: 100%;
+  padding: 8px 16px;
+  background-color: #fff0f3;
+  color: #ff6b81;
+  border: 1px solid #ffb6c1;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.view-more-btn:hover:not(:disabled) {
+  background-color: #ffe4e8;
+  border-color: #ff8da1;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(255, 182, 193, 0.2);
+}
+
+.view-more-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.view-more-btn .is-loading {
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* 底部关于项 */

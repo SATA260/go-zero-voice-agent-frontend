@@ -7,7 +7,7 @@
     <transition name="fade">
       <div v-if="displayText" class="bubble-container">
         <div class="bubble-content">
-          {{ displayText }}
+          {{ truncateText(displayText, 50) }}
         </div>
       </div>
     </transition>
@@ -118,6 +118,13 @@ const handleAction = (action: string) => {
       showMessage('正在为你挂断...', 1000)
       break
   }
+}
+
+const truncateText = (text: string, maxLength: number) => {
+  if (text.length <= maxLength) {
+    return text
+  }
+  return text.slice(0, maxLength) + '...'
 }
 
 const showMessage = (text: string, duration = 5000) => {

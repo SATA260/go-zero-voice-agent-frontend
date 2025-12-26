@@ -79,17 +79,52 @@
                 <div class="font-semibold text-gray-800 truncate">{{ tool.info?.name || '未知工具' }}</div>
                 <el-tag size="small" round :type="statusType(tool)">{{ statusLabel(tool) }}</el-tag>
               </div>
-              <div class="mt-1 text-[11px] leading-snug text-gray-600 break-all">
-                {{ toolDescription(tool) }}
+
+              <!-- 工具描述 -->
+              <div v-if="tool.info?.description" class="mt-1 text-[11px] leading-snug text-gray-500 italic">
+                {{ tool.info.description }}
               </div>
+
               <div v-if="tool.info?.requiresConfirmation || tool.info?.scope === CLIENT_SCOPE" class="mt-2 flex gap-2">
                 <el-button size="small" type="success" plain :disabled="!isPending(tool) || handlingTool"
                   @click="handleSingle(msg, tool, 'confirm')">确认</el-button>
                 <el-button size="small" type="danger" plain :disabled="!isPending(tool) || handlingTool"
                   @click="handleSingle(msg, tool, 'reject')">拒绝</el-button>
               </div>
-              <div v-if="tool.result" class="mt-1 text-[11px] text-green-600">结果：{{ tool.result }}</div>
-              <div v-if="tool.error" class="mt-1 text-[11px] text-red-500">错误：{{ tool.error }}</div>
+
+              <!-- 工具结果，支持展开/收起 -->
+              <div v-if="tool.result" class="mt-1 text-[11px] text-green-600">
+                <div
+                  :class="[
+                    'break-all',
+                    !isToolExpanded(msg, tIndex) && toolResultNeedsExpand(tool) ? 'line-clamp-3' : ''
+                  ]">
+                  结果：{{ tool.result }}
+                </div>
+                <button
+                  v-if="toolResultNeedsExpand(tool)"
+                  @click="toggleToolExpand(msg, tIndex)"
+                  class="text-pink-500 hover:text-pink-600 mt-1 underline">
+                  {{ isToolExpanded(msg, tIndex) ? '收起' : '展开' }}
+                </button>
+              </div>
+
+              <!-- 工具错误，支持展开/收起 -->
+              <div v-if="tool.error" class="mt-1 text-[11px] text-red-500">
+                <div
+                  :class="[
+                    'break-all',
+                    !isToolExpanded(msg, tIndex) && toolErrorNeedsExpand(tool) ? 'line-clamp-3' : ''
+                  ]">
+                  错误：{{ tool.error }}
+                </div>
+                <button
+                  v-if="toolErrorNeedsExpand(tool)"
+                  @click="toggleToolExpand(msg, tIndex)"
+                  class="text-pink-500 hover:text-pink-600 mt-1 underline">
+                  {{ isToolExpanded(msg, tIndex) ? '收起' : '展开' }}
+                </button>
+              </div>
             </div>
           </div>
           <div>{{ msg.content }}</div>
@@ -313,6 +348,43 @@ const handleEnter = (e: KeyboardEvent) => {
 const CLIENT_SCOPE = 'client'
 const PENDING_STATUSES = ['tool_calling_start', 'tool_calling_waiting_confirmation']
 
+// 展开状态管理：使用 Map 存储每个消息中每个工具的展开状态
+const toolExpandStates = ref<Map<string, Set<number>>>(new Map())
+
+const getToolExpandKey = (msg: UiMessage) => {
+  return `${msg.id || msg.createTime || JSON.stringify(msg)}`
+}
+
+const isToolExpanded = (msg: UiMessage, toolIndex: number) => {
+  const key = getToolExpandKey(msg)
+  return toolExpandStates.value.get(key)?.has(toolIndex) || false
+}
+
+const toggleToolExpand = (msg: UiMessage, toolIndex: number) => {
+  const key = getToolExpandKey(msg)
+  if (!toolExpandStates.value.has(key)) {
+    toolExpandStates.value.set(key, new Set())
+  }
+  const expandSet = toolExpandStates.value.get(key)!
+  if (expandSet.has(toolIndex)) {
+    expandSet.delete(toolIndex)
+  } else {
+    expandSet.add(toolIndex)
+  }
+}
+
+const toolResultNeedsExpand = (tool: ToolCall) => {
+  const result = tool.result || ''
+  // 判断结果是否超过3行（大约150个字符）
+  return result.length > 150
+}
+
+const toolErrorNeedsExpand = (tool: ToolCall) => {
+  const error = tool.error || ''
+  // 判断错误信息是否超过3行（大约150个字符）
+  return error.length > 150
+}
+
 const hasToolCalls = (msg: UiMessage) => {
   return Array.isArray((msg as any).toolCalls) && (msg as any).toolCalls.length > 0
 }
@@ -370,10 +442,6 @@ const handlingTool = ref(false)
 const executeClientTool = async (tool: ToolCall) => {
   // Placeholder for real client-side tool execution
   return `客户端已确认执行 ${tool.info?.name || ''}，暂未实现具体逻辑`
-}
-
-const toolDescription = (tool: ToolCall) => {
-  return tool.info?.description || tool.info?.argumentsJson || '无参数'
 }
 
 const applyLocalToolUpdates = (
@@ -514,5 +582,13 @@ watch(
 
 .overflow-y-auto::-webkit-scrollbar-thumb:hover {
   background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* 文本截断样式 */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 </style>

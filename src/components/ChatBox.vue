@@ -248,6 +248,7 @@
 
 <script setup lang="ts">
 import { ref, nextTick, watch, onMounted, computed } from 'vue'
+<<<<<<< HEAD
 import { Promotion, Collection, Document, Tools } from '@element-plus/icons-vue'
 import { webRTCService, type llmChatMsg } from '@/services/webrtcService'
 import { useMsgHistoryStore } from '@/stores/modules/msgHistory'
@@ -259,6 +260,12 @@ import type {
   ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner,
   ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInnerInfo,
 } from '@/api/llm/model'
+=======
+import { Promotion } from '@element-plus/icons-vue'
+import { webRTCService } from '@/services/webrtcService'
+import { useMsgHistoryStore } from '@/stores/modules/msgHistory'
+import { storeToRefs } from 'pinia'
+>>>>>>> 99277053c4a27964f631dcd7ef16adb410b9c2b2
 
 defineProps<{
   aiName?: string
@@ -304,6 +311,7 @@ const msgHistoryStore = useMsgHistoryStore()
 const { messages: historyMessages, currentSessionId } = storeToRefs(msgHistoryStore)
 
 // 消息列表
+<<<<<<< HEAD
 type UiMessage =
   | ChatmessageListChatMessageBySession200ResponseMessagesInner
   | (llmChatMsg & {
@@ -324,6 +332,13 @@ const messages = computed<UiMessage[]>(() => {
     return historyMessages.value as UiMessage[]
   }
   return webRTCService.chatMessages.value as UiMessage[]
+=======
+const messages = computed(() => {
+  if (currentSessionId.value) {
+    return historyMessages.value
+  }
+  return webRTCService.chatMessages.value
+>>>>>>> 99277053c4a27964f631dcd7ef16adb410b9c2b2
 })
 
 const messagesContainer = ref<HTMLElement | null>(null)
@@ -524,6 +539,14 @@ const sendMessage = async () => {
     // 历史会话模式下暂不支持发送消息
     return
   }
+<<<<<<< HEAD
+=======
+
+  webRTCService.chatMessages.value.push({
+    role: 'user',
+    content: textarea.value
+  })
+>>>>>>> 99277053c4a27964f631dcd7ef16adb410b9c2b2
 
   const content = textarea.value
   textarea.value = ''

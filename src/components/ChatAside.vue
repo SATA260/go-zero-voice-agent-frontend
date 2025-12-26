@@ -70,6 +70,7 @@
 </template>
 
 <script setup lang="ts">
+<<<<<<< HEAD
 import { ref, watch, onMounted, type Component } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useMsgHistoryStore } from '@/stores/modules/msgHistory'
@@ -77,18 +78,31 @@ import { useChatStore } from '@/stores/modules/chat'
 import { storeToRefs } from 'pinia'
 import { dayjs } from 'element-plus'
 import { Key, Document, Loading } from '@element-plus/icons-vue'
+=======
+import { ref, watch, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { useMsgHistoryStore } from '@/stores/modules/msgHistory'
+import { storeToRefs } from 'pinia'
+>>>>>>> 99277053c4a27964f631dcd7ef16adb410b9c2b2
 
 const router = useRouter()
 const route = useRoute()
 const msgHistoryStore = useMsgHistoryStore()
+<<<<<<< HEAD
 const chatStore = useChatStore()
 const { sessions: recentItems, loading, hasMore } = storeToRefs(msgHistoryStore)
+=======
+const { sessions: recentItems } = storeToRefs(msgHistoryStore)
+>>>>>>> 99277053c4a27964f631dcd7ef16adb410b9c2b2
 
 // 定义菜单项类型
 interface MenuItem {
   label: string
   path: string
+<<<<<<< HEAD
   icon: Component
+=======
+>>>>>>> 99277053c4a27964f631dcd7ef16adb410b9c2b2
 }
 
 // 折叠状态
@@ -104,8 +118,12 @@ const clearSelection = () => {
 
 // 功能菜单项数据
 const menuItems = ref<MenuItem[]>([
+<<<<<<< HEAD
   { label: 'API-KEY', path: '/voice-chat/api', icon: Key },
   { label: 'RAG', path: '/voice-chat/rag', icon: Document },
+=======
+  { label: 'api-key', path: '/voice-chat/api' },
+>>>>>>> 99277053c4a27964f631dcd7ef16adb410b9c2b2
 ])
 
 // 新对话按钮点击事件
@@ -113,7 +131,10 @@ const handleNewChat = () => {
   clearSelection()
   console.log('开始新对话')
   msgHistoryStore.clearMessages()
+<<<<<<< HEAD
   chatStore.resetConversation()
+=======
+>>>>>>> 99277053c4a27964f631dcd7ef16adb410b9c2b2
   router.push('/voice-chat')
 }
 
@@ -157,6 +178,7 @@ const handleRecentItemClick = async (id: number) => {
   router.push('/voice-chat')
 }
 
+<<<<<<< HEAD
 // 加载更多对话
 const handleLoadMore = async () => {
   await msgHistoryStore.loadMoreSessions()
@@ -164,6 +186,10 @@ const handleLoadMore = async () => {
 
 onMounted(() => {
   msgHistoryStore.fetchSessions(true)
+=======
+onMounted(() => {
+  msgHistoryStore.fetchSessions()
+>>>>>>> 99277053c4a27964f631dcd7ef16adb410b9c2b2
 })
 </script>
 

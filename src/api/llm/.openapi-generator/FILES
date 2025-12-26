@@ -5,6 +5,7 @@ api/default-api.ts
 base.ts
 common.ts
 configuration.ts
+<<<<<<< HEAD
 docs/ChatTextChat200Response.md
 docs/ChatTextChat200ResponseMessages.md
 docs/ChatTextChatRequest.md
@@ -12,6 +13,10 @@ docs/ChatmessageListChatMessageBySession200Response.md
 docs/ChatmessageListChatMessageBySession200ResponseMessagesInner.md
 docs/ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInner.md
 docs/ChatmessageListChatMessageBySession200ResponseMessagesInnerToolCallsInnerInfo.md
+=======
+docs/ChatmessageListChatMessageBySession200Response.md
+docs/ChatmessageListChatMessageBySession200ResponseMessagesInner.md
+>>>>>>> 99277053c4a27964f631dcd7ef16adb410b9c2b2
 docs/ChatmessageListChatMessageBySessionRequest.md
 docs/ChatmessageListChatMessageBySessionRequestPageQuery.md
 docs/ChatsessionGetChatSession200Response.md
@@ -29,6 +34,7 @@ docs/ConfigListMyConfigRequestFilter.md
 docs/DefaultApi.md
 git_push.sh
 index.ts
+<<<<<<< HEAD
 model/chat-text-chat-request.ts
 model/chat-text-chat200-response-messages.ts
 model/chat-text-chat200-response.ts
@@ -36,6 +42,10 @@ model/chatmessage-list-chat-message-by-session-request-page-query.ts
 model/chatmessage-list-chat-message-by-session-request.ts
 model/chatmessage-list-chat-message-by-session200-response-messages-inner-tool-calls-inner-info.ts
 model/chatmessage-list-chat-message-by-session200-response-messages-inner-tool-calls-inner.ts
+=======
+model/chatmessage-list-chat-message-by-session-request-page-query.ts
+model/chatmessage-list-chat-message-by-session-request.ts
+>>>>>>> 99277053c4a27964f631dcd7ef16adb410b9c2b2
 model/chatmessage-list-chat-message-by-session200-response-messages-inner.ts
 model/chatmessage-list-chat-message-by-session200-response.ts
 model/chatsession-get-chat-session200-response.ts

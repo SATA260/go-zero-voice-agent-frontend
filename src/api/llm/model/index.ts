@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 export * from './chat-text-chat200-response';
 export * from './chat-text-chat200-response-messages';
 export * from './chat-text-chat-request';
@@ -5,6 +6,10 @@ export * from './chatmessage-list-chat-message-by-session200-response';
 export * from './chatmessage-list-chat-message-by-session200-response-messages-inner';
 export * from './chatmessage-list-chat-message-by-session200-response-messages-inner-tool-calls-inner';
 export * from './chatmessage-list-chat-message-by-session200-response-messages-inner-tool-calls-inner-info';
+=======
+export * from './chatmessage-list-chat-message-by-session200-response';
+export * from './chatmessage-list-chat-message-by-session200-response-messages-inner';
+>>>>>>> 99277053c4a27964f631dcd7ef16adb410b9c2b2
 export * from './chatmessage-list-chat-message-by-session-request';
 export * from './chatmessage-list-chat-message-by-session-request-page-query';
 export * from './chatsession-get-chat-session200-response';

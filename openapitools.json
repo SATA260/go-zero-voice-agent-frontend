@@ -33,6 +33,16 @@
           "apiPackage": "api",
           "modelPackage": "model"
         }
+      },
+      "rag": {
+        "inputSpec": "public/swagger/rag.openapi.json",
+        "generatorName": "typescript-axios",
+        "output": "src/api/rag",
+        "additionalProperties": {
+          "withSeparateModelsAndApi": true,
+          "apiPackage": "api",
+          "modelPackage": "model"
+        }
       }
     }
   }

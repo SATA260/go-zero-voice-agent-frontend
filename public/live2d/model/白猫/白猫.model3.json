@@ -6,7 +6,65 @@
 			"白猫.4096/texture_00.png"
 		],
 		"Physics": "白猫.physics3.json",
-		"DisplayInfo": "白猫.cdi3.json"
+		"DisplayInfo": "白猫.cdi3.json",
+		"Expressions": [
+			{
+				"Name": "爱心眼",
+				"File": "expression/aixinyan.exp3.json"
+			},
+			{
+				"Name": "不爽嘴",
+				"File": "expression/bushuangzui.exp3.json"
+			},
+			{
+				"Name": "嘟嘴",
+				"File": "expression/duzui.exp3.json"
+			},
+			{
+				"Name": "黑脸",
+				"File": "expression/heilian.exp3.json"
+			},
+			{
+				"Name": "黑脸&嘴",
+				"File": "expression/heilian&zui.exp3.json"
+			},
+			{
+				"Name": "惊恐",
+				"File": "expression/jingkong.exp3.json"
+			},
+			{
+				"Name": "泪目&嘴",
+				"File": "expression/leimu&zui.exp3.json"
+			},
+			{
+				"Name": "脸红100%",
+				"File": "expression/lianhong100.exp3.json"
+			},
+			{
+				"Name": "脸红50%",
+				"File": "expression/lianhong50.exp3.json"
+			},
+			{
+				"Name": "斜眼",
+				"File": "expression/xieyan.exp3.json"
+			},
+			{
+				"Name": "星星眼",
+				"File": "expression/xingxingyan.exp3.json"
+			},
+			{
+				"Name": "心虚眼",
+				"File": "expression/xinxuyan.exp3.json"
+			},
+			{
+				"Name": "白丝开关",
+				"File": "expression/baisi-kaiguan.exp3.json"
+			},
+			{
+				"Name": "JK开关",
+				"File": "expression/JKkaiguan.exp3.json"
+			}
+		]
 	},
 	"Groups": [
 		{

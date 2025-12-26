@@ -21,6 +21,7 @@
     "@element-plus/icons-vue": "^2.3.2",
     "@tauri-apps/api": "^2.9.0",
     "axios": "^1.13.2",
+    "dayjs": "^1.11.19",
     "element-plus": "^2.11.8",
     "gsap": "^3.13.0",
     "pinia": "^3.0.3",

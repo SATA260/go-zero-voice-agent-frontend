@@ -1,173 +1,177 @@
 <script setup lang="ts">
-import { gsap } from 'gsap';
-import { nextTick, onBeforeUpdate, onMounted, onUnmounted, ref, watch, type VNodeRef } from 'vue';
-import { useRouter } from 'vue-router';
+import { gsap } from 'gsap'
+import { nextTick, onBeforeUpdate, onMounted, onUnmounted, ref, watch, type VNodeRef } from 'vue'
+import { useRouter } from 'vue-router'
 
-const router = useRouter();
+const router = useRouter()
 
 type CardNavLink = {
-  label: string;
-  href?: string;
-  ariaLabel: string;
-};
+  label: string
+  href?: string
+  ariaLabel: string
+}
 
 export type CardNavItem = {
-  label: string;
-  bgColor: string;
-  textColor: string;
-  links: CardNavLink[];
-};
+  label: string
+  bgColor: string
+  textColor: string
+  links: CardNavLink[]
+}
 
 export interface CardNavProps {
-  logo: string;
-  logoAlt?: string;
-  items: CardNavItem[];
-  className?: string;
-  ease?: string;
-  baseColor?: string;
-  menuColor?: string;
-  buttonBgColor?: string;
-  buttonTextColor?: string;
+  logo: string
+  logoAlt?: string
+  items: CardNavItem[]
+  className?: string
+  ease?: string
+  baseColor?: string
+  menuColor?: string
+  buttonBgColor?: string
+  buttonTextColor?: string
 }
 
 const props = withDefaults(defineProps<CardNavProps>(), {
   logoAlt: 'Logo',
   className: '',
   ease: 'power3.out',
-  baseColor: '#fff'
-});
+  baseColor: '#fff',
+})
 
-const isHamburgerOpen = ref(false);
-const isExpanded = ref(false);
+const isHamburgerOpen = ref(false)
+const isExpanded = ref(false)
 
-const navRef = ref<HTMLDivElement | null>(null);
-const cardsRef = ref<HTMLDivElement[]>([]);
-const tlRef = ref<gsap.core.Timeline | null>(null);
+const navRef = ref<HTMLDivElement | null>(null)
+const cardsRef = ref<HTMLDivElement[]>([])
+const tlRef = ref<gsap.core.Timeline | null>(null)
 
 const setCardRef =
   (i: number): VNodeRef =>
-  el => {
+  (el) => {
     if (el && el instanceof HTMLDivElement) {
-      cardsRef.value[i] = el;
-    }
-  };
-
-onBeforeUpdate(() => {
-  cardsRef.value = [];
-});
-
-const calculateHeight = () => {
-  const navEl = navRef.value;
-  if (!navEl) return 260;
-
-  const isMobile = window.matchMedia('(max-width: 768px)').matches;
-  if (isMobile) {
-    const contentEl = navEl.querySelector('.card-nav-content') as HTMLElement;
-    if (contentEl) {
-      const wasVisible = contentEl.style.visibility;
-      const wasPosition = contentEl.style.position;
-      const wasHeight = contentEl.style.height;
-
-      contentEl.style.visibility = 'visible';
-      contentEl.style.position = 'static';
-      contentEl.style.height = 'auto';
-
-      const topBar = 60;
-      const padding = 16;
-      const contentHeight = contentEl.scrollHeight;
-
-      contentEl.style.visibility = wasVisible;
-      contentEl.style.position = wasPosition;
-      contentEl.style.height = wasHeight;
-
-      return topBar + contentHeight + padding;
+      cardsRef.value[i] = el
     }
   }
-  return 260;
-};
+
+onBeforeUpdate(() => {
+  cardsRef.value = []
+})
+
+const calculateHeight = () => {
+  const navEl = navRef.value
+  if (!navEl) return 260
+
+  const isMobile = window.matchMedia('(max-width: 768px)').matches
+  if (isMobile) {
+    const contentEl = navEl.querySelector('.card-nav-content') as HTMLElement
+    if (contentEl) {
+      const wasVisible = contentEl.style.visibility
+      const wasPosition = contentEl.style.position
+      const wasHeight = contentEl.style.height
+
+      contentEl.style.visibility = 'visible'
+      contentEl.style.position = 'static'
+      contentEl.style.height = 'auto'
+
+      const topBar = 60
+      const padding = 16
+      const contentHeight = contentEl.scrollHeight
+
+      contentEl.style.visibility = wasVisible
+      contentEl.style.position = wasPosition
+      contentEl.style.height = wasHeight
+
+      return topBar + contentHeight + padding
+    }
+  }
+  return 260
+}
 
 const createTimeline = () => {
-  const navEl = navRef.value;
-  if (!navEl) return null;
+  const navEl = navRef.value
+  if (!navEl) return null
 
-  gsap.set(navEl, { height: 60, overflow: 'hidden' });
-  gsap.set(cardsRef.value, { y: 50, opacity: 0 });
+  gsap.set(navEl, { height: 60, overflow: 'hidden' })
+  gsap.set(cardsRef.value, { y: 50, opacity: 0 })
 
-  const tl = gsap.timeline({ paused: true });
+  const tl = gsap.timeline({ paused: true })
 
   tl.to(navEl, {
     height: calculateHeight,
     duration: 0.4,
-    ease: props.ease
-  });
+    ease: props.ease,
+  })
 
-  tl.to(cardsRef.value, { y: 0, opacity: 1, duration: 0.4, ease: props.ease, stagger: 0.08 }, '-=0.1');
+  tl.to(
+    cardsRef.value,
+    { y: 0, opacity: 1, duration: 0.4, ease: props.ease, stagger: 0.08 },
+    '-=0.1',
+  )
 
-  return tl;
-};
+  return tl
+}
 
 const toggleMenu = () => {
-  const tl = tlRef.value;
-  if (!tl) return;
+  const tl = tlRef.value
+  if (!tl) return
   if (!isExpanded.value) {
-    isHamburgerOpen.value = true;
-    isExpanded.value = true;
+    isHamburgerOpen.value = true
+    isExpanded.value = true
     nextTick(() => {
-      tl.play(0);
-    });
+      tl.play(0)
+    })
   } else {
-    isHamburgerOpen.value = false;
+    isHamburgerOpen.value = false
     tl.eventCallback('onReverseComplete', () => {
-      isExpanded.value = false;
-      tl.eventCallback('onReverseComplete', null);
-    });
-    tl.reverse();
+      isExpanded.value = false
+      tl.eventCallback('onReverseComplete', null)
+    })
+    tl.reverse()
   }
-};
+}
 
 const handleResize = () => {
-  if (!tlRef.value) return;
+  if (!tlRef.value) return
 
   if (isExpanded.value) {
-    const newHeight = calculateHeight();
-    gsap.set(navRef.value, { height: newHeight });
+    const newHeight = calculateHeight()
+    gsap.set(navRef.value, { height: newHeight })
 
-    tlRef.value.kill();
-    const newTl = createTimeline();
+    tlRef.value.kill()
+    const newTl = createTimeline()
     if (newTl) {
-      newTl.progress(1);
-      tlRef.value = newTl;
+      newTl.progress(1)
+      tlRef.value = newTl
     }
   } else {
-    tlRef.value.kill();
-    tlRef.value = createTimeline();
+    tlRef.value.kill()
+    tlRef.value = createTimeline()
   }
-};
+}
 
 const toLoginView = () => {
-  router.push('/voice-chat');
-};
+  router.push('/voice-chat')
+}
 
 onMounted(() => {
-  tlRef.value = createTimeline();
-  window.addEventListener('resize', handleResize);
-});
+  tlRef.value = createTimeline()
+  window.addEventListener('resize', handleResize)
+})
 
 onUnmounted(() => {
-  tlRef.value?.kill();
-  tlRef.value = null;
-  window.removeEventListener('resize', handleResize);
-});
+  tlRef.value?.kill()
+  tlRef.value = null
+  window.removeEventListener('resize', handleResize)
+})
 
 watch(
   () => [props.ease, props.items],
   () => {
     nextTick(() => {
-      if (tlRef.value) tlRef.value.kill();
-      tlRef.value = createTimeline();
-    });
-  }
-);
+      if (tlRef.value) tlRef.value.kill()
+      tlRef.value = createTimeline()
+    })
+  },
+)
 </script>
 
 <template>
@@ -178,7 +182,7 @@ watch(
       ref="navRef"
       :class="[
         'card-nav block h-[60px] p-0 rounded-xl shadow-md relative overflow-hidden will-change-[height]',
-        { open: isExpanded }
+        { open: isExpanded },
       ]"
       :style="{ backgroundColor: props.baseColor }"
     >
@@ -188,7 +192,7 @@ watch(
         <div
           :class="[
             'hamburger-menu group h-full flex flex-col items-center justify-center cursor-pointer gap-[6px] order-2 md:order-none',
-            { open: isHamburgerOpen }
+            { open: isHamburgerOpen },
           ]"
           @click="toggleMenu"
           role="button"
@@ -199,13 +203,13 @@ watch(
           <div
             :class="[
               'hamburger-line w-[30px] h-[2px] bg-current transition-[transform,opacity,margin] duration-300 ease-linear [transform-origin:50%_50%] group-hover:opacity-75',
-              { 'translate-y-[4px] rotate-45': isHamburgerOpen }
+              { 'translate-y-[4px] rotate-45': isHamburgerOpen },
             ]"
           />
           <div
             :class="[
               'hamburger-line w-[30px] h-[2px] bg-current transition-[transform,opacity,margin] duration-300 ease-linear [transform-origin:50%_50%] group-hover:opacity-75',
-              { '-translate-y-[4px] -rotate-45': isHamburgerOpen }
+              { '-translate-y-[4px] -rotate-45': isHamburgerOpen },
             ]"
           />
         </div>
@@ -221,7 +225,7 @@ watch(
           class="hidden md:inline-flex px-4 py-2 border-0 rounded-[calc(0.75rem-0.2rem)] h-full font-medium transition-colors duration-300 cursor-pointer card-nav-cta-button cursor-target"
           :style="{
             backgroundColor: props.buttonBgColor,
-            color: props.buttonTextColor
+            color: props.buttonTextColor,
           }"
           @click="toLoginView"
         >
@@ -232,7 +236,7 @@ watch(
       <div
         :class="[
           'card-nav-content absolute left-0 right-0 top-[60px] bottom-0 p-2 flex flex-col items-stretch gap-2 justify-start z-[1] md:flex-row md:items-end md:gap-[12px]',
-          isExpanded ? 'visible pointer-events-auto' : 'invisible pointer-events-none'
+          isExpanded ? 'visible pointer-events-auto' : 'invisible pointer-events-none',
         ]"
         :aria-hidden="!isExpanded"
       >
@@ -254,7 +258,11 @@ watch(
               :href="lnk.href"
               :aria-label="lnk.ariaLabel"
             >
-              <v-icon name="go-arrow-up-right" class="nav-card-link-icon shrink-0" aria-hidden="true" />
+              <v-icon
+                name="go-arrow-up-right"
+                class="nav-card-link-icon shrink-0"
+                aria-hidden="true"
+              />
               {{ lnk.label }}
             </a>
           </div>
@@ -263,3 +271,38 @@ watch(
     </nav>
   </div>
 </template>
+
+<style scoped>
+.card-nav {
+  border-radius: 12px;
+}
+.card-nav-cta-button {
+  box-shadow: 0 6px 18px rgba(255, 105, 180, 0.06);
+  border: 1px solid rgba(255, 105, 180, 0.08);
+}
+.nav-card {
+  border: 1px solid rgba(255, 105, 180, 0.08);
+  border-radius: 10px;
+  box-shadow: 0 6px 14px rgba(255, 105, 180, 0.04);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+  display: flex;
+  flex-direction: column;
+}
+.nav-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 36px rgba(255, 105, 180, 0.12);
+  border-color: rgba(255, 105, 180, 0.18);
+}
+.nav-card-label {
+  font-weight: 600;
+}
+.nav-card-link {
+  color: inherit;
+}
+.nav-card-link .nav-card-link-icon {
+  color: rgba(59, 13, 47, 0.9);
+}
+</style>

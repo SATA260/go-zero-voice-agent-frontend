@@ -1,6 +1,6 @@
 <template>
   <div class="basic-layout">
-    <el-container class="h-screen">
+    <el-container class="h-screen bg-white">
       <el-header class="m-0 p-0">
         <HeaderBar />
       </el-header>

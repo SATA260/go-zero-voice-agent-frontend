@@ -2,25 +2,33 @@ import { defineStore } from 'pinia';
 import { DefaultApi } from '@/api/usercenter/api/default-api';
 import { Configuration } from '@/api/usercenter/configuration';
 import type { UserLoginRequest, UserRegisterRequest, UserSendCodeRequest } from '@/api/usercenter/model';
-import type { UserDetail200ResponseUserInfo } from '@/api/usercenter/model';
+import type { UserDetail200Response } from '@/api/usercenter/model';
 
-const apiConfig = new Configuration({ basePath: '/api' });
+const apiConfig = new Configuration({
+  basePath: '/api'
+});
 const userApi = new DefaultApi(apiConfig);
 
 interface UserState {
   token: string | null;
-  userInfo: UserDetail200ResponseUserInfo | null;
+  userInfo: UserDetail200Response | null;
   accessExpire: number | null;
   refreshAfter: number | null;
 }
 
 export const useUserStore = defineStore('user', {
-  state: (): UserState => ({
-    token: localStorage.getItem('token') || null,
-    userInfo: JSON.parse(localStorage.getItem('userInfo') || 'null'),
-    accessExpire: Number(localStorage.getItem('accessExpire')) || null,
-    refreshAfter: Number(localStorage.getItem('refreshAfter')) || null,
-  }),
+  state: (): UserState => {
+    const userInfoStr = localStorage.getItem('userInfo');
+    const accessExpireStr = localStorage.getItem('accessExpire');
+    const refreshAfterStr = localStorage.getItem('refreshAfter');
+
+    return {
+      token: localStorage.getItem('token') || null,
+      userInfo: userInfoStr ? JSON.parse(userInfoStr) : null,
+      accessExpire: accessExpireStr ? Number(accessExpireStr) : null,
+      refreshAfter: refreshAfterStr ? Number(refreshAfterStr) : null,
+    };
+  },
 
   getters: {
     isLoggedIn: (state) => !!state.token,
@@ -69,7 +77,7 @@ export const useUserStore = defineStore('user', {
     async login(email: string, password: string) {
       try {
         const request: UserLoginRequest = {
-          mobile: email,
+          email: email,
           password
         };
         const response = await userApi.userLogin(request);
@@ -101,9 +109,9 @@ export const useUserStore = defineStore('user', {
       if (!this.token) return;
 
       try {
-        const response = await userApi.userDetail(`Bearer ${this.token}`);
-        if (response.data && response.data.userInfo) {
-          this.userInfo = response.data.userInfo;
+        const response = await userApi.userDetail();
+        if (response.data) {
+          this.userInfo = response.data;
           localStorage.setItem('userInfo', JSON.stringify(this.userInfo));
         }
       } catch (error) {

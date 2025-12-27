@@ -1,14 +1,14 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "用户中心",
+    "title": "usercenter",
     "description": "",
     "version": "v1"
   },
   "tags": [],
   "paths": {
     "/usercenter/v1/user/auth": {
-      "post": {
+      "get": {
         "summary": "auth by token",
         "deprecated": false,
         "description": "",
@@ -24,6 +24,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "example": 1,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -33,11 +42,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "userId": {
-                      "type": "integer"
-                    }
-                  }
+                  "properties": {}
                 }
               }
             },
@@ -56,11 +61,11 @@
         "tags": [],
         "parameters": [
           {
-            "name": "Authorization",
+            "name": "X-User-Id",
             "in": "header",
             "description": "",
-            "required": true,
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjE3MjE5NTQsImlhdCI6MTc2MTExNzE1NCwidXNlcklkIjoxMDAwMX0.-8TUTYOTycYxy8cUoVZT4yMclbR_MN5C6kPrQ9e6vOo",
+            "required": false,
+            "example": "",
             "schema": {
               "type": "string"
             }
@@ -74,39 +79,23 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "userInfo": {
-                      "type": "object",
-                      "required": [
-                        "id",
-                        "email",
-                        "password",
-                        "nickname",
-                        "avatar",
-                        "info"
-                      ],
-                      "properties": {
-                        "Sex": {
-                          "type": "integer"
-                        },
-                        "avatar": {
-                          "type": "string"
-                        },
-                        "email": {
-                          "type": "string"
-                        },
-                        "id": {
-                          "type": "integer"
-                        },
-                        "info": {
-                          "type": "string"
-                        },
-                        "nickname": {
-                          "type": "string"
-                        },
-                        "password": {
-                          "type": "string"
-                        }
-                      }
+                    "avatar": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "info": {
+                      "type": "string"
+                    },
+                    "nickname": {
+                      "type": "string"
+                    },
+                    "sex": {
+                      "type": "integer"
                     }
                   }
                 }
@@ -125,18 +114,28 @@
         "description": "",
         "operationId": "userLogin",
         "tags": [],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "example": 1,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "required": [
-                  "mobile",
+                  "email",
                   "password"
                 ],
                 "properties": {
-                  "mobile": {
+                  "email": {
                     "type": "string"
                   },
                   "password": {
@@ -182,7 +181,17 @@
         "description": "",
         "operationId": "userRegister",
         "tags": [],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "example": 1,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -243,7 +252,17 @@
         "description": "",
         "operationId": "userSendCode",
         "tags": [],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "description": "",
+            "example": 1,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -286,6 +305,7 @@
   },
   "components": {
     "schemas": {},
+    "responses": {},
     "securitySchemes": {}
   },
   "servers": [],

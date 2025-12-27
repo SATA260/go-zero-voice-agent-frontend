@@ -8,6 +8,7 @@ const RagManagementView = () => import('@/views/RagManagementView.vue')
 const VoiceChatView = () => import('@/views/VoiceChatView.vue')
 const HomeView = () => import('@/views/HomeView.vue')
 const AuthView = () => import('@/views/AuthView.vue')
+const UserView = () => import('@/views/UserView.vue')
 
 const routes = [
   {
@@ -44,6 +45,11 @@ const routes = [
         path: 'rag',
         name: 'RagManagement',
         component: RagManagementView,
+      },
+      {
+        path: 'user',
+        name: 'User',
+        component: UserView,
       },
     ],
   },

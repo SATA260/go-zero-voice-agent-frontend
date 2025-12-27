@@ -66,6 +66,19 @@
         </button>
       </div>
     </div>
+
+    <!-- 用户按钮 -->
+    <div class="user-section">
+      <div class="sidebar-item user-item cursor-target" @click="handleUserClick" :class="[
+        { selected: selectedMenu === '/voice-chat/user' },
+        { 'shadow-md': selectedMenu === '/voice-chat/user' },
+      ]">
+        <el-icon class="icon">
+          <User />
+        </el-icon>
+        <span>用户中心</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -76,7 +89,7 @@ import { useMsgHistoryStore } from '@/stores/modules/msgHistory'
 import { useChatStore } from '@/stores/modules/chat'
 import { storeToRefs } from 'pinia'
 import { dayjs } from 'element-plus'
-import { Key, Document, Loading } from '@element-plus/icons-vue'
+import { Key, Document, Loading, User } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -160,6 +173,13 @@ const handleRecentItemClick = async (id: number) => {
 // 加载更多对话
 const handleLoadMore = async () => {
   await msgHistoryStore.loadMoreSessions()
+}
+
+// 用户按钮点击事件
+const handleUserClick = () => {
+  clearSelection()
+  selectedMenu.value = '/voice-chat/user'
+  router.push('/voice-chat/user')
 }
 
 onMounted(() => {
@@ -364,6 +384,24 @@ onMounted(() => {
 /* 底部关于项 */
 .about {
   margin-top: auto;
+}
+
+/* 用户部分 */
+.user-section {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid #ffe4e8;
+}
+
+.user-item {
+  background-color: #ffffff;
+  border: 1px solid #ffb6c1;
+  font-weight: 500;
+}
+
+.user-item:hover {
+  background-color: #fff0f3;
+  border-color: #ff8da1;
 }
 
 /* 选中态 */

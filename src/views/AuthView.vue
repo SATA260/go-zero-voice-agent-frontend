@@ -53,6 +53,7 @@
             />
           </div>
         </div>
+        <p v-if="errorMessage && isLoginMode" class="text-sm text-rose-600 text-center mt-4">{{ errorMessage }}</p>
       </div>
     </Stepper>
 
@@ -135,6 +136,7 @@
             />
           </div>
         </div>
+        <p v-if="errorMessage && !isLoginMode" class="text-sm text-rose-600 text-center mt-4">{{ errorMessage }}</p>
       </div>
     </Stepper>
   </div>

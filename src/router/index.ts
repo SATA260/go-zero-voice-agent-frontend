@@ -5,13 +5,18 @@ const VoiceChatLayout = () => import('@/layouts/VoiceChatLayout.vue')
 const ApiSetting = () => import('@/views/ApiSetting.vue')
 const RagManagementView = () => import('@/views/RagManagementView.vue')
 const VoiceChatView = () => import('@/views/VoiceChatView.vue')
+const HomeView = () => import('@/views/HomeView.vue')
 
 const routes = [
   {
     path: '/',
     component: BasicLayout,
     children: [],
-    redirect: '/voice-chat',
+    redirect: '/home'
+  },
+  {
+    path: '/home',
+    component: HomeView,
   },
   {
     path: '/voice-chat',

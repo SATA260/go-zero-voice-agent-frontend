@@ -24,6 +24,7 @@
     "dayjs": "^1.11.19",
     "element-plus": "^2.11.8",
     "gsap": "^3.13.0",
+    "ogl": "^1.0.11",
     "pinia": "^3.0.3",
     "pixi-live2d-display": "^0.4.0",
     "pixi.js": "~6.5.10",

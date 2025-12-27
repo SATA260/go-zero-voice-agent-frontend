@@ -5,6 +5,7 @@
 <script setup lang="ts">
 import { gsap } from 'gsap'
 import { onMounted, onBeforeUnmount, ref, useTemplateRef, watch } from 'vue'
+import { useRouter } from 'vue-router'
 
 interface TargetCursorProps {
   targetSelector?: string
@@ -18,9 +19,11 @@ const props = withDefaults(defineProps<TargetCursorProps>(), {
   hideDefaultCursor: true,
 })
 
+const router = useRouter()
 const cursorRef = useTemplateRef('cursorRef')
 const cornersRef = ref<NodeListOf<HTMLDivElement> | null>(null)
 const spinTl = ref<gsap.core.Timeline | null>(null)
+const forceResetCursor = ref<(() => void) | null>(null)
 
 const constants = {
   borderWidth: 3,
@@ -207,9 +210,17 @@ const setupAnimation = () => {
       })
     }
 
-    const leaveHandler = () => {
+    const resetCursorToDefault = () => {
+      if (activeTarget) {
+        cleanupTarget(activeTarget)
+      }
       activeTarget = null
       isAnimatingToTarget = false
+
+      if (resumeTimeout) {
+        clearTimeout(resumeTimeout)
+        resumeTimeout = null
+      }
 
       if (cornersRef.value) {
         const corners = Array.from(cornersRef.value)
@@ -259,9 +270,14 @@ const setupAnimation = () => {
         }
         resumeTimeout = null
       }, 50)
+    }
 
+    const leaveHandler = () => {
+      resetCursorToDefault()
       cleanupTarget(target)
     }
+
+    forceResetCursor.value = resetCursorToDefault
 
     currentTargetMove = targetMove
     currentLeaveHandler = leaveHandler
@@ -316,6 +332,13 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   cleanupAnimation()
+})
+
+// 监听路由变化，重置光标状态
+router.beforeEach(() => {
+  if (forceResetCursor.value) {
+    forceResetCursor.value()
+  }
 })
 
 watch(

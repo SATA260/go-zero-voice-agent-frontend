@@ -5,7 +5,12 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**userInfo** | [**UserDetail200ResponseUserInfo**](UserDetail200ResponseUserInfo.md) |  | [optional] [default to undefined]
+**avatar** | **string** |  | [optional] [default to undefined]
+**email** | **string** |  | [optional] [default to undefined]
+**id** | **number** |  | [optional] [default to undefined]
+**info** | **string** |  | [optional] [default to undefined]
+**nickname** | **string** |  | [optional] [default to undefined]
+**sex** | **number** |  | [optional] [default to undefined]
 
 ## Example
 
@@ -13,7 +18,12 @@ Name | Type | Description | Notes
 import { UserDetail200Response } from './api';
 
 const instance: UserDetail200Response = {
-    userInfo,
+    avatar,
+    email,
+    id,
+    info,
+    nickname,
+    sex,
 };
 ```
 

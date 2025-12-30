@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**mobile** | **string** |  | [default to undefined]
+**email** | **string** |  | [default to undefined]
 **password** | **string** |  | [default to undefined]
 
 ## Example
@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 import { UserLoginRequest } from './api';
 
 const instance: UserLoginRequest = {
-    mobile,
+    email,
     password,
 };
 ```

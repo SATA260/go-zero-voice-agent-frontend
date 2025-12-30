@@ -3,6 +3,7 @@ import { DefaultApi } from '@/api/voicechat/api/default-api';
 import { Configuration } from '@/api/voicechat/configuration';
 import { DefaultApi as LlmApi } from '@/api/llm/api/default-api';
 import { Configuration as LlmConfiguration } from '@/api/llm/configuration';
+import { useUserStore } from './user';
 import type {
   AsrListAsrConfig200ResponseConfigListInner,
   TtsListTtsConfig200ResponseConfigListInner,
@@ -48,7 +49,8 @@ export const useApiSettingStore = defineStore('apiSetting', {
 
   actions: {
     getUserId() {
-      return 1; // TODO: Replace with actual user ID retrieval logic
+      const userStore = useUserStore();
+      return userStore.userId;
     },
 
     // --- ASR Actions ---

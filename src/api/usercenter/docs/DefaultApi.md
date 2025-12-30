@@ -8,7 +8,7 @@ All URIs are relative to *http://localhost*
 |[**userLogin**](#userlogin) | **POST** /usercenter/v1/user/login | login|
 |[**userRegister**](#userregister) | **POST** /usercenter/v1/user/register | register|
 |[**userSendCode**](#usersendcode) | **POST** /usercenter/v1/user/sendCode | send code|
-|[**userVerifyToken**](#userverifytoken) | **POST** /usercenter/v1/user/auth | auth by token|
+|[**userVerifyToken**](#userverifytoken) | **GET** /usercenter/v1/user/auth | auth by token|
 
 # **userDetail**
 > UserDetail200Response userDetail()
@@ -26,10 +26,10 @@ import {
 const configuration = new Configuration();
 const apiInstance = new DefaultApi(configuration);
 
-let authorization: string; // (default to undefined)
+let xUserId: string; // (optional) (default to undefined)
 
 const { status, data } = await apiInstance.userDetail(
-    authorization
+    xUserId
 );
 ```
 
@@ -37,7 +37,7 @@ const { status, data } = await apiInstance.userDetail(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **authorization** | [**string**] |  | defaults to undefined|
+| **xUserId** | [**string**] |  | (optional) defaults to undefined|
 
 
 ### Return type
@@ -79,9 +79,11 @@ const configuration = new Configuration();
 const apiInstance = new DefaultApi(configuration);
 
 let userLoginRequest: UserLoginRequest; //
+let xUserId: number; // (optional) (default to undefined)
 
 const { status, data } = await apiInstance.userLogin(
-    userLoginRequest
+    userLoginRequest,
+    xUserId
 );
 ```
 
@@ -90,6 +92,7 @@ const { status, data } = await apiInstance.userLogin(
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
 | **userLoginRequest** | **UserLoginRequest**|  | |
+| **xUserId** | [**number**] |  | (optional) defaults to undefined|
 
 
 ### Return type
@@ -131,9 +134,11 @@ const configuration = new Configuration();
 const apiInstance = new DefaultApi(configuration);
 
 let userRegisterRequest: UserRegisterRequest; //
+let xUserId: number; // (optional) (default to undefined)
 
 const { status, data } = await apiInstance.userRegister(
-    userRegisterRequest
+    userRegisterRequest,
+    xUserId
 );
 ```
 
@@ -142,6 +147,7 @@ const { status, data } = await apiInstance.userRegister(
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
 | **userRegisterRequest** | **UserRegisterRequest**|  | |
+| **xUserId** | [**number**] |  | (optional) defaults to undefined|
 
 
 ### Return type
@@ -183,9 +189,11 @@ const configuration = new Configuration();
 const apiInstance = new DefaultApi(configuration);
 
 let userSendCodeRequest: UserSendCodeRequest; //
+let xUserId: number; // (optional) (default to undefined)
 
 const { status, data } = await apiInstance.userSendCode(
-    userSendCodeRequest
+    userSendCodeRequest,
+    xUserId
 );
 ```
 
@@ -194,6 +202,7 @@ const { status, data } = await apiInstance.userSendCode(
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
 | **userSendCodeRequest** | **UserSendCodeRequest**|  | |
+| **xUserId** | [**number**] |  | (optional) defaults to undefined|
 
 
 ### Return type
@@ -218,7 +227,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **userVerifyToken**
-> UserVerifyToken200Response userVerifyToken()
+> object userVerifyToken()
 
 
 
@@ -234,9 +243,11 @@ const configuration = new Configuration();
 const apiInstance = new DefaultApi(configuration);
 
 let authorization: string; // (optional) (default to undefined)
+let xUserId: number; // (optional) (default to undefined)
 
 const { status, data } = await apiInstance.userVerifyToken(
-    authorization
+    authorization,
+    xUserId
 );
 ```
 
@@ -245,11 +256,12 @@ const { status, data } = await apiInstance.userVerifyToken(
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
 | **authorization** | [**string**] |  | (optional) defaults to undefined|
+| **xUserId** | [**number**] |  | (optional) defaults to undefined|
 
 
 ### Return type
 
-**UserVerifyToken200Response**
+**object**
 
 ### Authorization
 
